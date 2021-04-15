@@ -16,10 +16,10 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $barangs = Barang::all();
+        $barang = Barang::all();
 
         return view('barang_index', [
-            'barangs' => $barangs
+            'barangs' => $barang
         ]);
     }
 
@@ -31,8 +31,22 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $barang = new Barang();
+        $barang->kodeBarang = $request->kodeBarang;
+        $barang->namaBarang = $request->namaBarang;
+        $barang->qty = $request->qty;
+        $barang->satuan = $request->satuan;
+        $barang->hargaBeli = $request->hargaBeli;
+        $barang->hargaJual = $request->hargaJual;
+        $barang->save();
+
+        $barang = Barang::all();
+
+        return view('barang_index', [
+            'barang' => $barang
+        ]);
     }
+    
 
     /**
      * Display the specified resource.

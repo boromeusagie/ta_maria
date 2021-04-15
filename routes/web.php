@@ -38,6 +38,7 @@ Route::group(
         Route::group(
             ['prefix' => 'barang'], function() {
                 Route::get('', 'BarangController@index')->name('barang.index');
+                Route::post('', 'BarangController@store')->name('barang.store');
                 Route::get('{id}','BarangController@edit')->name('barang.edit');
                 Route::post('{id}','BarangController@update')->name('barang.update');
                 Route::delete('{kodeBarang}', 'BarangController@destroy')->name('barang.destroy');
@@ -65,6 +66,15 @@ Route::group(
                 Route::get('{id}','PenjualanController@edit')->name('penjualan.edit');
                 Route::post('{id}','PenjualanController@update')->name('penjualan.update');
                 Route::delete('{id}', 'PenjualanController@destroy')->name('penjualan.destroy');
+            }
+
+        );
+
+        // Routes for laporan persediaan barang
+        Route::group(
+            ['prefix' => 'laporanPersediaanBarang`'], function() {
+                Route::get('', 'LaporanPersediaanBarangController@index')->name('laporanPersediaanBarang.index');
+                Route::get('getPDF', 'LaporanPersediaanBarangController@cetak_pdf')->name('laporanPersediaanBarang.cetak_pdf');
             }
 
         );
