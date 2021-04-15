@@ -16,8 +16,18 @@ class Pembelian extends Model
      * @var array
      */
     protected $fillable = [
-        'tanggal', 'noFaktur', 'namaSupplier', 'kodeBarang', 'qty', 'satuan'
+        'tanggal', 'noFaktur', 'kodeSupplier'
     ];
 
     protected $table = 'pembelian';
+
+    public function items()
+    {
+        return $this->hasMany('App\ItemPembelian', 'noFaktur', 'noFaktur');
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo('App\Supplier', 'kodeSupplier', 'kodeSupplier');
+    }
 }

@@ -20,4 +20,9 @@ class Supplier extends Model
     ];
 
     protected $table = 'supplier';
+
+    public function pembelian()
+    {
+        return $this->hasMany('App\Pembelian', 'kodeSupplier', 'kodeSupplier');
+    }
 }

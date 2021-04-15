@@ -69,5 +69,21 @@ Route::group(
 
         );
 
+        // Routes for pembelian
+        Route::group(
+            ['prefix' => 'pembelian'], function() {
+                Route::get('', 'PembelianController@index')->name('pembelian.index');
+                Route::get('order', 'PembelianController@orderPembelian')->name('pembelian.order');
+                Route::post('order', 'PembelianController@store')->name('pembelian.store');
+                Route::get('order/{id}', 'PembelianController@orderPembelianShow')->name('pembelian.ordershow');
+                Route::post('order/{id}', 'PembelianController@orderPembelianStore')->name('pembelian.orderstore');
+                Route::get('order/getSatuan/{kodeBarang}', 'PembelianController@getSatuan')->name('pembelian.getsatuan');
+                Route::get('{id}','PembelianController@edit')->name('pembelian.edit');
+                Route::post('{id}','PembelianController@update')->name('pembelian.update');
+                Route::delete('order/{id}/{itemId}/delete', 'PembelianController@itemDestroy')->name('pembelian.itemdestroy');
+            }
+
+        );
+
     }
 );

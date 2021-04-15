@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Toko Andatu') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
+    @toastr_css
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -24,7 +25,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{ config('app.name', 'Toko Andatu') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -41,9 +42,9 @@
                                 MASTER
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('barang') }}">Barang</a>
-                                <a class="dropdown-item" href="supplier">Supplier</a>
-                                <a class="dropdown-item" href="user">User</a>
+                                <a class="dropdown-item" href="{{ route('barang.index') }}">Barang</a>
+                                <a class="dropdown-item" href="{{ route('supplier.index') }}">Supplier</a>
+                                <a class="dropdown-item" href="{{ route('user.index') }}">User</a>
                                 </div>
                             </li>
 
@@ -54,11 +55,11 @@
                                 <div class="dropdown-menu dropright" aria-labelledby="navbarDropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pembelian</a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                                        <a class="dropdown-item" href="pembelian">Order Pembelian</a>
+                                        <a class="dropdown-item" href="{{ route('pembelian.order') }}">Order Pembelian</a>
                                         <a class="dropdown-item" href="penerimaanBarang">Penerimaan Barang</a>
                                         <a class="dropdown-item" href="returnPembelian">Return Pembelian</a>
                                     </div>
-                                <a class="dropdown-item" href="penjualan">Penjualan</a>
+                                <a class="dropdown-item" href="{{ route('penjualan.index') }}">Penjualan</a>
                                 <a class="dropdown-item" href="kas">Kas</a>
                                 </div>
                             </li>
@@ -117,5 +118,10 @@
             @yield('content')
         </main>
     </div>
+
+    <script src="/js/jquery.min.js"></script>
+    @toastr_js
+    @toastr_render
+    @yield('script')
 </body>
 </html>
