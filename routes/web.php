@@ -38,6 +38,7 @@ Route::group(
         Route::group(
             ['prefix' => 'barang'], function() {
                 Route::get('', 'BarangController@index')->name('barang.index');
+                Route::post('', 'BarangController@store')->name('barang.store');
                 Route::get('{id}','BarangController@edit')->name('barang.edit');
                 Route::post('{id}','BarangController@update')->name('barang.update');
                 Route::delete('{kodeBarang}', 'BarangController@destroy')->name('barang.destroy');
@@ -78,9 +79,17 @@ Route::group(
                 Route::get('order/{id}', 'PembelianController@orderPembelianShow')->name('pembelian.ordershow');
                 Route::post('order/{id}', 'PembelianController@orderPembelianStore')->name('pembelian.orderstore');
                 Route::get('order/getSatuan/{kodeBarang}', 'PembelianController@getSatuan')->name('pembelian.getsatuan');
-                Route::get('{id}','PembelianController@edit')->name('pembelian.edit');
-                Route::post('{id}','PembelianController@update')->name('pembelian.update');
+                Route::get('{id}', 'PembelianController@edit')->name('pembelian.edit');
+                Route::post('{id}', 'PembelianController@update')->name('pembelian.update');
                 Route::delete('order/{id}/{itemId}/delete', 'PembelianController@itemDestroy')->name('pembelian.itemdestroy');
+            }
+        );
+        
+        // Routes for laporan persediaan barang
+        Route::group(
+            ['prefix' => 'laporanPersediaanBarang`'], function() {
+                Route::get('', 'LaporanPersediaanBarangController@index')->name('laporanPersediaanBarang.index');
+                Route::get('getPDF', 'LaporanPersediaanBarangController@cetak_pdf')->name('laporanPersediaanBarang.cetak_pdf');
             }
 
         );

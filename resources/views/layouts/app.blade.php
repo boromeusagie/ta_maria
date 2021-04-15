@@ -69,7 +69,7 @@
                                 LAPORAN
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="barang">Laporan Persediaan Barang</a>
+                                <a class="dropdown-item" href="{{ route('laporanPersediaanBarang.index') }}">Laporan Persediaan Barang</a>
                                 <a class="dropdown-item" href="laporanPembelian">Laporan Pembelian</a>
                                 <a class="dropdown-item" href="laporanReturnPembelian">Laporan Return Pembelian</a>
                                 <a class="dropdown-item" href="laporanPenjualan">Laporan Penjualan</a>

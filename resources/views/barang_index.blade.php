@@ -4,6 +4,38 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+        <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('barang.store') }}" method="post">
+                    @csrf
+                        <div class="form-group">
+                            <label for="kodeBarang">Kode Barang</label>
+                            <input class="form-control" type="text" name="kodeBarang" id="kodeBarang">
+                        </div>
+                        <div class="form-group">
+                            <label for="namaBarang">Nama Barang</label>
+                            <input class="form-control" type="text" name="namaBarang" id="namaBarang">
+                        </div>
+                        <div class="form-group">
+                            <label for="qty">Quantity</label>
+                            <input class="form-control" type="text" name="qty" id="qty">
+                        </div>
+                        <div class="form-group">
+                            <label for="satuan">Satuan</label>
+                            <input class="form-control" type="text" name="satuan" id="satuan">
+                        </div>
+                        <div class="form-group">
+                            <label for="hargaBeli">Harga Beli</label>
+                            <input class="form-control" type="text" name="hargaBeli" id="hargaBeli">
+                        </div>
+                        <div class="form-group">
+                            <label for="hargaJual">Harga Jual</label>
+                            <input class="form-control" type="text" name="hargaJual" id="hargaJual">
+                        </div>
+                        <button class="btn btn-primary" type="submit">SAVE</button>
+                    </form>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-header">{{ __('Daftar Barang') }}</div>
 
