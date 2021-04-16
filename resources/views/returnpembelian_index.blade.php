@@ -21,10 +21,18 @@
                         </div>
                     </form>
 
+                    
                     <div class="form-group row">
                         <label for="supplier" class="col-sm-4 col-form-label">Supplier</label>
                         <div class="col-sm-8">
                             <input class="form-control" type="text" name="supplier" id="supplier" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="noReturn" class="col-sm-4 col-form-label">No Return</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="noReturn" id="noReturn" disabled>
                         </div>
                     </div>
                     
@@ -62,7 +70,7 @@
         $(function() {
             $('#noFaktur').change(function () {
                 var val = $(this).val();
-                let url = "{{ route('penerimaan-barang.show', ['id' => ':id']) }}";
+                let url = "{{ route('return-pembelian.show', ['id' => ':id']) }}";
                 url = url.replace(':id', val);
                 console.log(url);
                 

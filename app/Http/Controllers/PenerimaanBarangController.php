@@ -17,7 +17,11 @@ class PenerimaanBarangController extends Controller
      */
     public function index()
     {
-        $pembelian = Pembelian::all();
+        $pembelian = Pembelian::whereHas('items', function($q) {
+            $q->whereHas('status', function($s) {
+                $s->where('status', 'Belum Diterima');
+            });
+        })->get();
 
         return view('penerimaanbarang_index', ['pembelian' => $pembelian]);
     }

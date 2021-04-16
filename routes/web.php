@@ -81,19 +81,19 @@ Route::group(
         );
 
         // Routes for return pembelian
-        Route::group(
-            ['prefix' => 'returnPembelian'], function() {
-                Route::get('', 'ReturnPembelianController@index')->name('returnPembelian.index');
-                Route::get('order', 'ReturnPembelianController@returnPembelian')->name('returnPembelian.order');
-                Route::post('order', 'ReturnPembelianController@store')->name('returnPembelian.store');
-                Route::get('order/{id}', 'ReturnPembelianController@returnPembelianShow')->name('returnPembelian.ordershow');
-                Route::post('order/{id}', 'ReturnPembelianController@returnPembelianStore')->name('returnPembelian.orderstore');
-                Route::get('order/getSatuan/{kodeBarang}', 'ReturnPembelianController@getSatuan')->name('returnPembelian.getsatuan');
-                Route::get('{id}', 'ReturnPembelianController@edit')->name('returnPembelian.edit');
-                Route::post('{id}', 'ReturnPembelianController@update')->name('returnPembelian.update');
-                Route::delete('order/{id}/{itemId}/delete', 'ReturnPembelianController@itemDestroy')->name('returnPembelian.itemdestroy');
-            }
-        );
+        // Route::group(
+        //     ['prefix' => 'returnPembelian'], function() {
+        //         Route::get('', 'ReturnPembelianController@index')->name('returnPembelian.index');
+        //         Route::get('order', 'ReturnPembelianController@returnPembelian')->name('returnPembelian.order');
+        //         Route::post('order', 'ReturnPembelianController@store')->name('returnPembelian.store');
+        //         Route::get('order/{id}', 'ReturnPembelianController@returnPembelianShow')->name('returnPembelian.ordershow');
+        //         Route::post('order/{id}', 'ReturnPembelianController@returnPembelianStore')->name('returnPembelian.orderstore');
+        //         Route::get('order/getSatuan/{kodeBarang}', 'ReturnPembelianController@getSatuan')->name('returnPembelian.getsatuan');
+        //         Route::get('{id}', 'ReturnPembelianController@edit')->name('returnPembelian.edit');
+        //         Route::post('{id}', 'ReturnPembelianController@update')->name('returnPembelian.update');
+        //         Route::delete('order/{id}/{itemId}/delete', 'ReturnPembelianController@itemDestroy')->name('returnPembelian.itemdestroy');
+        //     }
+        // );
         
         // Routes for penerimaan barang
         Route::group(
@@ -101,10 +101,25 @@ Route::group(
                 Route::get('', 'PenerimaanBarangController@index')->name('penerimaan-barang.index');
                 Route::get('{id}', 'PenerimaanBarangController@show')->name('penerimaan-barang.show');
                 Route::get('{id}/{idItem}', 'PenerimaanBarangController@terimaBarang')->name('penerimaan-barang.terima');
-                // Route::post('', 'PenerimaanBarangController@store')->name('penerimaan-barang.store');
-                // Route::get('{id}','PenerimaanBarangController@edit')->name('penerimaan-barang.edit');
-                // Route::post('{id}','PenerimaanBarangController@update')->name('penerimaan-barang.update');
-                // Route::delete('{id}', 'PenerimaanBarangController@destroy')->name('penerimaan-barang.destroy');
+            }
+
+        );
+
+        // Routes for return-pembelian
+        Route::group(
+            ['prefix' => 'return-pembelian'], function() {
+                Route::get('', 'ReturnPembelianController@index')->name('return-pembelian.index');
+                Route::get('{id}', 'ReturnPembelianController@show')->name('return-pembelian.show');
+                Route::get('{id}/{idItem}', 'ReturnPembelianController@terimaBarang')->name('return-pembelian.return');
+            }
+
+        );
+
+        // Routes for laporan
+        Route::group(
+            ['prefix' => 'cetak-laporan'], function() {
+                Route::get('', 'LaporanCOntroller@index')->name('laporan.index');
+                Route::get('cetak', 'LaporanCOntroller@cetakPdf')->name('laporan.cetak');
             }
 
         );

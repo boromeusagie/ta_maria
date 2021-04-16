@@ -57,7 +57,7 @@
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
                                             <a class="dropdown-item" href="{{ route('pembelian.order') }}">Order Pembelian</a>
                                             <a class="dropdown-item" href="{{ route('penerimaan-barang.index') }}">Penerimaan Barang</a>
-                                            <a class="dropdown-item" href="returnPembelian">Return Pembelian</a>
+                                            <a class="dropdown-item" href="{{ route('return-pembelian.index') }}">Return Pembelian</a>
                                         </div>
                                     <a class="dropdown-item" href="{{ route('penjualan.order') }}">Penjualan</a>
                                     <a class="dropdown-item" href="kas">Kas</a>
@@ -65,16 +65,7 @@
                             </li>
 
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                LAPORAN
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="laporanPersediaanBarang">Laporan Persediaan Barang</a>
-                                <a class="dropdown-item" href="laporanPembelian">Laporan Pembelian</a>
-                                <a class="dropdown-item" href="laporanReturnPembelian">Laporan Return Pembelian</a>
-                                <a class="dropdown-item" href="laporanPenjualan">Laporan Penjualan</a>
-                                <a class="dropdown-item" href="laporanKas">Laporan Kas</a>
-                                </div>
+                                <a class="nav-link dropdown-item" href="{{ route('laporan.index') }}">LAPORAN</a>
                             </li>
                         </ul>
                     @endguest

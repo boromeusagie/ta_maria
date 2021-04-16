@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Barang;
-use App\ReturnPembelian;
 use App\ItemPembelian;
 use App\Pembelian;
-use App\Supplier;
+use App\StatusItem;
 use Illuminate\Http\Request;
 
 class ReturnPembelianController extends Controller
@@ -18,43 +17,13 @@ class ReturnPembelianController extends Controller
      */
     public function index()
     {
-        $returnPembelian = ReturnPembelian::all();
+        $pembelian = Pembelian::whereHas('items', function($q) {
+            $q->whereHas('status', function($s) {
+                $s->where('status', 'Belum Diterima');
+            });
+        })->get();
 
-        return view('returnPembelian_index', [
-            'returnPembelian' => $returnPembelian
-        ]);
-    }
-
-    /**
-     * Display a order pembelian form.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function returnPembelian()
-    {
-        $suppliers = Supplier::all();
-        $barangs = Barang::all();
-        $pembelian = Pembelian::all();
-
-        return view('order_pembelian', [
-            'suppliers' => $suppliers,
-            'barangs' => $barangs,
-            'pembelian' => $pembelian,
-        ]);
-    }
-
-    /**
-     * Display a order pembelian form.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    
-    public function getSatuan(Request $request, $kodeBarang)
-    {
-        $barang = Barang::where('kodeBarang', $kodeBarang)->first();
-        $satuan = $barang->satuan;
-
-        return response()->json(['satuan' => $satuan]);
+        return view('returnpembelian_index', ['pembelian' => $pembelian]);
     }
 
     /**
@@ -65,73 +34,7 @@ class ReturnPembelianController extends Controller
      */
     public function store(Request $request)
     {
-        $customMessages = [
-            'required' => 'Harap isi :attribute',
-            'unique' => ':attribute sudah digunakan'
-        ];
-
-        $request->validate(
-            [
-                'tanggal' => 'required|date',
-                'noReturn' => 'required|unique:returnPembelian,noReturn',
-                'noFaktur' => 'required|unique:pembelian,noFaktur',
-                'supplier' => 'string',
-                'kodeBarang' => 'string',
-                'qty' => 'required|integer'
-            ], $customMessages
-        );
-
-        $barang = Barang::where('kodeBarang', $request->namaBarang)->first();
-
-        $newReturnPembelian = new ReturnPembelian();
-        $newReturnPembelian->tanggal = $request->tanggal;
-        $newReturnPembelian->noReturn = $request->noReturn;
-        $newReturnPembelian->noFaktur = $request->noFaktur;
-        $newReturnPembelian->kodeSupplier = $request->kodeSupplier;
-        $newReturnPembelian->save();
-
-        $newItem = new ItemPembelian();
-        $newItem->noFaktur = $newReturnPembelian->noReturn;
-        $newItem->noItemPembelian = ItemPembelian::count() + 1;
-        $newItem->kodeBarang = $request->namaBarang;
-        $newItem->qty = (int) $request->qty;
-        $newItem->totalHarga = (int) $barang->hargaBeli * (int) $request->qty;
-        $newItem->save();
-
-
-        toastr()->success('Barang berhasil ditambahkan');
-        return redirect()->route('pembelian.ordershow', $newPembelian->id);
-    }
-
-    public function orderPembelianStore(Request $request, $id)
-    {
-        $pembelian = Pembelian::findOrFail($id);
-
-        $customMessages = [
-            'required' => 'Harap isi :attribute',
-            'unique' => ':attribute sudah digunakan'
-        ];
-
-        $request->validate(
-            [
-                'kodeBarang' => 'string',
-                'qty' => 'required|integer'
-            ], $customMessages
-        );
-
-        $barang = Barang::where('kodeBarang', $request->namaBarang)->first();
-
-        $newItem = new ItemPembelian();
-        $newItem->noFaktur = $pembelian->noFaktur;
-        $newItem->noItemPembelian = ItemPembelian::count() + 1;
-        $newItem->kodeBarang = $request->namaBarang;
-        $newItem->qty = (int) $request->qty;
-        $newItem->totalHarga = (int) $barang->hargaBeli * (int) $request->qty;
-        $newItem->save();
-
-
-        toastr()->success('Barang berhasil ditambahkan');
-        return redirect()->route('pembelian.ordershow', $pembelian->id);
+        //
     }
 
     /**
@@ -142,7 +45,30 @@ class ReturnPembelianController extends Controller
      */
     public function show($id)
     {
-        //
+        $pembelian = Pembelian::findOrFail($id);
+        $pembelians = Pembelian::whereHas('items', function($q) {
+            $q->whereHas('status', function($s) {
+                $s->where('status', 'Belum Diterima');
+            });
+        })->get();
+
+        return view('returnpembelian_show', ['pembelian' => $pembelian, 'pembelians' => $pembelians]);
+    }
+
+    public function return($id, $idItem)
+    {
+        $pembelian = Pembelian::findOrFail($id);
+        $item = ItemPembelian::findOrFail($idItem);
+        $status = StatusItem::where('noItemPembelian', $item->noItemPembelian)->first();
+        $barang = Barang::where('kodeBarang', $item->kodeBarang)->first();
+
+        $status->status = 'Sudah Diterima';
+        $status->save();
+
+        $barang->qty += $item->qty;
+        $barang->save();
+
+        return redirect()->route('return-pembelian.show', $pembelian->id);
     }
 
     /**
@@ -166,16 +92,5 @@ class ReturnPembelianController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function itemDestroy($id, $itemId)
-    {
-        $pembelian = Pembelian::findOrFail($id);
-
-        $item = ItemPembelian::findOrFail($itemId);
-        $item->delete();
-
-        toastr()->success('Barang berhasil dihapus');
-        return redirect()->route('pembelian.ordershow', $pembelian->id);
     }
 }
