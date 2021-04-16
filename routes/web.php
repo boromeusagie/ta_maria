@@ -59,14 +59,11 @@ Route::group(
         // Routes for pembelian
         Route::group(
             ['prefix' => 'pembelian'], function() {
-                Route::get('', 'PembelianController@index')->name('pembelian.index');
                 Route::get('order', 'PembelianController@orderPembelian')->name('pembelian.order');
                 Route::post('order', 'PembelianController@store')->name('pembelian.store');
                 Route::get('order/{id}', 'PembelianController@orderPembelianShow')->name('pembelian.ordershow');
                 Route::post('order/{id}', 'PembelianController@orderPembelianStore')->name('pembelian.orderstore');
                 Route::get('order/getSatuan/{kodeBarang}', 'PembelianController@getSatuan')->name('pembelian.getsatuan');
-                Route::get('{id}', 'PembelianController@edit')->name('pembelian.edit');
-                Route::post('{id}', 'PembelianController@update')->name('pembelian.update');
                 Route::delete('order/{id}/{itemId}/delete', 'PembelianController@itemDestroy')->name('pembelian.itemdestroy');
             }
         );
@@ -83,6 +80,19 @@ Route::group(
             }
         );
         
+        // Routes for penerimaan barang
+        Route::group(
+            ['prefix' => 'penerimaan-barang'], function() {
+                Route::get('', 'PenerimaanBarangController@index')->name('penerimaan-barang.index');
+                Route::get('{id}', 'PenerimaanBarangController@show')->name('penerimaan-barang.show');
+                Route::get('{id}/{idItem}', 'PenerimaanBarangController@terimaBarang')->name('penerimaan-barang.terima');
+                // Route::post('', 'PenerimaanBarangController@store')->name('penerimaan-barang.store');
+                // Route::get('{id}','PenerimaanBarangController@edit')->name('penerimaan-barang.edit');
+                // Route::post('{id}','PenerimaanBarangController@update')->name('penerimaan-barang.update');
+                // Route::delete('{id}', 'PenerimaanBarangController@destroy')->name('penerimaan-barang.destroy');
+            }
+
+        );
 
     }
 );

@@ -19,4 +19,9 @@ class ItemPembelian extends Model
     {
         return $this->belongsTo('App\Barang', 'kodeBarang', 'kodeBarang');
     }
+
+    public function status()
+    {
+        return $this->hasOne('App\StatusItem', 'noItemPembelian', 'noItemPembelian');
+    }
 }

@@ -17,8 +17,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    @toastr_css
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -53,14 +53,14 @@
                                 TRANSAKSI
                                 </a>
                                 <div class="dropdown-menu dropright" aria-labelledby="navbarDropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pembelian</a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                                        <a class="dropdown-item" href="{{ route('pembelian.order') }}">Order Pembelian</a>
-                                        <a class="dropdown-item" href="penerimaanBarang">Penerimaan Barang</a>
-                                        <a class="dropdown-item" href="returnPembelian">Return Pembelian</a>
-                                    </div>
-                                <a class="dropdown-item" href="{{ route('penjualan.order') }}">Penjualan</a>
-                                <a class="dropdown-item" href="kas">Kas</a>
+                                    <a class="nav-link ml-3 dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pembelian</a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                                            <a class="dropdown-item" href="{{ route('pembelian.order') }}">Order Pembelian</a>
+                                            <a class="dropdown-item" href="{{ route('penerimaan-barang.index') }}">Penerimaan Barang</a>
+                                            <a class="dropdown-item" href="returnPembelian">Return Pembelian</a>
+                                        </div>
+                                    <a class="dropdown-item" href="{{ route('penjualan.order') }}">Penjualan</a>
+                                    <a class="dropdown-item" href="kas">Kas</a>
                                 </div>
                             </li>
 
@@ -120,7 +120,7 @@
     </div>
 
     <script src="/js/jquery.min.js"></script>
-    @toastr_js
+    <script src="/js/toastr.min.js"></script>
     @toastr_render
     @yield('script')
 </body>

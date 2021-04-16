@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Barang;
 use App\ItemPembelian;
 use App\Pembelian;
+use App\StatusItem;
 use App\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PembelianController extends Controller
 {
@@ -97,13 +99,20 @@ class PembelianController extends Controller
         $newPembelian->kodeSupplier = $request->kodeSupplier;
         $newPembelian->save();
 
+        $lastRecord = ItemPembelian::count() > 0 ? DB::table('item_pembelian')->latest()->first()->id : 0;
+
         $newItem = new ItemPembelian();
         $newItem->noFaktur = $newPembelian->noFaktur;
-        $newItem->noItemPembelian = ItemPembelian::count() + 1;
+        $newItem->noItemPembelian = (int) $lastRecord + 1;
         $newItem->kodeBarang = $request->namaBarang;
         $newItem->qty = (int) $request->qty;
         $newItem->totalHarga = (int) $barang->hargaBeli * (int) $request->qty;
         $newItem->save();
+
+        $newStatus = new StatusItem();
+        $newStatus->noItemPembelian = $newItem->noItemPembelian;
+        $newStatus->status = 'Belum Diterima';
+        $newStatus->save();
 
 
         toastr()->success('Barang berhasil ditambahkan');
@@ -127,14 +136,20 @@ class PembelianController extends Controller
         );
 
         $barang = Barang::where('kodeBarang', $request->namaBarang)->first();
+        $lastRecord = ItemPembelian::count() > 0 ? DB::table('item_pembelian')->latest()->first()->id : 0;
 
         $newItem = new ItemPembelian();
         $newItem->noFaktur = $pembelian->noFaktur;
-        $newItem->noItemPembelian = ItemPembelian::count() + 1;
+        $newItem->noItemPembelian = (int) $lastRecord + 1;
         $newItem->kodeBarang = $request->namaBarang;
         $newItem->qty = (int) $request->qty;
         $newItem->totalHarga = (int) $barang->hargaBeli * (int) $request->qty;
         $newItem->save();
+
+        $newStatus = new StatusItem();
+        $newStatus->noItemPembelian = $newItem->noItemPembelian;
+        $newStatus->status = 'Belum Diterima';
+        $newStatus->save();
 
 
         toastr()->success('Barang berhasil ditambahkan');

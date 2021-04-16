@@ -32,7 +32,7 @@ return [
         'onShown'           => null,
         'positionClass'     => 'toast-top-right',
         'preventDuplicates' => true,
-        'progressBar'       => true,
+        'progressBar'       => false,
         'progressClass'     => 'toast-progress',
         'rtl'               => false,
         'showDuration'      => 300,
