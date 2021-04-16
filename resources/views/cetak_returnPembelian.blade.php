@@ -25,7 +25,7 @@
         <main class="py-4">
             <div class="container">
                 <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
-                <h3 class="text-center"><center>LAPORAN PERSEDIAAN BARANG</h3>
+                <h3 class="text-center"><center>LAPORAN RETURN PEMBELIAN</h3>
                 <p>Tanggal Print: {{ date('d-m-Y', strtotime(now())) }}</p>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
@@ -36,22 +36,22 @@
                                     <thead>
                                         <tr>
                                             <th><center>No</center></th>
-                                            <th><center>Kode Barang</center></th>
-                                            <th><center>Nama Barang</center></th>
-                                            <th><center>Qty</center></th>
-                                            <th><center>Harga Beli</center></th>
-                                            <th><center>Harga Jual</center></th>
+                                            <th><center>Tanggal</center></th>
+                                            <th><center>No. Return</center></th>
+                                            <th><center>No. Faktur</center></th>
+                                            <th><center>Supplier</center></th>
+                                            <th><center>Total Return</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($barangs as $index => $item)
+                                        @foreach($returnPembelian as $index => $item)
                                             <tr>
                                                 <td><center>{{ $index + 1 }}</td>
-                                                <td><center>{{ $item->kodeBarang }}</td>
-                                                <td><center>{{ $item->namaBarang }}</td>
-                                                <td><center>{{ $item->qty }} {{ $item->satuan }}</td>
-                                                <td><center>{{ $item->hargaBeli }}</td>
-                                                <td><center>{{ $item->hargaJual }}</td>
+                                                <td><center>{{ $item->tanggal }}</td>
+                                                <td><center>{{ $item->noReturn }}</td>
+                                                <td><center>{{ $item->noFaktur }}</td>
+                                                <td><center>{{ $item->supplier }}</td>
+                                                <td><center>{{ $item->totalReturn }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
