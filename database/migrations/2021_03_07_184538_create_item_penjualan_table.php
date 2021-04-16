@@ -16,6 +16,8 @@ class CreateItemPenjualanTable extends Migration
         Schema::create('item_penjualan', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+        
             $table->string('noPenjualan')->nullable();
             $table->foreign('noPenjualan')
                 ->references('noPenjualan')

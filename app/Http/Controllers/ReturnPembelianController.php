@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Barang;
-use App\ItemPenjualan;
-use App\Penjualan;
+use App\ReturnPembelian;
+use App\ItemPembelian;
+use App\Pembelian;
+use App\Supplier;
 use Illuminate\Http\Request;
-use App\Http\Controllers\toastr;
 
-class PenjualanController extends Controller
+class ReturnPembelianController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,24 +18,10 @@ class PenjualanController extends Controller
      */
     public function index()
     {
-        $penjualan = Penjualan::all();
+        $returnPembelian = ReturnPembelian::all();
 
-        return view('penjualan_index', [
-            'penjualan' => $penjualan
-        ]);
-    }
-
-    /**
-     * Display a order penjualan form.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function orderPenjualan()
-    {
-        $barangs = Barang::all();
-
-        return view('penjualan', [
-            'barangs' => $barangs
+        return view('returnPembelian_index', [
+            'returnPembelian' => $returnPembelian
         ]);
     }
 
@@ -43,17 +30,25 @@ class PenjualanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function orderPenjualanShow($id)
+    public function returnPembelian()
     {
-        $penjualan = Penjualan::findOrFail($id);
+        $suppliers = Supplier::all();
         $barangs = Barang::all();
+        $pembelian = Pembelian::all();
 
-        return view('penjualan_Show', [
-            'penjualan' => $penjualan,
-            'barangs' => $barangs
+        return view('order_pembelian', [
+            'suppliers' => $suppliers,
+            'barangs' => $barangs,
+            'pembelian' => $pembelian,
         ]);
     }
 
+    /**
+     * Display a order pembelian form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    
     public function getSatuan(Request $request, $kodeBarang)
     {
         $barang = Barang::where('kodeBarang', $kodeBarang)->first();
@@ -78,7 +73,9 @@ class PenjualanController extends Controller
         $request->validate(
             [
                 'tanggal' => 'required|date',
-                'noPenjualan' => 'required|unique:penjualan,noPenjualan',
+                'noReturn' => 'required|unique:returnPembelian,noReturn',
+                'noFaktur' => 'required|unique:pembelian,noFaktur',
+                'supplier' => 'string',
                 'kodeBarang' => 'string',
                 'qty' => 'required|integer'
             ], $customMessages
@@ -86,26 +83,29 @@ class PenjualanController extends Controller
 
         $barang = Barang::where('kodeBarang', $request->namaBarang)->first();
 
-        $newPenjualan = new Penjualan();
-        $newPenjualan->tanggal = $request->tanggal;
-        $newPenjualan->noPenjualan = $request->noPenjualan;
-        $newPenjualan->save();
+        $newReturnPembelian = new ReturnPembelian();
+        $newReturnPembelian->tanggal = $request->tanggal;
+        $newReturnPembelian->noReturn = $request->noReturn;
+        $newReturnPembelian->noFaktur = $request->noFaktur;
+        $newReturnPembelian->kodeSupplier = $request->kodeSupplier;
+        $newReturnPembelian->save();
 
-        $newItem = new ItemPenjualan();
-        $newItem->noPenjualan = $newPenjualan->noPenjualan;
+        $newItem = new ItemPembelian();
+        $newItem->noFaktur = $newReturnPembelian->noReturn;
+        $newItem->noItemPembelian = ItemPembelian::count() + 1;
         $newItem->kodeBarang = $request->namaBarang;
         $newItem->qty = (int) $request->qty;
-        $newItem->totalHarga = (int) $barang->hargaJual * (int) $request->qty;
+        $newItem->totalHarga = (int) $barang->hargaBeli * (int) $request->qty;
         $newItem->save();
 
 
         toastr()->success('Barang berhasil ditambahkan');
-        return redirect()->route('penjualan.ordershow', $newPenjualan->id);
+        return redirect()->route('pembelian.ordershow', $newPembelian->id);
     }
 
-    public function orderPenjualanStore(Request $request, $id)
+    public function orderPembelianStore(Request $request, $id)
     {
-        $penjualan = Penjualan::findOrFail($id);
+        $pembelian = Pembelian::findOrFail($id);
 
         $customMessages = [
             'required' => 'Harap isi :attribute',
@@ -121,24 +121,17 @@ class PenjualanController extends Controller
 
         $barang = Barang::where('kodeBarang', $request->namaBarang)->first();
 
-        $newItem = new ItemPenjualan();
-        $newItem->noPenjualan = $penjualan->noPenjualan;
+        $newItem = new ItemPembelian();
+        $newItem->noFaktur = $pembelian->noFaktur;
+        $newItem->noItemPembelian = ItemPembelian::count() + 1;
         $newItem->kodeBarang = $request->namaBarang;
         $newItem->qty = (int) $request->qty;
-        $newItem->totalHarga += (int) $barang->hargaJual * (int) $request->qty;
-        $penjualan->totalBayar = $request->totalHarga;
-        $barang->qty = $barang->qty - $request->qty;
-        $penjualan->totalPembayaran = $request->totalPembayaran;
-        $penjualan->kembalian = $request->totalPembayaran - $penjualan->totalBayar;
+        $newItem->totalHarga = (int) $barang->hargaBeli * (int) $request->qty;
         $newItem->save();
 
 
         toastr()->success('Barang berhasil ditambahkan');
-        return redirect()->route('penjualan.ordershow', $penjualan->id);
-    }
-
-    public function cashierPenjualan(Request $request, $id){
-
+        return redirect()->route('pembelian.ordershow', $pembelian->id);
     }
 
     /**
@@ -177,12 +170,12 @@ class PenjualanController extends Controller
 
     public function itemDestroy($id, $itemId)
     {
-        $penjualan = Penjualan::findOrFail($id);
+        $pembelian = Pembelian::findOrFail($id);
 
-        $item = ItemPenjualan::findOrFail($itemId);
+        $item = ItemPembelian::findOrFail($itemId);
         $item->delete();
 
         toastr()->success('Barang berhasil dihapus');
-        return redirect()->route('penjualan.ordershow', $penjualan->id);
+        return redirect()->route('pembelian.ordershow', $pembelian->id);
     }
 }

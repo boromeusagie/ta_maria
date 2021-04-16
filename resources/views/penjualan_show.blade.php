@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('penjualan.store', $penjualan->id) }}" method="post">
+                    <form action="{{ route('penjualan.orderstore', $penjualan->id) }}" method="post">
                     @csrf
                         <div class="form-group row">
                             <label for="tanggal" class="col-sm-4 col-form-label">Tanggal</label>
@@ -78,6 +78,7 @@
                                 <th><center>Total Harga</th>
                                 <th><center>Action</th>
                             </tr>
+                            <tr>
                         </thead>
                         <tbody>
                             @foreach ($penjualan->items as $index => $item)
@@ -95,9 +96,38 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            
+                            <tr>
+                                <div class="form-group row">
+                                    <label for="disc" class="col-sm-4 col-form-label">Discount</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control @error('disc') is-invalid @enderror" type="text" name="disc" id="disc" value="{{ $penjualan->disc }}">
+                                        @error('disc')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </tr>
+                                <div class="form-group row">
+                                    <label for="totalPembayaran" class="col-sm-4 col-form-label">Total Pembayaran</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control @error('totalPembayaran') is-invalid @enderror" type="text" name="totalPembayaran" id="totalPembayaran" value="{{ $penjualan->totalPembayaran }}">
+                                        @error('totalPembayaran')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-10"></div>
+                                    <button class="btn btn-primary col-sm-2" type="submit">CASHIER</button>
+                                 </div>
                             <tr>
                                 <th colspan="3"><div class="text-center"><strong>TOTAL</strong></div></th>
                                 <td>Rp {{ $penjualan->items->sum('totalHarga') }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="3"><div class="text-center"><strong>KEMBALIAN</strong></div></th>
+                                <td>Rp {{ isset($penjualan->totalPembayaran) ? ($penjualan->totalPembayaran - (($penjualan->items->sum('totalHarga')) - ($penjualan->items->sum('totalHarga') * $penjualan->disc))) : 0 }}</td>
                             </tr>
                         </tbody>
                     </table>
