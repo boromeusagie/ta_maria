@@ -40,10 +40,10 @@ class BarangController extends Controller
         $barang->hargaJual = $request->hargaJual;
         $barang->save();
 
-        $barang = Barang::all();
+        $barangs = Barang::all();
 
         return view('barang_index', [
-            'barang' => $barang
+            'barangs' => $barangs
         ]);
     }
     

@@ -82,6 +82,21 @@ Route::group(
                 Route::delete('no/{id}/{itemId}/delete', 'PenjualanController@itemDestroy')->name('penjualan.itemdestroy');
             }
         );
+
+        // Routes for return pembelian
+        Route::group(
+            ['prefix' => 'returnPembelian'], function() {
+                Route::get('', 'ReturnPembelianController@index')->name('returnPembelian.index');
+                Route::get('order', 'ReturnPembelianController@returnPembelian')->name('returnPembelian.order');
+                Route::post('order', 'ReturnPembelianController@store')->name('returnPembelian.store');
+                Route::get('order/{id}', 'ReturnPembelianController@returnPembelianShow')->name('returnPembelian.ordershow');
+                Route::post('order/{id}', 'ReturnPembelianController@returnPembelianStore')->name('returnPembelian.orderstore');
+                Route::get('order/getSatuan/{kodeBarang}', 'ReturnPembelianController@getSatuan')->name('returnPembelian.getsatuan');
+                Route::get('{id}', 'ReturnPembelianController@edit')->name('returnPembelian.edit');
+                Route::post('{id}', 'ReturnPembelianController@update')->name('returnPembelian.update');
+                Route::delete('order/{id}/{itemId}/delete', 'ReturnPembelianController@itemDestroy')->name('returnPembelian.itemdestroy');
+            }
+        );
         
 
     }

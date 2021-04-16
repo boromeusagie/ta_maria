@@ -54,7 +54,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php $no = 1; @endphp
+                        @php $no = 1; @endphp
                             @foreach($barangs as $barang)
                                 <tr>
                                     <td><center>{{ $no++ }}</td>
