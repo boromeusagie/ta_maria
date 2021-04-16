@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Barang;
+use App\ItemPenjualan;
 use App\Penjualan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\toastr;
 
 class PenjualanController extends Controller
 {
@@ -18,7 +20,46 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::all();
 
         return view('penjualan_index', [
-            'penjualan' => $penjualan       ]);
+            'penjualan' => $penjualan
+        ]);
+    }
+
+    /**
+     * Display a order pembelian form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function orderPenjualan()
+    {
+        $barangs = Barang::all();
+
+        return view('penjualan', [
+            'barangs' => $barangs
+        ]);
+    }
+
+    /**
+     * Display a order pembelian form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function penjualanShow($id)
+    {
+        $penjualan = Penjualan::findOrFail($id);
+        $barangs = Barang::all();
+
+        return view('penjualanShow', [
+            'penjualan' => $penjualan,
+            'barangs' => $barangs
+        ]);
+    }
+
+    public function getSatuan(Request $request, $kodeBarang)
+    {
+        $barang = Barang::where('kodeBarang', $kodeBarang)->first();
+        $satuan = $barang->satuan;
+
+        return response()->json(['satuan' => $satuan]);
     }
 
     /**
@@ -29,25 +70,69 @@ class PenjualanController extends Controller
      */
     public function store(Request $request)
     {
-        $penjualan = new Penjualan();
-        $penjualan->tanggal = $request->tanggal;
-        $penjualan->noPenjualan = $request->noPenjualan;
-        $penjualan->kodeBarang = $request->kodeBarang;
-        $penjualan->namaBarang = $request->namaBarang;
-        $penjualan->qty = $request->qty;
-        $penjualan->harga = $request->harga;
-        $penjualan->totalHarga = $request->totalHarga;
-        $penjualan->totalBayar = $request->totalBayar;
-        $penjualan->disc = $request->disc;
-        $penjualan->totalPembayaran = $request->totalPembayaran;
-        $penjualan->kembalian = $request->kembalian;
-        $penjualan->save();
+        $customMessages = [
+            'required' => 'Harap isi :attribute',
+            'unique' => ':attribute sudah digunakan'
+        ];
 
-        $penjualan = Penjualan::all();
+        $request->validate(
+            [
+                'tanggal' => 'required|date',
+                'noPenjualan' => 'required|unique:penjualan,noPenjualan',
+                'kodeBarang' => 'string',
+                'qty' => 'required|integer'
+            ], $customMessages
+        );
 
-        return view('penjualan_index', [
-            'penjualan' => $penjualan
-        ]);
+        $barang = Barang::where('kodeBarang', $request->namaBarang)->first();
+
+        $newPenjualan = new Penjualan();
+        $newPenjualan->tanggal = $request->tanggal;
+        $newPenjualan->noPenjualan = $request->noPenjualan;
+        $newPenjualan->save();
+
+        $newItem = new ItemPenjualan();
+        $newItem->noFaktur = $newPenjualan->noPenjualan;
+        $newItem->noItemPenjualan = ItemPenjualan::count() + 1;
+        $newItem->kodeBarang = $request->namaBarang;
+        $newItem->qty = (int) $request->qty;
+        $newItem->totalHarga = (int) $barang->hargaJual * (int) $request->qty;
+        $newItem->save();
+
+
+        toastr()->success('Barang berhasil ditambahkan');
+        return redirect()->route('penjualan.ordershow', $newPenjualan->id);
+    }
+
+    public function orderPenjualanStore(Request $request, $id)
+    {
+        $penjualan = Penjualan::findOrFail($id);
+
+        $customMessages = [
+            'required' => 'Harap isi :attribute',
+            'unique' => ':attribute sudah digunakan'
+        ];
+
+        $request->validate(
+            [
+                'kodeBarang' => 'string',
+                'qty' => 'required|integer'
+            ], $customMessages
+        );
+
+        $barang = Barang::where('kodeBarang', $request->namaBarang)->first();
+
+        $newItem = new ItemPenjualan();
+        $newItem->noPenjualan = $penjualan->noPenjualan;
+        $newItem->noItemPenjualan = ItemPenjualan::count() + 1;
+        $newItem->kodeBarang = $request->namaBarang;
+        $newItem->qty = (int) $request->qty;
+        $newItem->totalHarga = (int) $barang->hargaJual * (int) $request->qty;
+        $newItem->save();
+
+
+        toastr()->success('Barang berhasil ditambahkan');
+        return redirect()->route('penjualan.ordershow', $penjualan->id);
     }
 
     /**
@@ -68,32 +153,9 @@ class PenjualanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-    public function edit($id)
-    {
-        $penjualan = DB::table('penjualan')->where('id',$id)->get();
-        return view('penjualan_edit',['penjualan' => $penjualan]);
-    }
-
     public function update(Request $request, $id)
     {
-        // update data supplier
-	    DB::table('penjualan')->where('id',$request->id)->update([
-		'tanggal' => $request->tanggal,
-		'noPenjualan' => $request->noPenjualan,
-		'kodeBarang' => $request->kodeBarang,
-        'namaBarang' => $request->namaBarang,
-        'qty' => $request->qty,
-        'satuan' => $request->satuan,
-        'harga' => $request->harga,
-        'totalHarga' => $request->totalHarga,
-        'totalBayar' => $request->totalBayar,
-        'disc' => $request->disc,
-        'totalPembayaran' => $request->totalPembayaran,
-        'kembalian' => $request->kembalian,
-        ]);
-        // alihkan halaman ke halaman supplier
-        return redirect()->route('penjualan.index');
+        //
     }
 
     /**
@@ -104,13 +166,17 @@ class PenjualanController extends Controller
      */
     public function destroy($id)
     {
+        //
+    }
+
+    public function itemDestroy($id, $itemId)
+    {
         $penjualan = Penjualan::findOrFail($id);
-        $penjualan->delete();
 
-        $penjualan = Penjualan::all();
+        $item = ItemPenjualan::findOrFail($itemId);
+        $item->delete();
 
-        return view('penjualan_index', [
-            'penjualan' => $penjualan
-        ]);
+        toastr()->success('Barang berhasil dihapus');
+        return redirect()->route('penjualan.ordershow', $penjualan->id);
     }
 }

@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Toko Andatu') }}</title>
+    <title>{{ config('app.name', 'Toko Andatu5758') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -25,7 +25,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Toko Andatu') }}
+                    {{ config('app.name', 'Toko Andatu5758') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -59,7 +59,7 @@
                                         <a class="dropdown-item" href="penerimaanBarang">Penerimaan Barang</a>
                                         <a class="dropdown-item" href="returnPembelian">Return Pembelian</a>
                                     </div>
-                                <a class="dropdown-item" href="{{ route('penjualan.index') }}">Penjualan</a>
+                                <a class="dropdown-item" href="{{ route('penjualan.order') }}">Penjualan</a>
                                 <a class="dropdown-item" href="kas">Kas</a>
                                 </div>
                             </li>
@@ -69,7 +69,7 @@
                                 LAPORAN
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('laporanPersediaanBarang.index') }}">Laporan Persediaan Barang</a>
+                                <a class="dropdown-item" href="laporanPersediaanBarang">Laporan Persediaan Barang</a>
                                 <a class="dropdown-item" href="laporanPembelian">Laporan Pembelian</a>
                                 <a class="dropdown-item" href="laporanReturnPembelian">Laporan Return Pembelian</a>
                                 <a class="dropdown-item" href="laporanPenjualan">Laporan Penjualan</a>

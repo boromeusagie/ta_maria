@@ -84,15 +84,22 @@ Route::group(
                 Route::delete('order/{id}/{itemId}/delete', 'PembelianController@itemDestroy')->name('pembelian.itemdestroy');
             }
         );
-        
-        // Routes for laporan persediaan barang
-        Route::group(
-            ['prefix' => 'laporanPersediaanBarang`'], function() {
-                Route::get('', 'LaporanPersediaanBarangController@index')->name('laporanPersediaanBarang.index');
-                Route::get('getPDF', 'LaporanPersediaanBarangController@cetak_pdf')->name('laporanPersediaanBarang.cetak_pdf');
-            }
 
+        // Routes for penjualan
+        Route::group(
+            ['prefix' => 'penjualan'], function() {
+                Route::get('', 'PenjualanController@index')->name('penjualan.index');
+                Route::get('no', 'PenjualanController@orderPenjualan')->name('penjualan.order');
+                Route::post('no', 'PenjualanController@store')->name('penjualan.store');
+                Route::get('no/{id}', 'PenjualanController@orderPenjualanShow')->name('penjualan.ordershow');
+                Route::post('no/{id}', 'PenjualanController@orderPenjualanStore')->name('penjualan.orderstore');
+                Route::get('no/getSatuan/{kodeBarang}', 'PenjualanController@getSatuan')->name('penjualan.getsatuan');
+                Route::get('{id}', 'PenjualanController@edit')->name('penjualan.edit');
+                Route::post('{id}', 'PenjualanController@update')->name('penjualan.update');
+                Route::delete('no/{id}/{itemId}/delete', 'PenjualanController@itemDestroy')->name('penjualan.itemdestroy');
+            }
         );
+        
 
     }
 );

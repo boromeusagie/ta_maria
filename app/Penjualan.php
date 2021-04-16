@@ -16,8 +16,13 @@ class Penjualan extends Model
      * @var array
      */
     protected $fillable = [
-        'tanggal', 'noPenjualan', 'kodeBarang', 'namaBarang', 'qty', 'satuan', 'harga', 'totalHarga', 'totalBayar', 'disc', 'totalPembayaran', 'kembalian'
+        'tanggal', 'noFaktur'
     ];
 
     protected $table = 'penjualan';
+
+    public function items()
+    {
+        return $this->hasMany('App\ItemPenjualan', 'noPenjualan', 'noPenjualan');
+    }
 }
