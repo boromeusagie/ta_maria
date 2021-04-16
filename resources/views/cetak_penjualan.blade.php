@@ -36,22 +36,22 @@
                                     <thead>
                                         <tr>
                                             <th><center>No</center></th>
-                                            <th><center>Kode Barang</center></th>
-                                            <th><center>Nama Barang</center></th>
-                                            <th><center>Qty</center></th>
-                                            <th><center>Harga Beli</center></th>
-                                            <th><center>Harga Jual</center></th>
+                                            <th><center>Tanggal</center></th>
+                                            <th><center>No. Penjualan</center></th>
+                                            <th><center>Total Penjualan</center></th>
+                                            <th><center>HPP</center></th>
+                                            <th><center>Laba</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($barangs as $index => $item)
+                                        @foreach($penjualan as $index => $item)
                                             <tr>
                                                 <td><center>{{ $index + 1 }}</td>
-                                                <td><center>{{ $item->kodeBarang }}</td>
-                                                <td><center>{{ $item->namaBarang }}</td>
-                                                <td><center>{{ $item->qty }} {{ $item->satuan }}</td>
-                                                <td><center>{{ $item->hargaBeli }}</td>
-                                                <td><center>{{ $item->hargaJual }}</td>
+                                                <td><center>{{ $item->tanggal }}</td>
+                                                <td><center>{{ $item->noPenjualan }}</td>
+                                                <td><center>{{ $item->totalBayar }}</td>
+                                                <td><center>{{ $item->hpp }}</td>
+                                                <td><center>{{ $item->laba }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
