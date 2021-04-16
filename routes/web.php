@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'WelcomeController@index')->name('welcome');
 
 Auth::routes();
 
@@ -58,18 +56,6 @@ Route::group(
 
         );
 
-        // Routes for penjualan
-        Route::group(
-            ['prefix' => 'penjualan'], function() {
-                Route::get('', 'PenjualanController@index')->name('penjualan.index');
-                Route::post('', 'PenjualanController@store')->name('penjualan.store');
-                Route::get('{id}','PenjualanController@edit')->name('penjualan.edit');
-                Route::post('{id}','PenjualanController@update')->name('penjualan.update');
-                Route::delete('{id}', 'PenjualanController@destroy')->name('penjualan.destroy');
-            }
-
-        );
-
         // Routes for pembelian
         Route::group(
             ['prefix' => 'pembelian'], function() {
@@ -88,14 +74,11 @@ Route::group(
         // Routes for penjualan
         Route::group(
             ['prefix' => 'penjualan'], function() {
-                Route::get('', 'PenjualanController@index')->name('penjualan.index');
                 Route::get('no', 'PenjualanController@orderPenjualan')->name('penjualan.order');
                 Route::post('no', 'PenjualanController@store')->name('penjualan.store');
                 Route::get('no/{id}', 'PenjualanController@orderPenjualanShow')->name('penjualan.ordershow');
                 Route::post('no/{id}', 'PenjualanController@orderPenjualanStore')->name('penjualan.orderstore');
                 Route::get('no/getSatuan/{kodeBarang}', 'PenjualanController@getSatuan')->name('penjualan.getsatuan');
-                Route::get('{id}', 'PenjualanController@edit')->name('penjualan.edit');
-                Route::post('{id}', 'PenjualanController@update')->name('penjualan.update');
                 Route::delete('no/{id}/{itemId}/delete', 'PenjualanController@itemDestroy')->name('penjualan.itemdestroy');
             }
         );
