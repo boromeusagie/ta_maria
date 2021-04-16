@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form name="show" method="get">
+                    <form id="show1" name="show" method="get">
                         <div class="form-group row">
                             <label for="noFaktur" class="col-sm-4 col-form-label">No Faktur</label>
                             <div class="col-sm-8">
@@ -18,7 +18,7 @@
                             </div>
                         </div>
                     </form>
-
+                    
                     <div class="form-group row">
                         <label for="supplier" class="col-sm-4 col-form-label">Supplier</label>
                         <div class="col-sm-8">
@@ -26,18 +26,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="noReturn" class="col-sm-4 col-form-label">No Return</label>
-                        <div class="col-sm-8">
-                            <input class="form-control @error('noReturn') is-invalid @enderror" type="text" name="noReturn" id="noReturn" disabled>
-                        </div>
-                        @error('noReturn')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-group row">
                         <label for="tanggal" class="col-sm-4 col-form-label">Tanggal Terima</label>
                         <div class="col-sm-8">
-                            <input class="form-control @error('tanggal') is-invalid @enderror" type="date" name="tanggal" id="tanggal">
+                            <input class="form-control @error('tanggal') is-invalid @enderror" type="date" name="tanggal" id="tanggal" value="{{ Carbon\Carbon::today()->format('Y-m-d') }}" readonly>
                             @error('tanggal')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -49,47 +40,66 @@
                 <div class="card-header">{{ __('Detail Transaksi') }}</div>
 
                 <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th><center>No</th>
-                                <th><center>Nama Barang</th>
-                                <th><center>Quantity</th>
-                                <th><center>Total Harga</th>
-                                <th><center>Status</th>
-                                <th><center>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($pembelian->items as $index => $item)
+                    <form action="{{ route('return-pembelian.return', $item->id) }}" method="post">
+                        @csrf
+                        <div class="form-group row">
+                            <label for="noReturn" class="col-sm-4 col-form-label">No Return</label>
+                            <div class="col-sm-8">
+                                <input class="form-control @error('noReturn') is-invalid @enderror" type="text" name="noReturn" id="noReturn">
+                            </div>
+                            @error('noReturn')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <input type="text" name="noFaktur" value="{{ $item->noFaktur }}" hidden>
+                        <input class="form-control @error('tanggal') is-invalid @enderror" type="date" name="tanggal" id="tanggal" value="{{ Carbon\Carbon::today()->format('Y-m-d') }}" hidden>
+                        <table class="table table-bordered">
+                            <thead>
                                 <tr>
-                                    <td><center>{{ $index + 1 }}</td>
-                                    <td>{{ $item->barang->namaBarang }}</td>
-                                    <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
-                                    <td><center>Rp {{ $item->totalHarga }}</td>
-                                    <td><center>
-                                        @if ($item->status->status === 'Belum Diterima')
-                                            <p class="text-muted">
-                                                {{ $item->status->status }}
-                                            </p>
-                                        @elseif ($item->status->status === 'Sudah Diterima')
-                                            <p class="text-success">
-                                                {{ $item->status->status }}
-                                            </p>
-                                        @else
-                                            <p class="text-danger">
-                                                {{ $item->status->status }}
-                                            </p>
-                                        @endif
-                                    </td>
-                                    <td><center>
-                                        @if ($item->status->status === 'Belum Diterima')
-                                            <a href="{{ route('return-pembelian.return', ['id' => $pembelian->id, 'idItem' => $item->id]) }}" class="btn btn-danger btn-sm">RETURN</a></td>
-                                        @endif
+                                    <th><center>No</th>
+                                    <th><center>Nama Barang</th>
+                                    <th><center>Quantity</th>
+                                    <th><center>Total Harga</th>
+                                    <th><center>Status</th>
+                                    <th><center>Action</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($pembelian->items as $index => $item)
+                                    <tr>
+                                        <td><center>{{ $index + 1 }}</td>
+                                        <td>{{ $item->barang->namaBarang }}</td>
+                                        <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
+                                        <td><center>Rp {{ $item->totalHarga }}</td>
+                                        <td><center>
+                                            @if ($item->status->status === 'Belum Diterima')
+                                                <p class="text-muted">
+                                                    {{ $item->status->status }}
+                                                </p>
+                                            @elseif ($item->status->status === 'Sudah Diterima')
+                                                <p class="text-success">
+                                                    {{ $item->status->status }}
+                                                </p>
+                                            @else
+                                                <p class="text-danger">
+                                                    {{ $item->status->status }}
+                                                </p>
+                                            @endif
+                                        </td>
+                                        <td><center>
+                                            @if ($item->status->status === 'Belum Diterima')
+                                                {{-- <a href="{{ route('return-pembelian.return', ['id' => $pembelian->id, 'idItem' => $item->id, 'tanggal' => Carbon\Carbon::today()->format('Y-m-d')]) }}" class="btn btn-danger btn-sm">RETURN</a></td> --}}
+                                                <input class="@error('checks') is-invalid @enderror" type="checkbox" name="checks[{{ $item->id }}]" value="{{ $item->id }}">
+                                                @error('checks')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <center><button type="submit" class="btn btn-primary">SAVE</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -111,7 +121,7 @@
                 }
 
                 document.show.action = get_action();
-                $('form').submit();
+                $('form#show1').submit();
 
             })
         });

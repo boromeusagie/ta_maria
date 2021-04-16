@@ -28,7 +28,7 @@
                     <div class="form-group row">
                         <label for="tanggal" class="col-sm-4 col-form-label">Tanggal Terima</label>
                         <div class="col-sm-8">
-                            <input class="form-control @error('tanggal') is-invalid @enderror" type="date" name="tanggal" id="tanggal">
+                            <input class="form-control @error('tanggal') is-invalid @enderror" type="date" name="tanggal" id="tanggal" value="{{ Carbon\Carbon::today()->format('Y-m-d') }}" readonly>
                             @error('tanggal')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -57,7 +57,7 @@
                                     <td><center>{{ $index + 1 }}</td>
                                     <td>{{ $item->barang->namaBarang }}</td>
                                     <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
-                                    <td><center>Rp {{ $item->totalHarga }}</td>
+                                    <td><center>Rp {{ number_format($item->totalHarga, 2) }}</td>
                                     <td><center>
                                         @if ($item->status->status === 'Belum Diterima')
                                             <p class="text-muted">

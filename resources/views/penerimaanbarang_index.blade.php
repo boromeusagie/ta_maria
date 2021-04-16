@@ -31,7 +31,7 @@
                     <div class="form-group row">
                         <label for="tanggal" class="col-sm-4 col-form-label">Tanggal Terima</label>
                         <div class="col-sm-8">
-                            <input class="form-control" type="date" name="tanggal" id="tanggal" disabled>
+                            <input class="form-control" type="date" name="tanggal" id="tanggal" value="{{ Carbon\Carbon::today()->format('Y-m-d') }}" readonly>
                         </div>
                     </div>
                 </div>

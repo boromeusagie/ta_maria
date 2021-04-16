@@ -24,6 +24,7 @@ class CreatePembelianTable extends Migration
                 ->references('kodeSupplier')
                 ->on('supplier')
                 ->onDelete('set null');
+            $table->integer('totalBayar')->nullable();
         });
     }
 

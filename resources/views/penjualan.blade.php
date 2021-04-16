@@ -11,7 +11,7 @@
                         <div class="form-group row">
                             <label for="tanggal" class="col-sm-4 col-form-label">Tanggal</label>
                             <div class="col-sm-8">
-                                <input class="form-control @error('tanggal') is-invalid @enderror" type="date" name="tanggal" id="tanggal">
+                                <input class="form-control @error('tanggal') is-invalid @enderror" type="date" name="tanggal" id="tanggal" value="{{ Carbon\Carbon::today()->format('Y-m-d') }}" readonly>
                                 @error('tanggal')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror

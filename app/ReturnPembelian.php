@@ -19,7 +19,7 @@ class ReturnPembelian extends Model
         'tanggal', 'noReturn','noFaktur', 'kodeSupplier'
     ];
 
-    protected $table = 'returnPembelian';
+    protected $table = 'return_pembelian';
 
     public function items()
     {

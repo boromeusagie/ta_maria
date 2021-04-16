@@ -109,6 +109,9 @@ class PembelianController extends Controller
         $newItem->totalHarga = (int) $barang->hargaBeli * (int) $request->qty;
         $newItem->save();
 
+        $newPembelian->totalBayar += $newItem->totalHarga;
+        $newPembelian->save();
+
         $newStatus = new StatusItem();
         $newStatus->noItemPembelian = $newItem->noItemPembelian;
         $newStatus->status = 'Belum Diterima';
@@ -150,6 +153,9 @@ class PembelianController extends Controller
         $newStatus->noItemPembelian = $newItem->noItemPembelian;
         $newStatus->status = 'Belum Diterima';
         $newStatus->save();
+
+        $pembelian->totalBayar += $newItem->totalHarga;
+        $pembelian->save();
 
 
         toastr()->success('Barang berhasil ditambahkan');

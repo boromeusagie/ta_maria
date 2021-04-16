@@ -28,18 +28,11 @@
                             <input class="form-control" type="text" name="supplier" id="supplier" disabled>
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        <label for="noReturn" class="col-sm-4 col-form-label">No Return</label>
-                        <div class="col-sm-8">
-                            <input class="form-control" type="text" name="noReturn" id="noReturn" disabled>
-                        </div>
-                    </div>
                     
                     <div class="form-group row">
                         <label for="tanggal" class="col-sm-4 col-form-label">Tanggal Terima</label>
                         <div class="col-sm-8">
-                            <input class="form-control" type="date" name="tanggal" id="tanggal" disabled>
+                            <input class="form-control" type="date" name="tanggal" id="tanggal"  value="{{ Carbon\Carbon::today()->format('Y-m-d') }}" readonly>
                         </div>
                     </div>
                 </div>

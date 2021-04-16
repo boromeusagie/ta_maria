@@ -79,7 +79,7 @@ class PenjualanController extends Controller
             [
                 'tanggal' => 'required|date',
                 'noPenjualan' => 'required|unique:penjualan,noPenjualan',
-                'kodeBarang' => 'string',
+                'namaBarang' => 'string',
                 'qty' => 'required|integer'
             ], $customMessages
         );
@@ -98,6 +98,11 @@ class PenjualanController extends Controller
         $newItem->totalHarga = (int) $barang->hargaJual * (int) $request->qty;
         $newItem->save();
 
+        $newPenjualan->totalBayar += $newPenjualan->items->sum('totalHarga');
+        $newPenjualan->save();
+        $barang->qty -= $request->qty;
+        $barang->save();
+
 
         toastr()->success('Barang berhasil ditambahkan');
         return redirect()->route('penjualan.ordershow', $newPenjualan->id);
@@ -114,7 +119,7 @@ class PenjualanController extends Controller
 
         $request->validate(
             [
-                'kodeBarang' => 'string',
+                'namaBarang' => 'string',
                 'qty' => 'required|integer'
             ], $customMessages
         );
@@ -126,11 +131,11 @@ class PenjualanController extends Controller
         $newItem->kodeBarang = $request->namaBarang;
         $newItem->qty = (int) $request->qty;
         $newItem->totalHarga += (int) $barang->hargaJual * (int) $request->qty;
-        $penjualan->totalBayar = $request->totalHarga;
-        $barang->qty = $barang->qty - $request->qty;
-        $penjualan->totalPembayaran = $request->totalPembayaran;
-        $penjualan->kembalian = $request->totalPembayaran - $penjualan->totalBayar;
         $newItem->save();
+        $penjualan->totalBayar = $penjualan->items->sum('totalHarga');
+        $penjualan->save();
+        $barang->qty -= $request->qty;
+        $barang->save();
 
 
         toastr()->success('Barang berhasil ditambahkan');
@@ -138,41 +143,33 @@ class PenjualanController extends Controller
     }
 
     public function cashierPenjualan(Request $request, $id){
+        $penjualan = Penjualan::findOrFail($id);
 
-    }
+        $customMessages = [
+            'required' => 'Harap isi :attribute',
+            'unique' => ':attribute sudah digunakan'
+        ];
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        $request->validate(
+            [
+                'disc' => 'nullable|integer',
+                'totalPembayaran' => 'required|integer'
+            ], $customMessages
+        );
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        if ($penjualan->totalBayar > $request->totalPembayaran) {
+            toastr()->error('Total Pembayaran Kurang!');
+            return redirect()->route('penjualan.ordershow', $penjualan->id);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $penjualan->disc = isset($request->disc) ? ($request->disc / 100) * $request->totalPembayaran : 0;
+        $penjualan->totalPembayaran = $request->totalPembayaran;
+        $bayar = $request->totalPembayaran - $penjualan->disc;
+        $penjualan->kembalian = $penjualan->totalBayar - $bayar;
+        $penjualan->save();
+
+        toastr()->success('Transaksi Berhasil');
+        return redirect()->route('penjualan.ordershow', $penjualan->id);
     }
 
     public function itemDestroy($id, $itemId)
@@ -180,6 +177,10 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::findOrFail($id);
 
         $item = ItemPenjualan::findOrFail($itemId);
+        $barang = Barang::where('kodeBarang', $item->kodeBarang)->first();
+        $barang->qty += $item->qty;
+        $barang->save();
+
         $item->delete();
 
         toastr()->success('Barang berhasil dihapus');

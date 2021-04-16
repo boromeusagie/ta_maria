@@ -75,25 +75,11 @@ Route::group(
                 Route::post('no', 'PenjualanController@store')->name('penjualan.store');
                 Route::get('no/{id}', 'PenjualanController@orderPenjualanShow')->name('penjualan.ordershow');
                 Route::post('no/{id}', 'PenjualanController@orderPenjualanStore')->name('penjualan.orderstore');
+                Route::post('no/{id}/cashier', 'PenjualanController@cashierPenjualan')->name('penjualan.cashier');
                 Route::get('no/getSatuan/{kodeBarang}', 'PenjualanController@getSatuan')->name('penjualan.getsatuan');
                 Route::delete('no/{id}/{itemId}/delete', 'PenjualanController@itemDestroy')->name('penjualan.itemdestroy');
             }
         );
-
-        // Routes for return pembelian
-        // Route::group(
-        //     ['prefix' => 'returnPembelian'], function() {
-        //         Route::get('', 'ReturnPembelianController@index')->name('returnPembelian.index');
-        //         Route::get('order', 'ReturnPembelianController@returnPembelian')->name('returnPembelian.order');
-        //         Route::post('order', 'ReturnPembelianController@store')->name('returnPembelian.store');
-        //         Route::get('order/{id}', 'ReturnPembelianController@returnPembelianShow')->name('returnPembelian.ordershow');
-        //         Route::post('order/{id}', 'ReturnPembelianController@returnPembelianStore')->name('returnPembelian.orderstore');
-        //         Route::get('order/getSatuan/{kodeBarang}', 'ReturnPembelianController@getSatuan')->name('returnPembelian.getsatuan');
-        //         Route::get('{id}', 'ReturnPembelianController@edit')->name('returnPembelian.edit');
-        //         Route::post('{id}', 'ReturnPembelianController@update')->name('returnPembelian.update');
-        //         Route::delete('order/{id}/{itemId}/delete', 'ReturnPembelianController@itemDestroy')->name('returnPembelian.itemdestroy');
-        //     }
-        // );
         
         // Routes for penerimaan barang
         Route::group(
@@ -110,7 +96,7 @@ Route::group(
             ['prefix' => 'return-pembelian'], function() {
                 Route::get('', 'ReturnPembelianController@index')->name('return-pembelian.index');
                 Route::get('{id}', 'ReturnPembelianController@show')->name('return-pembelian.show');
-                Route::get('{id}/{idItem}', 'ReturnPembelianController@terimaBarang')->name('return-pembelian.return');
+                Route::post('{id}/return', 'ReturnPembelianController@return')->name('return-pembelian.return');
             }
 
         );

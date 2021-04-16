@@ -95,7 +95,7 @@
                                     <td><center>{{ $index + 1 }}</td>
                                     <td>{{ $item->barang->namaBarang }}</td>
                                     <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
-                                    <td>Rp {{ $item->totalHarga }}</td>
+                                    <td>Rp {{ number_format($item->totalHarga, 2) }}</td>
                                     <td><center>
                                         <form action="{{ route('pembelian.itemdestroy', ['id' => $pembelian->id, 'itemId' => $item->id]) }}" method="POST">
                                             @method('DELETE')
@@ -107,7 +107,7 @@
                             @endforeach
                             <tr>
                                 <th colspan="3"><div class="text-center"><strong>TOTAL</strong></div></th>
-                                <td>Rp {{ $pembelian->items->sum('totalHarga') }}</td>
+                                <td>Rp {{ number_format($pembelian->totalBayar, 2) }}</td>
                             </tr>
                         </tbody>
                     </table>

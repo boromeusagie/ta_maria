@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ItemReturnPembelian extends Model
 {
-    protected $table = 'item_rerutnPembelian';
+    protected $table = 'item_return_pembelian';
 
     protected $fillable = ['noItemPembelian', 'kodeBarang', 'qty', 'totalHarga'];
 
