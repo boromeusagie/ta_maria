@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('pembelian.orderstore', $pembelian->id) }}" method="post">
+                    <form action="{{ route('pembelian.orderstore', [$pembelian->id, $kas->id]) }}" method="post">
                     @csrf
                         <div class="form-group row">
                             <label for="tanggal" class="col-sm-4 col-form-label">Tanggal</label>

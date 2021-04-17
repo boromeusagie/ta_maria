@@ -27,6 +27,7 @@
                 <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
                 <h3 class="text-center"><center>LAPORAN RETURN PEMBELIAN</h3>
                 <p>Tanggal Print: {{ date('d-m-Y', strtotime(now())) }}</p>
+                <p>Periode: {{ $dari }} - {{ $sampai }}</p>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
@@ -44,13 +45,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($returnPembelian as $index => $item)
+                                        @foreach($query as $index => $item)
                                             <tr>
                                                 <td><center>{{ $index + 1 }}</td>
                                                 <td><center>{{ $item->tanggal }}</td>
                                                 <td><center>{{ $item->noReturn }}</td>
                                                 <td><center>{{ $item->noFaktur }}</td>
-                                                <td><center>{{ $item->supplier }}</td>
+                                                <td><center>{{ $item->supplier->namaSupplier }}</td>
                                                 <td><center>{{ $item->totalReturn }}</td>
                                             </tr>
                                         @endforeach

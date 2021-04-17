@@ -8,7 +8,9 @@ use App\Pembelian;
 use App\ReturnPembelian;
 use App\Penjualan;
 use App\Kas;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
@@ -19,33 +21,32 @@ class LaporanController extends Controller
 
     public function cetakPdf(Request $request)
     {
+        $models = [
+            'barang' => Barang::class,
+            'pembelian' => Pembelian::class,
+            'return-pembelian' => ReturnPembelian::class,
+            'penjualan' => Penjualan::class,
+            'kas' => Kas::class
+        ];
+
         $laporan = $request->namaLaporan;
-        $date = date('d-m-y', strtotime(now()));
+        $date = Carbon::today()->format('Y-m-d');
+
+        $dari = $request->dari ?? $date;
+        $sampai = $request->sampai?? $date;
+
+        if ($request->dari || $request->sampai) {
+            $query = $models[$laporan]::whereBetween('tanggal', [$dari, $sampai])->get();
+        } else {
+            $query = $models[$laporan]::all();
+        }
 
         if ($laporan === 'barang') {
-            $barangs = Barang::all();
-            $pdf = \PDF::loadView('cetak_persediaan_barang', ['barangs' => $barangs])->setOptions(['defaultFont' => 'sans-serif']);
+            $pdf = \PDF::loadView('cetak_persediaan_barang', ['query' => $query])->setOptions(['defaultFont' => 'sans-serif']);
             return $pdf->download('laporan-persediaan-barang-'.$date.'.pdf');
-        }
-        else if ($laporan === 'pembelian') {
-            $pembelian = Pembelian::all();
-            $pdf = \PDF::loadView('cetak_pembelian', ['pembelian' => $pembelian])->setOptions(['defaultFont' => 'sans-serif']);
-            return $pdf->download('laporan-pembelian-'.$date.'.pdf');
-        }
-        else if ($laporan === 'returnPembelian') {
-            $returnPembelian = ReturnPembelian::all();
-            $pdf = \PDF::loadView('cetak_returnPembelian', ['returnPembelian' => $returnPembelian])->setOptions(['defaultFont' => 'sans-serif']);
-            return $pdf->download('laporan-returnPembelian-'.$date.'.pdf');
-        }
-        else if ($laporan === 'penjualan') {
-            $penjualan = Penjualan::all();
-            $pdf = \PDF::loadView('cetak_penjualan', ['penjualan' => $penjualan])->setOptions(['defaultFont' => 'sans-serif']);
-            return $pdf->download('laporan-penjualan-'.$date.'.pdf');
-        }
-        else if ($laporan === 'kas') {
-            $kas = Kas::all();
-            $pdf = \PDF::loadView('cetak_Kas', ['kas' => $kas])->setOptions(['defaultFont' => 'sans-serif']);
-            return $pdf->download('laporan-kas-'.$date.'.pdf');
+        } else {
+            $pdf = \PDF::loadView('cetak_'.$laporan, ['query' => $query, 'dari' => $dari, 'sampai' => $sampai])->setOptions(['defaultFont' => 'sans-serif']);
+            return $pdf->download('laporan-'.$laporan.'-'.$date.'.pdf');
         }
     }
 }

@@ -61,8 +61,8 @@ Route::group(
             ['prefix' => 'pembelian'], function() {
                 Route::get('order', 'PembelianController@orderPembelian')->name('pembelian.order');
                 Route::post('order', 'PembelianController@store')->name('pembelian.store');
-                Route::get('order/{id}', 'PembelianController@orderPembelianShow')->name('pembelian.ordershow');
-                Route::post('order/{id}', 'PembelianController@orderPembelianStore')->name('pembelian.orderstore');
+                Route::get('order/{id}/{kasId}', 'PembelianController@orderPembelianShow')->name('pembelian.ordershow');
+                Route::post('order/{id}/{kasId}', 'PembelianController@orderPembelianStore')->name('pembelian.orderstore');
                 Route::get('order/getSatuan/{kodeBarang}', 'PembelianController@getSatuan')->name('pembelian.getsatuan');
                 Route::delete('order/{id}/{itemId}/delete', 'PembelianController@itemDestroy')->name('pembelian.itemdestroy');
             }
@@ -104,8 +104,17 @@ Route::group(
         // Routes for laporan
         Route::group(
             ['prefix' => 'cetak-laporan'], function() {
-                Route::get('', 'LaporanCOntroller@index')->name('laporan.index');
-                Route::get('cetak', 'LaporanCOntroller@cetakPdf')->name('laporan.cetak');
+                Route::get('', 'LaporanController@index')->name('laporan.index');
+                Route::get('cetak', 'LaporanController@cetakPdf')->name('laporan.cetak');
+            }
+
+        );
+
+        // Routes for kas
+        Route::group(
+            ['prefix' => 'kas'], function() {
+                Route::get('', 'KasController@index')->name('kas.index');
+                // Route::get('cetak', 'LaporanCOntroller@cetakPdf')->name('laporan.cetak');
             }
 
         );

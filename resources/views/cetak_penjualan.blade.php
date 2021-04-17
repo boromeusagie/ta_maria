@@ -27,6 +27,7 @@
                 <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
                 <h3 class="text-center"><center>LAPORAN PERSEDIAAN BARANG</h3>
                 <p>Tanggal Print: {{ date('d-m-Y', strtotime(now())) }}</p>
+                <p>Periode: {{ $dari }} - {{ $sampai }}</p>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
@@ -44,14 +45,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($penjualan as $index => $item)
+                                        @foreach($query as $index => $item)
                                             <tr>
                                                 <td><center>{{ $index + 1 }}</td>
                                                 <td><center>{{ $item->tanggal }}</td>
                                                 <td><center>{{ $item->noPenjualan }}</td>
                                                 <td><center>{{ $item->totalBayar }}</td>
-                                                <td><center>{{ $item->hpp }}</td>
-                                                <td><center>{{ $item->laba }}</td>
+                                                <td><center>{{ $item->items->barang->sum('hargaBeli') }}</td>
+                                                <td><center>{{ $item->totalBayar - $item->items->barang->sum('hargaBeli') }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

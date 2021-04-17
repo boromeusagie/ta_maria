@@ -44,7 +44,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($barangs as $index => $item)
+                                        @foreach($query as $index => $item)
                                             <tr>
                                                 <td><center>{{ $index + 1 }}</td>
                                                 <td><center>{{ $item->kodeBarang }}</td>

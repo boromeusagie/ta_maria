@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Barang;
 use App\ItemPembelian;
+use App\Kas;
 use App\Pembelian;
 use App\StatusItem;
 use App\Supplier;
@@ -47,16 +48,18 @@ class PembelianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function orderPembelianShow($id)
+    public function orderPembelianShow($id, $kasId)
     {
         $pembelian = Pembelian::findOrFail($id);
         $suppliers = Supplier::all();
         $barangs = Barang::all();
+        $kas = Kas::findOrFail($kasId);
 
         return view('order_pembelian_show', [
             'pembelian' => $pembelian,
             'suppliers' => $suppliers,
-            'barangs' => $barangs
+            'barangs' => $barangs,
+            'kas' => $kas
         ]);
     }
 
@@ -117,12 +120,19 @@ class PembelianController extends Controller
         $newStatus->status = 'Belum Diterima';
         $newStatus->save();
 
+        $newKas = new Kas();
+        $newKas->tanggal = $request->tanggal;
+        $newKas->detailTransaksi = 'Pembelian dengan No Faktur: ' . $newPembelian->noFaktur;
+        $newKas->tag = 'pembelian';
+        $newKas->kasKeluar = $newPembelian->totalBayar;
+        $newKas->save();
+
 
         toastr()->success('Barang berhasil ditambahkan');
-        return redirect()->route('pembelian.ordershow', $newPembelian->id);
+        return redirect()->route('pembelian.ordershow', [$newPembelian->id, $newKas->id]);
     }
 
-    public function orderPembelianStore(Request $request, $id)
+    public function orderPembelianStore(Request $request, $id, $kasId)
     {
         $pembelian = Pembelian::findOrFail($id);
 
@@ -157,9 +167,12 @@ class PembelianController extends Controller
         $pembelian->totalBayar += $newItem->totalHarga;
         $pembelian->save();
 
+        $kas = Kas::findOrFail($kasId);
+        $kas->kasKeluar = $pembelian->totalBayar;
+        $kas->save();
 
         toastr()->success('Barang berhasil ditambahkan');
-        return redirect()->route('pembelian.ordershow', $pembelian->id);
+        return redirect()->route('pembelian.ordershow', [$pembelian->id, $kas->id]);
     }
 
     /**

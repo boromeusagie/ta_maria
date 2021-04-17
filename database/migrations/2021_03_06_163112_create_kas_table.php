@@ -18,10 +18,12 @@ class CreateKasTable extends Migration
             $table->timestamps();
 
             $table->date('tanggal')->nullable();
+            $table->string('detailTransaksi')->nullable();
+            $table->string('tag')->nullable();
             $table->integer('kasMasuk')->nullable();
             $table->integer('kasKeluar')->nullable();
             $table->integer('totalSaldo')->nullable();
-            $table->float('persentaseKuntungan')->nullable();
+            $table->float('persentaseKeuntungan')->nullable();
             $table->integer('totalLabaRugi')->nullable();
         });
     }

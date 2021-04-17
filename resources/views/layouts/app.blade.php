@@ -60,7 +60,7 @@
                                             <a class="dropdown-item" href="{{ route('return-pembelian.index') }}">Return Pembelian</a>
                                         </div>
                                     <a class="dropdown-item" href="{{ route('penjualan.order') }}">Penjualan</a>
-                                    <a class="dropdown-item" href="kas">Kas</a>
+                                    <a class="dropdown-item" href="{{ route('kas.index') }}">Kas</a>
                                 </div>
                             </li>
 

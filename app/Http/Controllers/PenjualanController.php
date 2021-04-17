@@ -7,6 +7,7 @@ use App\ItemPenjualan;
 use App\Penjualan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\toastr;
+use App\Kas;
 
 class PenjualanController extends Controller
 {
@@ -164,9 +165,16 @@ class PenjualanController extends Controller
 
         $penjualan->disc = isset($request->disc) ? ($request->disc / 100) * $request->totalPembayaran : 0;
         $penjualan->totalPembayaran = $request->totalPembayaran;
-        $bayar = $request->totalPembayaran - $penjualan->disc;
-        $penjualan->kembalian = $penjualan->totalBayar - $bayar;
+        $bayar = $request->totalBayar - $penjualan->disc;
+        $penjualan->kembalian = $penjualan->totalPembayaran - $bayar;
         $penjualan->save();
+
+        $newKas = new Kas();
+        $newKas->tanggal = $request->tanggal;
+        $newKas->detailTransaksi = 'Penjualan dengan No Penjualan: ' . $penjualan->noPenjualan;
+        $newKas->tag = 'penjualan';
+        $newKas->kasMasuk = $penjualan->totalBayar;
+        $newKas->save();
 
         toastr()->success('Transaksi Berhasil');
         return redirect()->route('penjualan.ordershow', $penjualan->id);

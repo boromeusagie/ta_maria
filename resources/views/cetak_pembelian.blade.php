@@ -27,6 +27,7 @@
                 <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
                 <h3 class="text-center"><center>LAPORAN PEMBELIAN</h3>
                 <p>Tanggal Print: {{ date('d-m-Y', strtotime(now())) }}</p>
+                <p>Periode: {{ $dari }} - {{ $sampai }}</p>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
@@ -43,18 +44,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($pembelian as $index => $item)
+                                        @foreach($query as $index => $item)
                                             <tr>
                                                 <td><center>{{ $index + 1 }}</td>
                                                 <td><center>{{ $item->tanggal }}</td>
                                                 <td><center>{{ $item->noFaktur }}</td>
-                                                <td><center>{{ $item->supplier }}</td>
-                                                <td><center>{{ $item->totalHarga }}</td>
+                                                <td><center>{{ $item->supplier->namaSupplier }}</td>
+                                                <td><center>{{ $item->totalBayar }}</td>
                                             </tr>
                                         @endforeach
                                         <tr>
                                             <th colspan="4"><div class="text-center"><strong>TOTAL</strong></div></th>
-                                            <td><center>{{ $pembelian->items->sum('totalHarga') }}</td>
+                                            <td><center>{{ $query->sum('totalBayar') }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
