@@ -60,7 +60,9 @@
 
                         <div class="form-group row">
                             <div class="col-sm-10"></div>
-                            <button class="btn btn-primary col-sm-2" type="submit">ADD ORDER</button>
+                            @if (!isset($penjualan->totalPembayaran))
+                                <button class="btn btn-primary col-sm-2" type="submit">ADD ORDER</button>
+                            @endif
                         </div>
                     </form>
                 </div>
