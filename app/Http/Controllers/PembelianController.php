@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use App\Barang;
 use App\ItemPembelian;
 use App\Kas;
@@ -103,6 +104,7 @@ class PembelianController extends Controller
         $newPembelian->save();
 
         $lastRecord = ItemPembelian::count() > 0 ? DB::table('item_pembelian')->latest()->first()->id : 0;
+        $lastKas = Kas::count() > 0 ? DB::table('kas')->latest()->first()->id : 0;
 
         $newItem = new ItemPembelian();
         $newItem->noFaktur = $newPembelian->noFaktur;
@@ -121,11 +123,15 @@ class PembelianController extends Controller
         $newStatus->save();
 
         $newKas = new Kas();
+        $newKas->noKas = (int) $lastKas + 1;
         $newKas->tanggal = $request->tanggal;
         $newKas->detailTransaksi = 'Pembelian dengan No Faktur: ' . $newPembelian->noFaktur;
-        $newKas->tag = 'pembelian';
+        $newKas->tag = 'keluar';
         $newKas->kasKeluar = $newPembelian->totalBayar;
         $newKas->save();
+
+        $newPembelian->noKas = $newKas->noKas;
+        $newPembelian->save();
 
 
         toastr()->success('Barang berhasil ditambahkan');
@@ -209,14 +215,23 @@ class PembelianController extends Controller
         //
     }
 
-    public function itemDestroy($id, $itemId)
+    public function itemDestroy($id, $kasId, $itemId)
     {
         $pembelian = Pembelian::findOrFail($id);
+        $kas = Kas::findOrFail($kasId);
 
         $item = ItemPembelian::findOrFail($itemId);
         $item->delete();
 
         toastr()->success('Barang berhasil dihapus');
-        return redirect()->route('pembelian.ordershow', $pembelian->id);
+        return redirect()->route('pembelian.ordershow', [$pembelian->id, $kas->id]);
+    }
+
+    public function printFaktur($id)
+    {
+        $pembelian = Pembelian::findOrFail($id);
+
+        $pdf = \PDF::loadView('print_faktur', ['pembelian' => $pembelian])->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->download('print-faktur-'.$pembelian->noFaktur.'.pdf');
     }
 }

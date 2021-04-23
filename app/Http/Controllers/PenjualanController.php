@@ -8,6 +8,7 @@ use App\Penjualan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\toastr;
 use App\Kas;
+use Illuminate\Support\Facades\DB;
 
 class PenjualanController extends Controller
 {
@@ -165,16 +166,21 @@ class PenjualanController extends Controller
 
         $penjualan->disc = isset($request->disc) ? ($request->disc / 100) * $request->totalPembayaran : 0;
         $penjualan->totalPembayaran = $request->totalPembayaran;
-        $bayar = $request->totalBayar - $penjualan->disc;
+        $bayar = $penjualan->totalBayar - $penjualan->disc;
         $penjualan->kembalian = $penjualan->totalPembayaran - $bayar;
         $penjualan->save();
 
+        $lastKas = Kas::count() > 0 ? DB::table('kas')->latest()->first()->id : 0;
         $newKas = new Kas();
+        $newKas->noKas = (int) $lastKas + 1;
         $newKas->tanggal = $request->tanggal;
         $newKas->detailTransaksi = 'Penjualan dengan No Penjualan: ' . $penjualan->noPenjualan;
-        $newKas->tag = 'penjualan';
+        $newKas->tag = 'masuk';
         $newKas->kasMasuk = $penjualan->totalBayar;
         $newKas->save();
+
+        $penjualan->noKas = $newKas->noKas;
+        $penjualan->save();
 
         toastr()->success('Transaksi Berhasil');
         return redirect()->route('penjualan.ordershow', $penjualan->id);
@@ -193,5 +199,13 @@ class PenjualanController extends Controller
 
         toastr()->success('Barang berhasil dihapus');
         return redirect()->route('penjualan.ordershow', $penjualan->id);
+    }
+
+    public function printStruk($id)
+    {
+        $penjualan = Penjualan::findOrFail($id);
+
+        $pdf = \PDF::loadView('print_struk', ['penjualan' => $penjualan])->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->download('print-struk-'.$penjualan->noPenjualan.'.pdf');
     }
 }

@@ -18,6 +18,7 @@ class CreateKasTable extends Migration
             $table->timestamps();
 
             $table->date('tanggal')->nullable();
+            $table->string('noKas')->unique();
             $table->string('detailTransaksi')->nullable();
             $table->string('tag')->nullable();
             $table->integer('kasMasuk')->nullable();

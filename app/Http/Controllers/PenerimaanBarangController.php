@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Barang;
 use App\ItemPembelian;
+use App\Kas;
 use App\Pembelian;
 use App\StatusItem;
 use Illuminate\Http\Request;
@@ -61,13 +62,33 @@ class PenerimaanBarangController extends Controller
         $item = ItemPembelian::findOrFail($idItem);
         $status = StatusItem::where('noItemPembelian', $item->noItemPembelian)->first();
         $barang = Barang::where('kodeBarang', $item->kodeBarang)->first();
+        $kas = Kas::whereHas('pembelian', function ($q) use ($id) {
+            $q->where('id', $id);
+        })->first();
+
+        $beforePrice = $item->totalHarga;
+        $afterPrice = $barang->hargaBeli * $item->qty;
 
         $status->status = 'Sudah Diterima';
         $status->save();
 
+        if ($beforePrice != $afterPrice) {
+            $pembelian->totalBayar -= $item->totalHarga;
+            $pembelian->save();
+            $item->totalHarga = (int) $barang->hargaBeli * (int) $item->qty;
+            $item->save();
+            $pembelian->totalBayar += $item->totalHarga;
+            $pembelian->save();
+        }
+
+
         $barang->qty += $item->qty;
         $barang->save();
 
+        $kas->kasKeluar = $pembelian->totalBayar;
+        $kas->save();
+
+        toastr()->success($barang->namaBarang.' sudah diterima');
         return redirect()->route('penerimaan-barang.show', $pembelian->id);
     }
 

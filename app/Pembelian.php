@@ -30,4 +30,9 @@ class Pembelian extends Model
     {
         return $this->belongsTo('App\Supplier', 'kodeSupplier', 'kodeSupplier');
     }
+
+    public function kas()
+    {
+        return $this->belongsTo('App\Kas', 'noKas', 'noKas');
+    }
 }

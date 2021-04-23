@@ -94,14 +94,12 @@
                 var val = $(this).val();
                 let url = "{{ route('penjualan.getsatuan',['kodeBarang' => ':kodeBarang']) }}";
                 url = url.replace(':kodeBarang', val);
-                console.log(url);
                 $.ajax({
                     url: url,
                     method: 'GET',
                     success: function(data) {
                         var str = '';
                         str = data.satuan;
-                        console.log(data);
                         $('#satuan').val(data.satuan);
                     }
                 });

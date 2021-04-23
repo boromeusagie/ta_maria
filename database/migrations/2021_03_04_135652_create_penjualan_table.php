@@ -19,6 +19,11 @@ class CreatePenjualanTable extends Migration
 
             $table->date('tanggal')->nullable();
             $table->string('noPenjualan')->unique();
+            $table->string('noKas')->nullable();
+            $table->foreign('noKas')
+                ->references('noKas')
+                ->on('kas')
+                ->onDelete('set null');
             $table->integer('totalBayar')->nullable();
             $table->float('disc')->nullable();
             $table->integer('totalPembayaran')->nullable();

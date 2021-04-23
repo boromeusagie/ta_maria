@@ -1004,38 +1004,55 @@
 <body>
     <div id="app">
         <main class="py-4">
+            <div class="card">
             <div class="container">
-                <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
-                <h3 class="text-center"><center>LAPORAN PERSEDIAAN BARANG</h3>
-                <p>Tanggal Print: {{ date('d-m-Y', strtotime(now())) }}</p>
-                <p>Periode: {{ $dari }} - {{ $sampai }}</p>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        <div class="card">
+                        <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
+                        <h6 class="text-center"><center>Jl. Sadang no. 103, Margahayu, Bandung</h6>
+                        <h6 class="text-center"><center>081321130987 - andatutrading5758@gmail.com</h6>
+                        <div class="row mt-5">
+                            <p><strong>No Penjualan:</strong> {{ $penjualan->noPenjualan }}</p>
+                            <p><strong>Tanggal:</strong> {{ date('d-m-Y', strtotime(now())) }}</p>
+                        </div>
             
                             <div class="card-body">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th><center>No</center></th>
-                                            <th><center>Tanggal</center></th>
-                                            <th><center>No. Penjualan</center></th>
-                                            <th><center>Total Penjualan</center></th>
-                                            <th><center>HPP</center></th>
-                                            <th><center>Laba</center></th>
+                                            <th><center>No</th>
+                                            <th><center>Nama Barang</th>
+                                            <th><center>Quantity</th>
+                                            <th><center>Harga</th>
+                                            <th><center>Total Harga</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($query as $index => $item)
+                                        @foreach ($penjualan->items as $index => $item)
                                             <tr>
                                                 <td><center>{{ $index + 1 }}</td>
-                                                <td><center>{{ $item->tanggal }}</td>
-                                                <td><center>{{ $item->noPenjualan }}</td>
-                                                <td><center>{{ $item->totalBayar }}</td>
-                                                <td><center>{{ $item->items->barang->sum('hargaBeli') }}</td>
-                                                <td><center>{{ $item->totalBayar - $item->items->barang->sum('hargaBeli') }}</td>
+                                                <td>{{ $item->barang->namaBarang }}</td>
+                                                <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
+                                                <td><center>{{ $item->barang->hargaJual }}</td>
+                                                <td>Rp {{ number_format($item->totalHarga, 2) }}</td>
                                             </tr>
                                         @endforeach
+                                        <tr>
+                                            <th colspan="4"><div class="text-center"><strong>TOTAL</strong></div></th>
+                                            <td>Rp {{ number_format($penjualan->totalBayar, 2) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4"><div class="text-center"><strong>DISCOUNT</strong></div></th>
+                                            <td>{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->disc, 2) : '' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4"><div class="text-center"><strong>TOTAL PEMBAYARAN</strong></div></th>
+                                            <td>{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->totalPembayaran, 2) : '' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4"><div class="text-center"><strong>KEMBALIAN</strong></div></th>
+                                            <td>{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->kembalian, 2) : '' }}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

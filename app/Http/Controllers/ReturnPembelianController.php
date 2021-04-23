@@ -57,6 +57,19 @@ class ReturnPembelianController extends Controller
         return view('returnpembelian_show', ['pembelian' => $pembelian, 'pembelians' => $pembelians]);
     }
 
+    public function afterSubmit($id, $returnId)
+    {
+        $pembelian = Pembelian::findOrFail($id);
+        $return = ReturnPembelian::findOrFail($returnId);
+        $pembelians = Pembelian::whereHas('items', function($q) {
+            $q->whereHas('status', function($s) {
+                $s->where('status', 'Belum Diterima');
+            });
+        })->get();
+
+        return view('returnpembelian_after', ['pembelian' => $pembelian, 'return' => $return, 'pembelians' => $pembelians]);
+    }
+
     public function return(Request $request, $id)
     {
         $customMessages = [
@@ -101,8 +114,18 @@ class ReturnPembelianController extends Controller
             $pembelian->save();
         }
 
+
         toastr()->success('Barang berhasil di return');
-        return redirect()->route('return-pembelian.show', $pembelian->id);
+        return redirect()->route('return-pembelian.after', [$pembelian->id, $newReturn->id]);
+    }
+
+    public function printReturn($id, $returnId)
+    {
+        $pembelian = Pembelian::findOrFail($id);
+        $return = ReturnPembelian::findOrFail($returnId);
+
+        $pdf = \PDF::loadView('print_return', ['pembelian' => $pembelian, 'return' => $return])->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->download('print-return-'.$return->noReturn.'.pdf');
     }
 
     /**

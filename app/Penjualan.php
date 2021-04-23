@@ -25,4 +25,9 @@ class Penjualan extends Model
     {
         return $this->hasMany('App\ItemPenjualan', 'noPenjualan', 'noPenjualan');
     }
+
+    public function kas()
+    {
+        return $this->belongsTo('App\Kas', 'noKas', 'noKas');
+    }
 }

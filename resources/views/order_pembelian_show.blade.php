@@ -97,7 +97,7 @@
                                     <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
                                     <td>Rp {{ number_format($item->totalHarga, 2) }}</td>
                                     <td><center>
-                                        <form action="{{ route('pembelian.itemdestroy', ['id' => $pembelian->id, 'itemId' => $item->id]) }}" method="POST">
+                                        <form action="{{ route('pembelian.itemdestroy', ['id' => $pembelian->id, 'kasId' => $kas->id, 'itemId' => $item->id]) }}" method="POST">
                                             @method('DELETE')
                                             @csrf
                                             <button class="btn btn-sm btn-danger" type="submit">DELETE</button>
@@ -112,9 +112,9 @@
                         </tbody>
                     </table>
                     <div class="row">
-                        <div class="col-sm-10"></div>
-                        <div class="col-sm-2">
-                            <a href="{{ route('pembelian.order') }}" class="btn btn-primary">SAVE</a>
+                        <div class="col-sm-8"></div>
+                        <div class="col-sm-4">
+                            <a href="{{ route('pembelian.printfaktur', $pembelian->id) }}" class="btn btn-primary">SAVE & PRINT</a>
                         </div>
                     </div>
                 </div>
@@ -131,14 +131,12 @@
                 var val = $(this).val();
                 let url = "{{ route('pembelian.getsatuan',['kodeBarang' => ':kodeBarang']) }}";
                 url = url.replace(':kodeBarang', val);
-                console.log(url);
                 $.ajax({
                     url: url,
                     method: 'GET',
                     success: function(data) {
                         var str = '';
                         str = data.satuan;
-                        console.log(data);
                         $('#satuan').val(data.satuan);
                     }
                 });

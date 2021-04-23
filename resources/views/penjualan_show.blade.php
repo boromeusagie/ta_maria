@@ -94,7 +94,9 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-10"></div>
-                            <button class="btn btn-primary col-sm-2" type="submit">CASHIER</button>
+                            @if (!isset($penjualan->totalPembayaran))
+                                <button class="btn btn-primary col-sm-2" type="submit">CASHIER</button>
+                            @endif
                             </div>
                     </form>
                     <table class="table table-bordered">
@@ -103,6 +105,7 @@
                                 <th><center>No</th>
                                 <th><center>Nama Barang</th>
                                 <th><center>Quantity</th>
+                                <th><center>Harga</th>
                                 <th><center>Total Harga</th>
                                 @if (!isset($penjualan->totalPembayaran))
                                     <th><center>Action</th>
@@ -116,6 +119,7 @@
                                     <td><center>{{ $index + 1 }}</td>
                                     <td>{{ $item->barang->namaBarang }}</td>
                                     <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
+                                    <td><center>{{ $item->barang->hargaJual }}</td>
                                     <td>Rp {{ number_format($item->totalHarga, 2) }}</td>
                                     @if (!isset($penjualan->totalPembayaran))
                                         <td><center>
@@ -128,19 +132,20 @@
                                     @endif
                                 </tr>
                             @endforeach
-                                <th colspan="3"><div class="text-center"><strong>TOTAL</strong></div></th>
+                            <tr>
+                                <th colspan="4"><div class="text-center"><strong>TOTAL</strong></div></th>
                                 <td>Rp {{ number_format($penjualan->totalBayar, 2) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="3"><div class="text-center"><strong>DISCOUNT</strong></div></th>
+                                <th colspan="4"><div class="text-center"><strong>DISCOUNT</strong></div></th>
                                 <td>{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->disc, 2) : '' }}</td>
                             </tr>
                             <tr>
-                                <th colspan="3"><div class="text-center"><strong>TOTAL PEMBAYARAN</strong></div></th>
+                                <th colspan="4"><div class="text-center"><strong>TOTAL PEMBAYARAN</strong></div></th>
                                 <td>{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->totalPembayaran, 2) : '' }}</td>
                             </tr>
                             <tr>
-                                <th colspan="3"><div class="text-center"><strong>KEMBALIAN</strong></div></th>
+                                <th colspan="4"><div class="text-center"><strong>KEMBALIAN</strong></div></th>
                                 <td>{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->kembalian, 2) : '' }}</td>
                             </tr>
                         </tbody>
@@ -149,7 +154,7 @@
                         <div class="col-sm-10"></div>
                         <div class="col-sm-2">
                             @if (isset($penjualan->totalPembayaran))
-                                <a href="{{ route('penjualan.order') }}" class="btn btn-primary">SAVE</a>
+                                <a href="{{ route('penjualan.printstruk', $penjualan->id) }}" class="btn btn-primary">PRINT</a>
                             @endif
                         </div>
                     </div>
@@ -167,14 +172,12 @@
                 var val = $(this).val();
                 let url = "{{ route('penjualan.getsatuan',['kodeBarang' => ':kodeBarang']) }}";
                 url = url.replace(':kodeBarang', val);
-                console.log(url);
                 $.ajax({
                     url: url,
                     method: 'GET',
                     success: function(data) {
                         var str = '';
                         str = data.satuan;
-                        console.log(data);
                         $('#satuan').val(data.satuan);
                     }
                 });

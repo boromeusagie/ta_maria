@@ -24,6 +24,11 @@ class CreatePembelianTable extends Migration
                 ->references('kodeSupplier')
                 ->on('supplier')
                 ->onDelete('set null');
+            $table->string('noKas')->nullable();
+            $table->foreign('noKas')
+                ->references('noKas')
+                ->on('kas')
+                ->onDelete('set null');
             $table->integer('totalBayar')->nullable();
         });
     }

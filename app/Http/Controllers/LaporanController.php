@@ -44,6 +44,28 @@ class LaporanController extends Controller
         if ($laporan === 'barang') {
             $pdf = \PDF::loadView('cetak_persediaan_barang', ['query' => $query])->setOptions(['defaultFont' => 'sans-serif']);
             return $pdf->download('laporan-persediaan-barang-'.$date.'.pdf');
+        } elseif ($laporan === 'kas') {
+            $totalDebit = $query->sum('kasKeluar') ?? 0;
+            $totalKredit = $query->sum('kasMasuk') ?? 0;
+
+            if ($totalDebit > 0 && $totalKredit === 0) {
+                $presentase = 100;
+            } elseif ($totalKredit > 0 && $totalDebit === 0) {
+                $presentase = -100;
+            } elseif ($totalDebit === 0 && $totalKredit === 0) {
+                $presentase = 0;
+            } else {
+                $presentase = ($totalKredit - $totalDebit) / $totalDebit * 100;
+            }
+            $pdf = \PDF::loadView('cetak_'.$laporan, [
+                'query' => $query,
+                'dari' => $dari,
+                'sampai' => $sampai,
+                'totalKredit' => $totalKredit,
+                'totalDebit' => $totalDebit,
+                'presentase' => $presentase,
+                ])->setOptions(['defaultFont' => 'sans-serif']);
+            return $pdf->download('laporan-'.$laporan.'-'.$date.'.pdf');
         } else {
             $pdf = \PDF::loadView('cetak_'.$laporan, ['query' => $query, 'dari' => $dari, 'sampai' => $sampai])->setOptions(['defaultFont' => 'sans-serif']);
             return $pdf->download('laporan-'.$laporan.'-'.$date.'.pdf');

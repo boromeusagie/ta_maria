@@ -40,16 +40,12 @@
                 <div class="card-header">{{ __('Detail Transaksi') }}</div>
 
                 <div class="card-body">
-                    <form action="{{ route('return-pembelian.return', $pembelian->id) }}" method="post">
-                        @csrf
+                    <form action="#" method="get">
                         <div class="form-group row">
                             <label for="noReturn" class="col-sm-4 col-form-label">No Return</label>
                             <div class="col-sm-8">
-                                <input class="form-control @error('noReturn') is-invalid @enderror" type="text" name="noReturn" id="noReturn">
+                                <input class="form-control @error('noReturn') is-invalid @enderror" type="text" name="noReturn" id="noReturn" value="{{ $return->noReturn }}" disabled>
                             </div>
-                            @error('noReturn')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
                         </div>
                         <input type="text" name="noFaktur" value="{{ $pembelian->noFaktur }}" hidden>
                         <input class="form-control @error('tanggal') is-invalid @enderror" type="date" name="tanggal" id="tanggal" value="{{ Carbon\Carbon::today()->format('Y-m-d') }}" hidden>
@@ -99,7 +95,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <center><button id="submit" type="submit" class="btn btn-primary">SAVE</button>
+                        <center><a href="{{ route('return-pembelian.printreturn', [$pembelian->id, $return->id]) }}" class="btn btn-primary">PRINT</a>
                     </form>
                 </div>
             </div>
@@ -124,20 +120,6 @@
                 document.show.action = get_action();
                 $('form#show1').submit();
 
-            });
-
-            $('#submit').click(function () {
-                var noReturn = $('#noReturn').val();
-                var pembelian = "{{ $pembelian->id }}"
-                let url = "{{ route('return-pembelian.printreturn', ['pembelian' => ':pembelian', 'return', ':return']) }}"
-                url = url.replace([':pembelian' => pembelian, ':return' => noReturn])
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function(data) {
-                        console.log(data);
-                    }
-                });
             });
         });
     </script>

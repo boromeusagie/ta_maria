@@ -63,8 +63,9 @@ Route::group(
                 Route::post('order', 'PembelianController@store')->name('pembelian.store');
                 Route::get('order/{id}/{kasId}', 'PembelianController@orderPembelianShow')->name('pembelian.ordershow');
                 Route::post('order/{id}/{kasId}', 'PembelianController@orderPembelianStore')->name('pembelian.orderstore');
-                Route::get('order/getSatuan/{kodeBarang}', 'PembelianController@getSatuan')->name('pembelian.getsatuan');
-                Route::delete('order/{id}/{itemId}/delete', 'PembelianController@itemDestroy')->name('pembelian.itemdestroy');
+                Route::get('satuan/{kodeBarang}', 'PembelianController@getSatuan')->name('pembelian.getsatuan');
+                Route::delete('order/{id}/{kasId}/{itemId}/delete', 'PembelianController@itemDestroy')->name('pembelian.itemdestroy');
+                Route::get('print/{id}', 'PembelianController@printFaktur')->name('pembelian.printfaktur');
             }
         );
 
@@ -76,8 +77,9 @@ Route::group(
                 Route::get('no/{id}', 'PenjualanController@orderPenjualanShow')->name('penjualan.ordershow');
                 Route::post('no/{id}', 'PenjualanController@orderPenjualanStore')->name('penjualan.orderstore');
                 Route::post('no/{id}/cashier', 'PenjualanController@cashierPenjualan')->name('penjualan.cashier');
-                Route::get('no/getSatuan/{kodeBarang}', 'PenjualanController@getSatuan')->name('penjualan.getsatuan');
-                Route::delete('no/{id}/{itemId}/delete', 'PenjualanController@itemDestroy')->name('penjualan.itemdestroy');
+                Route::get('no/{id}/print', 'PenjualanController@printStruk')->name('penjualan.printstruk');
+                Route::get('satuan/{kodeBarang}', 'PenjualanController@getSatuan')->name('penjualan.getsatuan');
+                Route::delete('no/{id}/delete/{itemId}', 'PenjualanController@itemDestroy')->name('penjualan.itemdestroy');
             }
         );
         
@@ -97,6 +99,8 @@ Route::group(
                 Route::get('', 'ReturnPembelianController@index')->name('return-pembelian.index');
                 Route::get('{id}', 'ReturnPembelianController@show')->name('return-pembelian.show');
                 Route::post('{id}/return', 'ReturnPembelianController@return')->name('return-pembelian.return');
+                Route::get('{id}/return/{returnId}', 'ReturnPembelianController@afterSubmit')->name('return-pembelian.after');
+                Route::get('{id}/return/{returnId}/print', 'ReturnPembelianController@printReturn')->name('return-pembelian.printreturn');
             }
 
         );
@@ -114,6 +118,7 @@ Route::group(
         Route::group(
             ['prefix' => 'kas'], function() {
                 Route::get('', 'KasController@index')->name('kas.index');
+                Route::post('', 'KasController@store')->name('kas.store');
                 // Route::get('cetak', 'LaporanCOntroller@cetakPdf')->name('laporan.cetak');
             }
 

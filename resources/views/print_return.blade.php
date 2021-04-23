@@ -1004,36 +1004,36 @@
 <body>
     <div id="app">
         <main class="py-4">
+            <div class="card">
             <div class="container">
-                <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
-                <h3 class="text-center"><center>LAPORAN PERSEDIAAN BARANG</h3>
-                <p>Tanggal Print: {{ date('d-m-Y', strtotime(now())) }}</p>
-                <p>Periode: {{ $dari }} - {{ $sampai }}</p>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        <div class="card">
+                        <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
+                        <h3 class="text-center"><center>RETURN PEMBELIAN</h3>
+                        <div class="row mt-5">
+                            <p><strong>Tanggal:</strong> {{ date('d-m-Y', strtotime(now())) }}</p>
+                            <p><strong>No Faktur:</strong> {{ $pembelian->noFaktur }}</p>
+                            <p><strong>No Return:</strong> {{ $return->noReturn }}</p>
+                            <p><strong>Supplier:</strong> {{ $pembelian->supplier->namaSupplier }}</p>
+                            <p><strong>Alamat:</strong> {{ $pembelian->supplier->almtSupplier }}</p>
+                            <p><strong>No Telp:</strong> {{ $pembelian->supplier->tlpSupplier }}</p>
+                        </div>
             
                             <div class="card-body">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th><center>No</center></th>
-                                            <th><center>Tanggal</center></th>
-                                            <th><center>No. Penjualan</center></th>
-                                            <th><center>Total Penjualan</center></th>
-                                            <th><center>HPP</center></th>
-                                            <th><center>Laba</center></th>
+                                            <th><center>Nama Barang</center></th>
+                                            <th><center>Quantity</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($query as $index => $item)
+                                        @foreach($return->items as $index => $item)
                                             <tr>
                                                 <td><center>{{ $index + 1 }}</td>
-                                                <td><center>{{ $item->tanggal }}</td>
-                                                <td><center>{{ $item->noPenjualan }}</td>
-                                                <td><center>{{ $item->totalBayar }}</td>
-                                                <td><center>{{ $item->items->barang->sum('hargaBeli') }}</td>
-                                                <td><center>{{ $item->totalBayar - $item->items->barang->sum('hargaBeli') }}</td>
+                                                <td><center>{{ $item->barang->namaBarang }}</td>
+                                                <td><center>{{ $item->qty.' '.$item->barang->satuan }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
