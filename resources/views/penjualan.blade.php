@@ -22,7 +22,7 @@
                             <label for="noPenjualan" class="col-sm-4 col-form-label">No. Penjualan</label>
                             <div class="col-sm-8">
                                 <input class="form-control @error('noPenjualan') is-invalid @enderror" type="text" name="noPenjualan" id="noPenjualan">
-                                @error('noFaktur')
+                                @error('noPenjualan')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>

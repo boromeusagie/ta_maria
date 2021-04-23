@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Barang;
 use App\ItemPembelian;
 use App\ItemReturnPembelian;
+use App\Kas;
 use App\Pembelian;
 use App\ReturnPembelian;
 use App\StatusItem;
@@ -85,6 +86,9 @@ class ReturnPembelianController extends Controller
         );
 
         $pembelian = Pembelian::findOrFail($id);
+        $kas = Kas::whereHas('pembelian', function ($q) use ($id) {
+            $q->where('id', $id);
+        })->first();
 
         $newReturn = new ReturnPembelian();
         $newReturn->tanggal = $request->tanggal;
@@ -114,6 +118,8 @@ class ReturnPembelianController extends Controller
             $pembelian->save();
         }
 
+        $kas->kasKeluar = $pembelian->totalBayar;
+        $kas->save();
 
         toastr()->success('Barang berhasil di return');
         return redirect()->route('return-pembelian.after', [$pembelian->id, $newReturn->id]);
