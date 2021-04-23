@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Kas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KasController extends Controller
 {
