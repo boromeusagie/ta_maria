@@ -10,19 +10,31 @@
                     @csrf
                         <div class="form-group">
                             <label for="kodeSupplier">Kode Supplier</label>
-                            <input class="form-control" type="text" name="kodeSupplier" id="kodeSupplier">
+                            <input class="form-control @error('kodeSupplier') is-invalid @enderror" type="text" name="kodeSupplier" id="kodeSupplier">
+                            @error('kodeSupplier')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="namaSupplier">Nama Supplier</label>
-                            <input class="form-control" type="text" name="namaSupplier" id="namaSupplier">
+                            <input class="form-control @error('namaSupplier') is-invalid @enderror" type="text" name="namaSupplier" id="namaSupplier">
+                            @error('namaSupplier')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="almtSupplier">Alamat</label>
-                            <input class="form-control" type="text" name="almtSupplier" id="almtSupplier">
+                            <input class="form-control @error('almtSupplier') is-invalid @enderror" type="text" name="almtSupplier" id="almtSupplier">
+                            @error('almtSupplier')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="tlpSupplier">Telephone</label>
-                            <input class="form-control" type="text" name="tlpSupplier" id="tlpSupplier">
+                            <input class="form-control @error('tlpSupplier') is-invalid @enderror" type="text" name="tlpSupplier" id="tlpSupplier">
+                            @error('tlpSupplier')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <button class="btn btn-primary" type="submit">SAVE</button>
                     </form>

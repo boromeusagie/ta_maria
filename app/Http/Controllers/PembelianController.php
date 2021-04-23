@@ -220,7 +220,11 @@ class PembelianController extends Controller
         $pembelian = Pembelian::findOrFail($id);
         $kas = Kas::findOrFail($kasId);
 
+        
         $item = ItemPembelian::findOrFail($itemId);
+        $pembelian->totalBayar -= $item->totalHarga;
+        $pembelian->save();
+        
         $item->delete();
 
         toastr()->success('Barang berhasil dihapus');

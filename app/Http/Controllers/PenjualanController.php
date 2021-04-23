@@ -191,6 +191,9 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::findOrFail($id);
 
         $item = ItemPenjualan::findOrFail($itemId);
+        $penjualan->totalBayar -= $item->totalHarga;
+        $penjualan->save();
+        
         $barang = Barang::where('kodeBarang', $item->kodeBarang)->first();
         $barang->qty += $item->qty;
         $barang->save();

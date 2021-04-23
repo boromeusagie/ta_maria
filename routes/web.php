@@ -39,7 +39,7 @@ Route::group(
                 Route::post('', 'BarangController@store')->name('barang.store');
                 Route::get('{id}','BarangController@edit')->name('barang.edit');
                 Route::post('{id}','BarangController@update')->name('barang.update');
-                Route::delete('{kodeBarang}', 'BarangController@destroy')->name('barang.destroy');
+                Route::delete('{id}', 'BarangController@destroy')->name('barang.destroy');
             }
 
         );

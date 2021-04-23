@@ -31,6 +31,22 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
+        $customMessages = [
+            'required' => 'Harap isi :attribute',
+            'unique' => ':attribute sudah digunakan'
+        ];
+
+        $request->validate(
+            [
+                'kodeBarang' => 'required|unique:barang,kodeBarang|string',
+                'namaBarang' => 'required|string',
+                'qty' => 'required|integer',
+                'satuan' => 'required|string',
+                'hargaBeli' => 'required|integer',
+                'hargaJual' => 'required|integer'
+            ], $customMessages
+        );
+
         $barang = new Barang();
         $barang->kodeBarang = $request->kodeBarang;
         $barang->namaBarang = $request->namaBarang;
@@ -40,11 +56,8 @@ class BarangController extends Controller
         $barang->hargaJual = $request->hargaJual;
         $barang->save();
 
-        $barangs = Barang::all();
-
-        return view('barang_index', [
-            'barangs' => $barangs
-        ]);
+        toastr()->success('Barang berhasil ditambah');
+        return redirect()->route('barang.index');
     }
     
 
@@ -77,13 +90,30 @@ class BarangController extends Controller
 
     public function update(Request $request, $id)
     {
-        // update data supplier
-	    DB::table('barang')->where('id',$request->id)->update([
-		'kodeBarang' => $request->kodeBarang,
-		'namaBarang' => $request->namaBarang,
-        'hargaBeli' => $request->hargaBeli,
-        'hargaJual' => $request->hargaJual
-        ]);
+        $customMessages = [
+            'required' => 'Harap isi :attribute',
+            'unique' => ':attribute sudah digunakan'
+        ];
+
+        $request->validate(
+            [
+                'kodeBarang' => 'required|unique:barang,kodeBarang,'.$id.'|string',
+                'namaBarang' => 'required|string',
+                'satuan' => 'required|string',
+                'hargaBeli' => 'required|integer',
+                'hargaJual' => 'required|integer'
+            ], $customMessages
+        );
+
+        $barang = Barang::findOrFail($id);
+        $barang->kodeBarang = $request->kodeBarang;
+        $barang->namaBarang = $request->namaBarang;
+        $barang->satuan = $request->satuan;
+        $barang->hargaBeli = $request->hargaBeli;
+        $barang->hargaJual = $request->hargaJual;
+        $barang->save();
+
+        toastr()->success('Barang berhasil diubah');
         // alihkan halaman ke halaman supplier
         return redirect()->route('barang.index');
     }
@@ -99,9 +129,7 @@ class BarangController extends Controller
         $barang = Barang::findOrFail($id);
         $barang->delete();
 
-        $barangs = Barang::all();
-
-        return view('barang_index', [
-            'barangs' => $barangs        ]);
+        toastr()->success('Barang berhasil dihapus');
+        return redirect()->route('barang.index');
     }
 }

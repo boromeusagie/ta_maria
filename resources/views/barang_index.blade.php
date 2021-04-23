@@ -10,27 +10,45 @@
                     @csrf
                         <div class="form-group">
                             <label for="kodeBarang">Kode Barang</label>
-                            <input class="form-control" type="text" name="kodeBarang" id="kodeBarang">
+                            <input class="form-control @error('kodeBarang') is-invalid @enderror" type="text" name="kodeBarang" id="kodeBarang">
+                            @error('kodeBarang')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="namaBarang">Nama Barang</label>
-                            <input class="form-control" type="text" name="namaBarang" id="namaBarang">
+                            <input class="form-control @error('namaBarang') is-invalid @enderror" type="text" name="namaBarang" id="namaBarang">
+                            @error('namaBarang')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="qty">Quantity</label>
-                            <input class="form-control" type="text" name="qty" id="qty">
+                            <input class="form-control @error('qty') is-invalid @enderror" type="text" name="qty" id="qty">
+                            @error('qty')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="satuan">Satuan</label>
-                            <input class="form-control" type="text" name="satuan" id="satuan">
+                            <input class="form-control @error('satuan') is-invalid @enderror" type="text" name="satuan" id="satuan">
+                            @error('satuan')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="hargaBeli">Harga Beli</label>
-                            <input class="form-control" type="text" name="hargaBeli" id="hargaBeli">
+                            <input class="form-control @error('hargaBeli') is-invalid @enderror" type="text" name="hargaBeli" id="hargaBeli">
+                            @error('hargaBeli')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="hargaJual">Harga Jual</label>
-                            <input class="form-control" type="text" name="hargaJual" id="hargaJual">
+                            <input class="form-control @error('hargaJual') is-invalid @enderror" type="text" name="hargaJual" id="hargaJual">
+                            @error('hargaJual')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <button class="btn btn-primary" type="submit">SAVE</button>
                     </form>

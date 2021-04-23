@@ -29,6 +29,20 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
+        $customMessages = [
+            'required' => 'Harap isi :attribute',
+            'unique' => ':attribute sudah digunakan'
+        ];
+
+        $request->validate(
+            [
+                'kodeSupplier' => 'required|unique:supplier,kodeSupplier|string',
+                'namaSupplier' => 'required|string',
+                'almtSupplier' => 'required|string',
+                'tlpSupplier' => 'required|string'
+            ], $customMessages
+        );
+
         $supplier = new Supplier();
         $supplier->kodeSupplier = $request->kodeSupplier;
         $supplier->namaSupplier = $request->namaSupplier;
@@ -36,11 +50,8 @@ class SupplierController extends Controller
         $supplier->tlpSupplier = $request->tlpSupplier;
         $supplier->save();
 
-        $supplier = Supplier::all();
-
-        return view('supplier_index', [
-            'supplier' => $supplier
-        ]);
+        toastr()->success('Supplier berhasil dibuat');
+        return redirect()->route('supplier.index');
     }
 
     /**
@@ -73,13 +84,29 @@ class SupplierController extends Controller
 
     public function update(Request $request, $id)
     {
+        $customMessages = [
+            'required' => 'Harap isi :attribute',
+            'unique' => ':attribute sudah digunakan'
+        ];
+
+        $request->validate(
+            [
+                'kodeSupplier' => 'required|unique:supplier,kodeSupplier,'.$id.'|string',
+                'namaSupplier' => 'required|string',
+                'almtSupplier' => 'required|string',
+                'tlpSupplier' => 'required|string'
+            ], $customMessages
+        );
+
         // update data supplier
-	    DB::table('supplier')->where('id',$request->id)->update([
-        'kodeSupplier' => $request->kodeSupplier,
-		'namaSupplier' => $request->namaSupplier,
-		'almtSupplier' => $request->almtSupplier,
-		'tlpSupplier' => $request->tlpSupplier
-        ]);
+        $supplier = Supplier::findOrFail($id);
+	    $supplier->kodeSupplier = $request->kodeSupplier;
+        $supplier->namaSupplier = $request->namaSupplier;
+        $supplier->almtSupplier = $request->almtSupplier;
+        $supplier->tlpSupplier = $request->tlpSupplier;
+        $supplier->save();
+
+        toastr()->success('Supplier berhasil diubah');
         // alihkan halaman ke halaman supplier
         return redirect()->route('supplier.index');
     }
@@ -95,10 +122,8 @@ class SupplierController extends Controller
         $supplier = Supplier::findOrFail($id);
         $supplier->delete();
 
-        $supplier = Supplier::all();
-
-        return view('supplier_index', [
-            'supplier' => $supplier
-        ]);
+        toastr()->success('Supplier berhasil dihapus');
+        // alihkan halaman ke halaman supplier
+        return redirect()->route('supplier.index');
     }
 }

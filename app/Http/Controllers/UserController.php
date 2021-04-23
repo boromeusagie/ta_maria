@@ -40,11 +40,8 @@ class UserController extends Controller
         $user->email = $request->username.'@ta.com';
         $user->save();
 
-        $users = User::all();
-
-        return view('user_index', [
-            'users' => $users
-        ]);
+        toastr()->success('User berhasil dibuat');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -81,10 +78,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        $users = User::all();
-
-        return view('user_index', [
-            'users' => $users
-        ]);
+        toastr()->success('User berhasil dihapus');
+        return redirect()->route('user.index');
     }
 }
