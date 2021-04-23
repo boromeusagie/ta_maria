@@ -26,6 +26,14 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="hargaBeli">Satuan</label>
+                                    <input class="form-control @error('satuan') is-invalid @enderror" type="text" name="satuan" id="satuan" value="{{ $barang->satuan }}">
+                                    @error('satuan')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
                                     <label for="hargaBeli">Harga Beli</label>
                                     <input class="form-control @error('hargaBeli') is-invalid @enderror" type="text" name="hargaBeli" id="hargaBeli" value="{{ $barang->hargaBeli }}">
                                     @error('hargaBeli')
