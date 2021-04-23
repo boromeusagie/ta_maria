@@ -98,8 +98,10 @@ class KasController extends Controller
             ], $customMessages
         );
 
+        $lastKas = Kas::count() > 0 ? DB::table('kas')->latest()->first()->id : 0;
         if ($request->jenisTransaksi === 'kasMasuk') {
             $newKas = new Kas();
+            $newKas->noKas = (int) $lastKas + 1;
             $newKas->tanggal = $request->tanggal;
             $newKas->detailTransaksi = $request->detailTransaksi;
             $newKas->tag = 'masuk';
@@ -107,6 +109,7 @@ class KasController extends Controller
             $newKas->save();
         } else {
             $newKas = new Kas();
+            $newKas->noKas = (int) $lastKas + 1;
             $newKas->tanggal = $request->tanggal;
             $newKas->detailTransaksi = $request->detailTransaksi;
             $newKas->tag = 'keluar';

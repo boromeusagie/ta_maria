@@ -48,7 +48,7 @@ class PenjualanController extends Controller
     public function orderPenjualanShow($id)
     {
         $penjualan = Penjualan::findOrFail($id);
-        $barangs = Barang::all();
+        $barangs = Barang::where('qty', '>', 0)->get();
 
         return view('penjualan_Show', [
             'penjualan' => $penjualan,
@@ -87,11 +87,15 @@ class PenjualanController extends Controller
         );
 
         $barang = Barang::where('kodeBarang', $request->namaBarang)->first();
-
+        
         $newPenjualan = new Penjualan();
         $newPenjualan->tanggal = $request->tanggal;
         $newPenjualan->noPenjualan = $request->noPenjualan;
         $newPenjualan->save();
+        if ($request->qty > $barang->qty) {
+            toastr()->error('Stock tidak cukup');
+            return redirect()->route('penjualan.ordershow', $newPenjualan->id);
+        }
 
         $newItem = new ItemPenjualan();
         $newItem->noPenjualan = $newPenjualan->noPenjualan;
@@ -127,6 +131,11 @@ class PenjualanController extends Controller
         );
 
         $barang = Barang::where('kodeBarang', $request->namaBarang)->first();
+
+        if ($request->qty > $barang->qty) {
+            toastr()->error('Stock tidak cukup');
+            return redirect()->route('penjualan.ordershow', $penjualan->id);
+        }
 
         $newItem = new ItemPenjualan();
         $newItem->noPenjualan = $penjualan->noPenjualan;
@@ -193,7 +202,7 @@ class PenjualanController extends Controller
         $item = ItemPenjualan::findOrFail($itemId);
         $penjualan->totalBayar -= $item->totalHarga;
         $penjualan->save();
-        
+
         $barang = Barang::where('kodeBarang', $item->kodeBarang)->first();
         $barang->qty += $item->qty;
         $barang->save();
