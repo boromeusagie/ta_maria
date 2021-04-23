@@ -174,7 +174,7 @@ class PenjualanController extends Controller
             return redirect()->route('penjualan.ordershow', $penjualan->id);
         }
 
-        $penjualan->disc = isset($request->disc) ? ($request->disc / 100) * $request->totalBayar : 0;
+        $penjualan->disc = isset($request->disc) ? ($request->disc / 100) * $penjualan->totalBayar : 0;
         $penjualan->totalPembayaran = $request->totalPembayaran;
         $bayar = $penjualan->totalBayar - $penjualan->disc;
         $penjualan->kembalian = $penjualan->totalPembayaran - $bayar;
