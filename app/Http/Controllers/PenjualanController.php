@@ -164,6 +164,7 @@ class PenjualanController extends Controller
         $request->validate(
             [
                 'disc' => 'nullable|integer',
+                'date' => 'nullable|date',
                 'totalPembayaran' => 'required|integer'
             ], $customMessages
         );

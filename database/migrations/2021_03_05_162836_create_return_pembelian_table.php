@@ -23,12 +23,12 @@ class CreateReturnPembelianTable extends Migration
             $table->foreign('noFaktur')
                 ->references('noFaktur')
                 ->on('pembelian')
-                ->onDelete('set null');
+                ->onDelete('cascade');
             $table->string('kodeSupplier')->nullable();
             $table->foreign('kodeSupplier')
                 ->references('kodeSupplier')
                 ->on('supplier')
-                ->onDelete('set null');
+                ->onDelete('cascade');
             $table->integer('totalReturn')->nullable();
         });
     }

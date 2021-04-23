@@ -21,7 +21,7 @@ class CreatePenerimaanBarangTable extends Migration
             $table->foreign('noItemPembelian')
                 ->references('noItemPembelian')
                 ->on('item_pembelian')
-                ->onDelete('set null');
+                ->onDelete('cascade');
         });
     }
 

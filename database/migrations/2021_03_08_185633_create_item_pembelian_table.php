@@ -22,12 +22,12 @@ class CreateItemPembelianTable extends Migration
             $table->foreign('noFaktur')
                 ->references('noFaktur')
                 ->on('pembelian')
-                ->onDelete('set null');
+                ->onDelete('cascade');
             $table->string('kodeBarang', 6)->nullable();
             $table->foreign('kodeBarang')
                 ->references('kodeBarang')
                 ->on('barang')
-                ->onDelete('set null');
+                ->onDelete('cascade');
             $table->integer('qty')->nullable();
             $table->integer('totalHarga')->nullable();
         });

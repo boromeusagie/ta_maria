@@ -71,6 +71,7 @@
                 <div class="card-body">
                     <form action="{{ route('penjualan.cashier', $penjualan->id) }}" method="post">
                         @csrf
+                        <input class="form-control" type="date" name="tanggal" value="{{ $penjualan->tanggal }}" hidden>
                         <div class="form-group row">
                             <label for="disc" class="col-sm-4 col-form-label">Discount</label>
                             <div class="col-sm-7">

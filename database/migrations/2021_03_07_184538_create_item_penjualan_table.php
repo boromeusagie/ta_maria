@@ -22,12 +22,12 @@ class CreateItemPenjualanTable extends Migration
             $table->foreign('noPenjualan')
                 ->references('noPenjualan')
                 ->on('penjualan')
-                ->onDelete('set null');
+                ->onDelete('cascade');
             $table->string('kodeBarang', 6)->nullable();
             $table->foreign('kodeBarang')
                 ->references('kodeBarang')
                 ->on('barang')
-                ->onDelete('set null');
+                ->onDelete('cascade');
             $table->integer('qty')->nullable();
             $table->integer('totalHarga')->nullable();
         });

@@ -45,6 +45,7 @@ class LaporanController extends Controller
             $pdf = \PDF::loadView('cetak_persediaan_barang', ['query' => $query])->setOptions(['defaultFont' => 'sans-serif']);
             return $pdf->download('laporan-persediaan-barang-'.$date.'.pdf');
         } elseif ($laporan === 'kas') {
+            \Log::debug(['query' => $query]);
             $totalDebit = $query->sum('kasKeluar') ?? 0;
             $totalKredit = $query->sum('kasMasuk') ?? 0;
 

@@ -23,12 +23,12 @@ class CreatePembelianTable extends Migration
             $table->foreign('kodeSupplier')
                 ->references('kodeSupplier')
                 ->on('supplier')
-                ->onDelete('set null');
+                ->onDelete('cascade');
             $table->string('noKas')->nullable();
             $table->foreign('noKas')
                 ->references('noKas')
                 ->on('kas')
-                ->onDelete('set null');
+                ->onDelete('cascade');
             $table->integer('totalBayar')->nullable();
         });
     }
