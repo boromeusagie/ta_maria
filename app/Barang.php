@@ -12,4 +12,9 @@ class Barang extends Model
     {
         return $this->hasMany('App\ItemPembelian', 'kodeBarang', 'kodeBarang');
     }
+
+    public function itemPenjualan()
+    {
+        return $this->hasMany('App\ItemPenjualan', 'kodeBarang', 'kodeBarang');
+    }
 }

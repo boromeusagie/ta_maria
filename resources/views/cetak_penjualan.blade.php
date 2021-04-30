@@ -1032,8 +1032,8 @@
                                                 <td><center>{{ $item->tanggal }}</td>
                                                 <td><center>{{ $item->noPenjualan }}</td>
                                                 <td><center>{{ $item->totalBayar }}</td>
-                                                <td><center>{{ $item->items->barang->sum('hargaBeli') }}</td>
-                                                <td><center>{{ $item->totalBayar - $item->items->barang->sum('hargaBeli') }}</td>
+                                                <td><center>{{ $item->items->sum('barang.hargaBeli') }}</td>
+                                                <td><center>{{ $item->totalBayar - $item->items->sum('barang.hargaBeli') }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

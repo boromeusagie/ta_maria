@@ -9,7 +9,12 @@ use Illuminate\Support\Facades\DB;
 
 class KasController extends Controller
 {
-    public function index(Request $request)
+    public function index()
+    {
+        return view('kas_index');
+    }
+
+    public function show(Request $request)
     {
         $request->validate(
             [
@@ -22,41 +27,51 @@ class KasController extends Controller
 
         $filter = $request->all();
 
+        
         $date = Carbon::today()->format('Y-m-d');
         $tanggalKasMasukStart = $filter['tanggalKasMasukStart'] ?? $date;
         $tanggalKasMasukEnd = $filter['tanggalKasMasukEnd'] ?? $date;
         $tanggalKasKeluarStart = $filter['tanggalKasKeluarStart'] ?? $date;
         $tanggalKasKeluarEnd = $filter['tanggalKasKeluarEnd'] ?? $date;
 
-        if (
-            isset($filter['tanggalKasMasukStart'])
-            ||  isset($filter['tanggalKasMasukEnd'])
-            &&  !isset($filter['tanggalKasKeluarStart'])
-            &&  !isset($filter['tanggalKasKeluarEnd'])
-        ) {
-            $kas = Kas::where('tag', 'masuk')
-                ->whereBetween('tanggal', [$tanggalKasMasukStart, $tanggalKasMasukEnd])
-                ->get();
-        } elseif (
-            isset($filter['tanggalKasKeluarStart'])
-            ||  isset($filter['tanggalKasKeluarEnd'])
-            &&  !isset($filter['tanggalKasMasukStart'])
-            &&  !isset($filter['tanggalKasMasukEnd'])
-        ) {
-            $kas = Kas::where('tag', 'keluar')
+        if ($tanggalKasMasukStart > $tanggalKasMasukEnd || $tanggalKasKeluarStart > $tanggalKasKeluarEnd) {
+            toastr()->error('Tanggal dari harus lebih kecil dari sampai');
+            return redirect()->route('kas.index');
+        }
+
+        $tagMasuk = '';
+        $tagKeluar = '';
+
+        if (isset($filter['tanggalKasMasukStart']) || isset($filter['tanggalKasMasukEnd'])) {
+            $tagMasuk = 'masuk';
+        }
+        if (isset($filter['tanggalKasKeluarStart']) || isset($filter['tanggalKasKeluarEnd'])) {
+            $tagKeluar = 'keluar';
+        }
+
+        
+        $kasMasuk = Kas::where('tag', $tagMasuk)
+            ->whereBetween('tanggal', [$tanggalKasMasukStart, $tanggalKasMasukEnd])
+            ->get();
+            
+        $kasKeluar = Kas::where('tag', $tagKeluar)
                 ->whereBetween('tanggal', [$tanggalKasKeluarStart, $tanggalKasKeluarEnd])
                 ->get();
-        } elseif (
-            isset($filter['tanggalKasKeluarStart'])
-            &&  isset($filter['tanggalKasKeluarEnd'])
-            &&  isset($filter['tanggalKasMasukStart'])
-            &&  isset($filter['tanggalKasMasukEnd'])
-        ) {
-            $kas = Kas::whereBetween('tanggal', [$tanggalKasKeluarStart, $tanggalKasKeluarEnd])
-                ->get();
-        } else {
+
+
+        $kas = new \Illuminate\Database\Eloquent\Collection;
+        $kas = $kas->merge($kasKeluar);
+        $kas = $kas->merge($kasMasuk);
+
+
+        if (!isset($filter['tanggalKasMasukStart'])
+            && !isset($filter['tanggalKasMasukEnd'])
+            && !isset($filter['tanggalKasKeluarStart'])
+            && !isset($filter['tanggalKasKeluarEnd'])) {
             $kas = Kas::all();
         }
+
+        \Log::debug(['kas' => $kasKeluar]);
 
         $totalDebit = $kas->sum('kasKeluar') ?? 0;
         $totalKredit = $kas->sum('kasMasuk') ?? 0;
@@ -71,7 +86,7 @@ class KasController extends Controller
             $presentase = ($totalKredit - $totalDebit) / $totalDebit * 100;
         }
 
-        return view('kas_index', [
+        return view('kas_show', [
             'kas' => $kas,
             'totalKredit' => $totalKredit,
             'totalDebit' => $totalDebit,

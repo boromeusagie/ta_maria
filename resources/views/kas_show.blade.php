@@ -13,11 +13,11 @@
                         <div class="form-group row">
                             <label for="tanggalKasMasukStart" class="col-sm-3 col-form-label">Penjualan Tanggal</label>
                             <div class="col-sm-4">
-                                <input class="form-control" type="date" name="tanggalKasMasukStart" id="tanggalKasMasukStart">
+                                <input class="form-control" type="date" name="tanggalKasMasukStart" id="tanggalKasMasukStart" value="{{ $tanggalKasMasukStart }}">
                             </div>
                             <label for="tanggalKasMasukEnd" class="col-sm-1 col-form-label">-</label>
                             <div class="col-sm-4">
-                                <input class="form-control" type="date" name="tanggalKasMasukEnd" id="tanggalKasMasukEnd">
+                                <input class="form-control" type="date" name="tanggalKasMasukEnd" id="tanggalKasMasukEnd" value="{{ $tanggalKasMasukEnd }}">
                             </div>
                         </div>
                         <div class="dropdown-divider"></div>
@@ -25,11 +25,11 @@
                         <div class="form-group row">
                             <label for="tanggalKasKeluarStart" class="col-sm-3 col-form-label">Pembelian Tanggal</label>
                             <div class="col-sm-4">
-                                <input class="form-control" type="date" name="tanggalKasKeluarStart" id="tanggalKasKeluarStart">
+                                <input class="form-control" type="date" name="tanggalKasKeluarStart" id="tanggalKasKeluarStart" value="{{ $tanggalKasKeluarStart }}">
                             </div>
                             <label for="tanggalKasKeluarEnd" class="col-sm-1 col-form-label">-</label>
                             <div class="col-sm-4">
-                                <input class="form-control" type="date" name="tanggalKasKeluarEnd" id="tanggalKasKeluarEnd">
+                                <input class="form-control" type="date" name="tanggalKasKeluarEnd" id="tanggalKasKeluarEnd" value="{{ $tanggalKasKeluarEnd }}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -109,24 +109,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($kas as $index => $item)
                     <tr>
-                        <td><center></td>
-                        <td></td>
-                        <td><center></td>
-                        <td><center></td>
+                        <td><center>{{ $index + 1 }}</td>
+                        <td>{{ $item->detailTransaksi }}</td>
+                        <td><center>{{ isset($item->kasKeluar) ? 'Rp '.number_format($item->kasKeluar, 2) : '' }}</td>
+                        <td><center>{{ isset($item->kasMasuk) ? 'Rp '.number_format($item->kasMasuk, 2) : '' }}</td>
                     </tr>
+                    @endforeach
                     <tr>
                         <th colspan="2"><div class="text-center"><strong>TOTAL SALDO</strong></div></th>
-                        <th><center></th>
-                        <th><center></th>
+                        <th><center>{{ 'Rp '.number_format($totalDebit, 2) }}</th>
+                        <th><center>{{ 'Rp '.number_format($totalKredit, 2) }}</th>
                     </tr>
                     <tr>
                         <th colspan="2"><div class="text-center"><strong>PERSENTASE KEUNTUNGAN</strong></div></th>
-                        <th colspan="2"><center></th>
+                        <th colspan="2"><center>{{ number_format($presentase, 2) }}%</th>
                     </tr>
                     <tr>
                         <th colspan="2"><div class="text-center"><strong>TOTAL LABA RUGI</strong></div></th>
-                        <th colspan="2"><center></th>
+                        <th colspan="2"><center>{{ 'Rp '.number_format($totalKredit - $totalDebit, 2) }}</th>
                     </tr>
                 </tbody>
             </table>

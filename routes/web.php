@@ -119,6 +119,7 @@ Route::group(
             ['prefix' => 'kas'], function() {
                 Route::get('', 'KasController@index')->name('kas.index');
                 Route::post('', 'KasController@store')->name('kas.store');
+                Route::get('show', 'KasController@show')->name('kas.show');
                 // Route::get('cetak', 'LaporanCOntroller@cetakPdf')->name('laporan.cetak');
             }
 
