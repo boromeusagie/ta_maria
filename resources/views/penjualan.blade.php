@@ -58,9 +58,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-sm-10"></div>
-                            <button class="btn btn-primary col-sm-2" type="submit">ADD ORDER</button>
+                        <div class="row">
+                            <div class="col-sm-12" align="right">
+                                <button class="btn btn-primary" type="submit">ADD ORDER</button>
+                            </div>
                         </div>
                     </form>
                 </div>

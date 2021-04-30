@@ -55,10 +55,11 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-10"></div>
-                            <button class="btn btn-primary col-sm-2" type="submit">CASHIER</button>
+                        <div class="row">
+                            <div class="col-sm-12" align="right">
+                                <button class="btn btn-primary" type="submit">CASHIER</button>
                             </div>
+                        </div>
                     </form>
                     <table class="table table-bordered">
                         <thead>

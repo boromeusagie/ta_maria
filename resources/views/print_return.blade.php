@@ -1001,56 +1001,83 @@
         }
     </style>
 </head>
-<body>
-    <div id="app">
-        <main class="py-4">
-            <div class="card">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
-                        <h3 class="text-center"><center>RETURN PEMBELIAN</h3>
-                        <div class="row mt-5">
-                            <p><strong>Tanggal:</strong> {{ date('d-m-Y', strtotime(now())) }}</p>
-                            <p><strong>No Faktur:</strong> {{ $pembelian->noFaktur }}</p>
-                            <p><strong>No Return:</strong> {{ $return->noReturn }}</p>
-                            <p><strong>Supplier:</strong> {{ $pembelian->supplier->namaSupplier }}</p>
-                            <p><strong>Alamat:</strong> {{ $pembelian->supplier->almtSupplier }}</p>
-                            <p><strong>No Telp:</strong> {{ $pembelian->supplier->tlpSupplier }}</p>
-                        </div>
-            
-                            <div class="card-body">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th><center>No</center></th>
-                                            <th><center>Nama Barang</center></th>
-                                            <th><center>Quantity</center></th>
-                                            <th><center>Total Harga</center></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($return->items as $index => $item)
-                                            <tr>
-                                                <td><center>{{ $index + 1 }}</td>
-                                                <td><center>{{ $item->barang->namaBarang }}</td>
-                                                <td><center>{{ $item->qty.' '.$item->barang->satuan }}</td>
-                                                <td><center>Rp {{ $item->totalHarga }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
+    <body>
+        <div id="app">
+            <main class="py-4">
+                <div class="card">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <table>
+                                    <tr>
+                                        <td><font size="9px"><strong>TOKO ANDATU 5758 - Jl. Sadang no. 103, Margahayu, Bandung</strong></font></td>
+                                    </tr>
+                                    <tr>
+                                        <td><font size="9px"><strong>081321130987 - <font size="9px" color="blue">andatutrading5758@gmail.com</font></strong></font></td>
+                                    </tr>
                                 </table>
+                                <h2><center><strong>RETURN PEMBELIAN</strong></h2>
+                                <table>
+                                    <tr>
+                                        <td><font size="14px"><strong>Tanggal</strong></font></td>
+                                        <td><font size="14px"><strong> : <strong></font></td>
+                                        <td><font size="14px">{{ date('d/m/Y', strtotime(now())) }}</font></td>
+                                    </tr>
+                                    <tr>
+                                        <td><font size="14px"><strong>No. Faktur</strong></font></td>
+                                        <td><font size="14px"><strong> : </strong></font></td>
+                                        <td><font size="14px">{{ $pembelian->noFaktur }}</font></td>
+                                    </tr>
+                                    <tr>
+                                        <td><font size="14px"><strong>No. Return</strong></td>
+                                        <td><font size="14px"><strong> : </td>
+                                        <td><font size="14px">{{ $return->noReturn }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><font size="14px"><strong>Supplier</strong></td>
+                                        <td><font size="14px"><strong> : </strong></td>
+                                        <td><font size="14px">{{ $pembelian->supplier->namaSupplier }}</td>
+                                    </tr>
+                                </table>   
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th><center><font size="14px">No</center></th>
+                                                <th><center><font size="14px">Nama Barang</center></th>
+                                                <th><center><font size="14px">Quantity</center></th>
+                                                <th><center><font size="14px">Total Harga</center></th>
+                                                </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($return->items as $index => $item)
+                                                <tr>
+                                                    <td><center><font size="14px">{{ $index + 1 }}</td>
+                                                    <td><center><font size="14px">{{ $item->barang->namaBarang }}</td>
+                                                    <td><center><font size="14px">{{ $item->qty.' '.$item->barang->satuan }}</td>
+                                                    <td><center><font size="14px">Rp {{ $item->totalHarga }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <table align="right">
+                                        <tr>
+                                            <th><div class="text-center"><font size="12px"><strong>TOTAL</strong></font></div></th>
+                                            <td><font size="12px"> : </font></td>
+                                            <td><font size="12px">Rp {{ number_format($return->totalReturn, 2) }}</font></td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
-    </div>
+            </main>
+        </div>
 
-    <script src="/js/jquery.min.js"></script>
-    @toastr_js
-    @toastr_render
-    @yield('script')
-</body>
+        <script src="/js/jquery.min.js"></script>
+        @toastr_js
+        @toastr_render
+        @yield('script')
+    </body>
 </html>

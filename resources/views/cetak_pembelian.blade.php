@@ -793,7 +793,7 @@
         .table > thead > tr > td,
         .table > tbody > tr > td,
         .table > tfoot > tr > td {
-        padding: 8px;
+        padding: 5px;
         line-height: 1.42857143;
         vertical-align: top;
         border-top: 1px solid #ddd;
@@ -1005,10 +1005,27 @@
     <div id="app">
         <main class="py-4">
             <div class="container">
-                <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
-                <h3 class="text-center"><center>LAPORAN PEMBELIAN</h3>
-                <p>Tanggal Print: {{ date('d-m-Y', strtotime(now())) }}</p>
-                <p>Periode: {{ $dari }} - {{ $sampai }}</p>
+                <table>
+                    <tr>
+                        <td><font size="14px"><strong>TOKO ANDATU 5758 - Jl. Sadang no. 103, Margahayu, Bandung</strong></font></td>
+                    </tr>
+                    <tr>
+                        <td><font size="12px"><strong>081321130987 - <font size="9px" color="blue">andatutrading5758@gmail.com</font></strong></font></td>
+                    </tr>
+                </table>
+                <h2><center><strong>LAPORAN PEMBELIAN</strong></h2>
+                <table>
+                    <tr>
+                        <td><strong>Tanggal Print</strong></td>
+                        <td><strong> : </strong></td>
+                        <td><font size="14px">{{ date('d/m/Y', strtotime(now())) }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Periode</strong></td>
+                        <td><strong> : </strong></td>
+                        <td><font size="14px">{{ date('d/m/Y', strtotime($dari)) }} - {{ date('d/m/Y', strtotime($sampai)) }}</td>
+                    </tr>
+                </table>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
@@ -1017,28 +1034,32 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th><center>No</center></th>
-                                            <th><center>Tanggal</center></th>
-                                            <th><center>No. Faktur</center></th>
-                                            <th><center>Supplier</center></th>
-                                            <th><center>Total Pembelian</center></th>
+                                            <th><center><font size="14px">No</center></th>
+                                            <th><center><font size="14px">Tanggal</center></th>
+                                            <th><center><font size="14px">No. Faktur</center></th>
+                                            <th><center><font size="14px">Supplier</center></th>
+                                            <th><center><font size="14px">Total Pembelian</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($query as $index => $item)
                                             <tr>
-                                                <td><center>{{ $index + 1 }}</td>
-                                                <td><center>{{ $item->tanggal }}</td>
-                                                <td><center>{{ $item->noFaktur }}</td>
-                                                <td><center>{{ $item->supplier->namaSupplier }}</td>
-                                                <td><center>{{ $item->totalBayar }}</td>
+                                                <td><center><font size="13px">{{ $index + 1 }}</td>
+                                                <td><center><font size="13px">{{ $item->tanggal }}</td>
+                                                <td><center><font size="13px">{{ $item->noFaktur }}</td>
+                                                <td><center><font size="13px">{{ $item->supplier->namaSupplier }}</td>
+                                                <td><center><font size="13px">{{ $item->totalBayar }}</td>
                                             </tr>
                                         @endforeach
                                         <tr>
-                                            <th colspan="4"><div class="text-center"><strong>TOTAL</strong></div></th>
-                                            <td><center>{{ $query->sum('totalBayar') }}</td>
+                                            
                                         </tr>
                                     </tbody>
+                                </table>
+                                <table align="right">
+                                    <th><font size="11px"><strong>TOTAL PEMBELIAN</strong></th>
+                                    <td><font size="11px"> <strong> : </strong></td>
+                                    <td><center><font size="11px" color="red"><strong>{{ $query->sum('totalBayar') }}</strong></td>
                                 </table>
                             </div>
                         </div>

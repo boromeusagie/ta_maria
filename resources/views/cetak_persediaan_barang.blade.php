@@ -793,7 +793,7 @@
         .table > thead > tr > td,
         .table > tbody > tr > td,
         .table > tfoot > tr > td {
-        padding: 8px;
+        padding: 5px;
         line-height: 1.42857143;
         vertical-align: top;
         border-top: 1px solid #ddd;
@@ -1005,9 +1005,16 @@
     <div id="app">
         <main class="py-4">
             <div class="container">
-                <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
-                <h3 class="text-center"><center>LAPORAN PERSEDIAAN BARANG</h3>
-                <p>Tanggal Print: {{ date('d-m-Y', strtotime(now())) }}</p>
+                <table>
+                    <tr>
+                        <td><font size="14px"><strong>TOKO ANDATU 5758 - Jl. Sadang no. 103, Margahayu, Bandung</strong></font></td>
+                    </tr>
+                    <tr>
+                        <td><font size="12px"><strong>081321130987 - <font size="9px" color="blue">andatutrading5758@gmail.com</font></strong></font></td>
+                    </tr>
+                </table>
+                <h2><center><strong>LAPORAN PERSEDIAAN BARANG</strong></h2>
+                <p><strong>Tanggal Print : </strong> {{ date('d-m-Y', strtotime(now())) }}</p>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
@@ -1016,23 +1023,23 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th><center>No</center></th>
-                                            <th><center>Kode Barang</center></th>
-                                            <th><center>Nama Barang</center></th>
-                                            <th><center>Qty</center></th>
-                                            <th><center>Harga Beli</center></th>
-                                            <th><center>Harga Jual</center></th>
+                                            <th><center><font size="13px">No</center></th>
+                                            <th><center><font size="13px">Kode Barang</center></th>
+                                            <th><center><font size="13px">Nama Barang</center></th>
+                                            <th><center><font size="13px">Qty</center></th>
+                                            <th><center><font size="13px">Harga Beli</center></th>
+                                            <th><center><font size="13px">Harga Jual</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($query as $index => $item)
                                             <tr>
-                                                <td><center>{{ $index + 1 }}</td>
-                                                <td><center>{{ $item->kodeBarang }}</td>
-                                                <td><center>{{ $item->namaBarang }}</td>
-                                                <td><center>{{ $item->qty }} {{ $item->satuan }}</td>
-                                                <td><center>{{ $item->hargaBeli }}</td>
-                                                <td><center>{{ $item->hargaJual }}</td>
+                                                <td><center><font size="12px">{{ $index + 1 }}</td>
+                                                <td><center><font size="12px">{{ $item->kodeBarang }}</td>
+                                                <td><center><font size="12px">{{ $item->namaBarang }}</td>
+                                                <td><center><font size="12px">{{ $item->qty }} {{ $item->satuan }}</td>
+                                                <td><center><font size="12px">{{ $item->hargaBeli }}</td>
+                                                <td><center><font size="12px">{{ $item->hargaJual }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
