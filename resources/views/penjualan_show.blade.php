@@ -58,11 +58,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-sm-10"></div>
-                            @if (!isset($penjualan->totalPembayaran))
-                                <button class="btn btn-primary col-sm-2" type="submit">ADD ORDER</button>
-                            @endif
+                        <div class="row">
+                            <div class="col-sm-12" align="right">
+                                @if (!isset($penjualan->totalPembayaran))
+                                    <button class="btn btn-primary col-sm-2" type="submit">ADD ORDER</button>
+                                @endif
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -95,13 +96,15 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-10"></div>
-                            @if (!isset($penjualan->totalPembayaran))
-                                <button class="btn btn-primary col-sm-2" type="submit">CASHIER</button>
-                            @endif
+                        <div class="row">
+                            <div class="col-sm-12" align="right">
+                                @if (!isset($penjualan->totalPembayaran))
+                                    <button class="btn btn-primary" type="submit">CASHIER</button>
+                                @endif
                             </div>
+                        </div>
                     </form>
+                    <br>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -153,12 +156,12 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="row">
-                        <div class="col-sm-10"></div>
-                        <div class="col-sm-2">
-                            @if (isset($penjualan->totalPembayaran))
-                                <a href="{{ route('penjualan.printstruk', $penjualan->id) }}" class="btn btn-primary">PRINT</a>
-                            @endif
+                        <div class="row">
+                            <div class="col-sm-12" align="right">
+                                @if (isset($penjualan->totalPembayaran))
+                                    <a href="{{ route('penjualan.printstruk', $penjualan->id) }}" class="btn btn-primary">PRINT</a>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>

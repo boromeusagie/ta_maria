@@ -72,11 +72,7 @@
                                 <input class="form-control" type="text" name="satuan" id="satuan" value="" disabled>
                             </div>
                         </div>
-
-                        <div class="form-group row">
-                            <div class="col-sm-10"></div>
-                            <button class="btn btn-primary col-sm-2" type="submit">ADD ORDER</button>
-                        </div>
+                        <button class="btn btn-primary" type="submit">ADD ORDER</button>
                     </form>
                 </div>
             </div>
@@ -90,7 +86,6 @@
                                 <th><center>No</th>
                                 <th><center>Nama Barang</th>
                                 <th><center>Quantity</th>
-                                <th><center>Total Harga</th>
                             </tr>
                         </thead>
                     </table>

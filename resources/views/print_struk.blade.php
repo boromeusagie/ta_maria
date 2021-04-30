@@ -1004,56 +1004,72 @@
 <body>
     <div id="app">
         <main class="py-4">
-            <div class="card">
             <div class="container">
                 <div class="row justify-content-center">
+                        <font size="20px"><strong><center>TOKO ANDATU 5758</strong></font>
+                        <font size="12px"><strong><center>Jl. Sadang no. 103, Margahayu, Bandung</strong></font>
+                        <font size="12px"><strong><center>081321130987 - <font color="blue">andatutrading5758@gmail.com</font></strong></font>
+                        <br>
                     <div class="col-md-8">
-                        <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
-                        <h6 class="text-center"><center>Jl. Sadang no. 103, Margahayu, Bandung</h6>
-                        <h6 class="text-center"><center>081321130987 - andatutrading5758@gmail.com</h6>
-                        <div class="row mt-5">
-                            <p><strong>No Penjualan:</strong> {{ $penjualan->noPenjualan }}</p>
-                            <p><strong>Tanggal:</strong> {{ date('d-m-Y', strtotime(now())) }}</p>
+                        <div class="card">
+                            <table>
+                                    <tr>
+                                        <td><font size="14px"><strong>No. Penjualan</strong></td>
+                                        <td><font size="14px"><strong> : </strong></td>
+                                        <td><font size="14px">{{ $penjualan->noPenjualan }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><font size="14px"><strong>Tanggal</strong></td>
+                                        <td><font size="14px"><strong> : </strong></td>
+                                        <td><font size="14px">{{ date('d/m/Y', strtotime(now())) }}</td>
+                                    </tr>
+                            </table>
                         </div>
-            
+                        <br>
                             <div class="card-body">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th><center>No</th>
-                                            <th><center>Nama Barang</th>
-                                            <th><center>Quantity</th>
-                                            <th><center>Harga</th>
-                                            <th><center>Total Harga</th>
+                                            <th><center><font size="14px">No</th>
+                                            <th><center><font size="14px">Nama Barang</th>
+                                            <th><center><font size="14px">Quantity</th>
+                                            <th><center><font size="14px">Harga</th>
+                                            <th><center><font size="14px">Total Harga</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($penjualan->items as $index => $item)
                                             <tr>
-                                                <td><center>{{ $index + 1 }}</td>
-                                                <td>{{ $item->barang->namaBarang }}</td>
-                                                <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
-                                                <td><center>{{ $item->barang->hargaJual }}</td>
-                                                <td>Rp {{ number_format($item->totalHarga, 2) }}</td>
+                                                <td><center><font size="14px">{{ $index + 1 }}</td>
+                                                <td><font size="14px">{{ $item->barang->namaBarang }}</td>
+                                                <td><center><font size="14px">{{ $item->qty }} {{ $item->barang->satuan }}</td>
+                                                <td><center><font size="14px">{{ $item->barang->hargaJual }}</td>
+                                                <td><font size="14px">Rp {{ number_format($item->totalHarga, 2) }}</td>
                                             </tr>
                                         @endforeach
-                                        <tr>
-                                            <th colspan="4"><div class="text-center"><strong>TOTAL</strong></div></th>
-                                            <td>Rp {{ number_format($penjualan->totalBayar, 2) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="4"><div class="text-center"><strong>DISCOUNT</strong></div></th>
-                                            <td>{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->disc, 2) : '' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="4"><div class="text-center"><strong>TOTAL PEMBAYARAN</strong></div></th>
-                                            <td>{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->totalPembayaran, 2) : '' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="4"><div class="text-center"><strong>KEMBALIAN</strong></div></th>
-                                            <td>{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->kembalian, 2) : '' }}</td>
-                                        </tr>
                                     </tbody>
+                                </table>
+                                <table align="right">
+                                    <tr>
+                                        <th><div class="text-center"><font size="12px"><strong>TOTAL</strong></font></div></th>
+                                        <td><font size="12px"> : </font></td>
+                                        <td><font size="12px">Rp {{ number_format($penjualan->totalBayar, 2) }}</font></td>
+                                    </tr>
+                                    <tr>
+                                        <th><div class="text-center"><font size="12px"><strong>DISCOUNT</strong></font></div></th>
+                                        <td><font size="12px"> : </font></td>
+                                        <td><font size="12px">{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->disc, 2) : '' }}</font></td>
+                                    </tr>
+                                    <tr>
+                                        <th><div class="text-center"><font size="12px"><strong>TOTAL PEMBAYARAN</strong></font></div></th>
+                                        <td><font size="12px"> : </font></td>
+                                        <td><font size="12px">{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->totalPembayaran, 2) : '' }}</font></td>
+                                    </tr>
+                                    <tr>
+                                        <th><div class="text-center"><font size="12px"><strong>KEMBALIAN</strong></font></div></th>
+                                        <td><font size="12px"> : </font></td>
+                                        <td><font size="12px">{{ isset($penjualan->totalPembayaran) ? 'Rp '.number_format($penjualan->kembalian, 2) : '' }}</font></td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>

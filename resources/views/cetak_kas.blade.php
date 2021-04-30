@@ -793,7 +793,7 @@
         .table > thead > tr > td,
         .table > tbody > tr > td,
         .table > tfoot > tr > td {
-        padding: 8px;
+        padding: 5px;
         line-height: 1.42857143;
         vertical-align: top;
         border-top: 1px solid #ddd;
@@ -1005,10 +1005,27 @@
     <div id="app">
         <main class="py-4">
             <div class="container">
-                <h1 class="text-center"><center>TOKO ANDATU 5758</h1>
-                <h3 class="text-center"><center>LAPORAN KAS</h3>
-                <p>Tanggal Print: {{ date('d-m-Y', strtotime(now())) }}</p>
-                <p>Periode: {{ $dari }} - {{ $sampai }}</p>
+                <table>
+                    <tr>
+                        <td><font size="14px"><strong>TOKO ANDATU 5758 - Jl. Sadang no. 103, Margahayu, Bandung</strong></font></td>
+                    </tr>
+                    <tr>
+                        <td><font size="12px"><strong>081321130987 - <font size="9px" color="blue">andatutrading5758@gmail.com</font></strong></font></td>
+                    </tr>
+                </table>
+                <h2><center><strong>LAPORAN KAS</strong></h2>
+                <table>
+                    <tr>
+                        <td><strong>Tanggal Print</strong></td>
+                        <td><strong> : </strong></td>
+                        <td><font size="14px">{{ date('d/m/Y', strtotime(now())) }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Periode</strong></td>
+                        <td><strong> : </strong></td>
+                        <td><font size="14px">{{ date('d/m/Y', strtotime($dari)) }} - {{ date('d/m/Y', strtotime($sampai)) }}</td>
+                    </tr>
+                </table>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
@@ -1017,33 +1034,33 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th><center>No</th>
-                                            <th><center>Detail Transaksi</th>
-                                            <th><center>Debit</th>
-                                            <th><center>Kredit</th>
+                                            <th><center><font size="14px">No</th>
+                                            <th><center><font size="14px">Detail Transaksi</th>
+                                            <th><center><font size="14px">Debit</th>
+                                            <th><center><font size="14px">Kredit</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($query as $index => $item)
                                         <tr>
-                                            <td><center>{{ $index + 1 }}</td>
-                                            <td>{{ $item->detailTransaksi }}</td>
-                                            <td><center>{{ isset($item->kasKeluar) ? 'Rp '.number_format($item->kasKeluar, 2) : '' }}</td>
-                                            <td><center>{{ isset($item->kasMasuk) ? 'Rp '.number_format($item->kasMasuk, 2) : '' }}</td>
+                                            <td><center><font size="13px">{{ $index + 1 }}</td>
+                                            <td><font size="13px">{{ $item->detailTransaksi }}</td>
+                                            <td><center><font size="13px">{{ isset($item->kasKeluar) ? 'Rp '.number_format($item->kasKeluar, 2) : '' }}</td>
+                                            <td><center><font size="13px">{{ isset($item->kasMasuk) ? 'Rp '.number_format($item->kasMasuk, 2) : '' }}</td>
                                         </tr>
                                         @endforeach
                                         <tr>
-                                            <th colspan="2"><div class="text-center"><strong>TOTAL SALDO</strong></div></th>
-                                            <th><center>{{ 'Rp '.number_format($totalDebit, 2) }}</th>
-                                            <th><center>{{ 'Rp '.number_format($totalKredit, 2) }}</th>
+                                            <th colspan="2"><div class="text-center"><font size="14px"><strong>TOTAL SALDO</strong></div></th>
+                                            <th><center><font size="14px">{{ 'Rp '.number_format($totalDebit, 2) }}</th>
+                                            <th><center><font size="14px">{{ 'Rp '.number_format($totalKredit, 2) }}</th>
                                         </tr>
                                         <tr>
-                                            <th colspan="2"><div class="text-center"><strong>PERSENTASE KEUNTUNGAN</strong></div></th>
-                                            <th colspan="2"><center>{{ number_format($presentase, 2) }}%</th>
+                                            <th colspan="2"><div class="text-center"><font size="14px"><strong>PERSENTASE KEUNTUNGAN</strong></div></th>
+                                            <th colspan="2"><center><font size="14px">{{ number_format($presentase, 2) }}%</th>
                                         </tr>
                                         <tr>
-                                            <th colspan="2"><div class="text-center"><strong>TOTAL LABA RUGI</strong></div></th>
-                                            <th colspan="2"><center>{{ 'Rp '.number_format($totalKredit - $totalDebit, 2) }}</th>
+                                            <th colspan="2"><div class="text-center"><font size="14px"><strong>TOTAL LABA RUGI</strong></div></th>
+                                            <th colspan="2"><center><font size="14px">{{ 'Rp '.number_format($totalKredit - $totalDebit, 2) }}</th>
                                         </tr>
                                     </tbody>
                                 </table>

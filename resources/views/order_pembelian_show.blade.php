@@ -67,10 +67,10 @@
                                 <input class="form-control" type="text" name="satuan" id="satuan" value="" disabled>
                             </div>
                         </div>
-
-                        <div class="form-group row">
-                            <div class="col-sm-10"></div>
-                            <button class="btn btn-primary col-sm-2" type="submit">ADD ORDER</button>
+                        <div class="row">
+                            <div class="col-sm-12" align="right">
+                                <button class="btn btn-primary"type="submit">ADD ORDER</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -85,7 +85,6 @@
                                 <th><center>No</th>
                                 <th><center>Nama Barang</th>
                                 <th><center>Quantity</th>
-                                <th><center>Total Harga</th>
                                 <th><center>Action</th>
                             </tr>
                         </thead>
@@ -95,7 +94,6 @@
                                     <td><center>{{ $index + 1 }}</td>
                                     <td>{{ $item->barang->namaBarang }}</td>
                                     <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
-                                    <td>Rp {{ number_format($item->totalHarga, 2) }}</td>
                                     <td><center>
                                         <form action="{{ route('pembelian.itemdestroy', ['id' => $pembelian->id, 'kasId' => $kas->id, 'itemId' => $item->id]) }}" method="POST">
                                             @method('DELETE')
@@ -105,16 +103,11 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            <tr>
-                                <th colspan="3"><div class="text-center"><strong>TOTAL</strong></div></th>
-                                <td>Rp {{ number_format($pembelian->totalBayar, 2) }}</td>
-                            </tr>
                         </tbody>
                     </table>
                     <div class="row">
-                        <div class="col-sm-8"></div>
-                        <div class="col-sm-4">
-                            <a href="{{ route('pembelian.printfaktur', $pembelian->id) }}" class="btn btn-primary">SAVE & PRINT</a>
+                        <div class="col-sm-12" align="right">
+                            <a href="{{ route('pembelian.printfaktur', $pembelian->id) }}" class="btn btn-primary">PRINT</a>
                         </div>
                     </div>
                 </div>

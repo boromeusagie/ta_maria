@@ -33,8 +33,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            {{-- <div class="col-sm-10"></div> --}}
-                            <button class="btn btn-primary col-sm-2" type="submit">FILTER</button>
+                            <div class="col-sm-12" align="left">
+                                <button class="btn btn-primary" type="submit">FILTER</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -89,8 +90,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-sm-10"></div>
-                            <button class="btn btn-primary col-sm-2" type="submit">SAVE</button>
+                            <div class="col-sm-12" align="right">
+                                <button class="btn btn-primary col-sm-2" type="submit">SAVE</button>
+                            </div>
                         </div>
                     </form>
                 </div>
