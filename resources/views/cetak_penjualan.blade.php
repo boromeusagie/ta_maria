@@ -1055,7 +1055,15 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                            </div>
+                                <table align="right">
+                                    <tr>
+                                        <th><div class="text-center"><font size="12px"><strong>TOTAL</strong></font></div></th>
+                                        <td><font size="12px"> : </font></td>
+                                        <td><font size="12px">Rp {{ $item->sum('penjualan.totalBayar') }}</td>
+                                        <td><font size="12px">Rp</td>
+                                        <td><font size="12px">Rp </td>
+                                    </tr>
+                                </table>
                         </div>
                     </div>
                 </div>

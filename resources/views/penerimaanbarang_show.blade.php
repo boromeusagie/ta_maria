@@ -46,6 +46,7 @@
                                 <th><center>No</th>
                                 <th><center>Nama Barang</th>
                                 <th><center>Quantity</th>
+                                <th><center>Harga</th>
                                 <th><center>Total Harga</th>
                                 <th><center>Status</th>
                                 <th><center>Action</th>
@@ -57,6 +58,7 @@
                                     <td><center>{{ $index + 1 }}</td>
                                     <td>{{ $item->barang->namaBarang }}</td>
                                     <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
+                                    <td><center>Rp {{ number_format($item->barang->hargaBeli, 2) }}</td>
                                     <td><center>Rp {{ number_format($item->totalHarga, 2) }}</td>
                                     <td><center>
                                         @if ($item->status->status === 'Belum Diterima')

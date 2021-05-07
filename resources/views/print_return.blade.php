@@ -1046,6 +1046,7 @@
                                                 <th><center><font size="14px">No</center></th>
                                                 <th><center><font size="14px">Nama Barang</center></th>
                                                 <th><center><font size="14px">Quantity</center></th>
+                                                <th><center><font size="14px">Harga</center></th>
                                                 <th><center><font size="14px">Total Harga</center></th>
                                                 </tr>
                                         </thead>
@@ -1055,6 +1056,7 @@
                                                     <td><center><font size="14px">{{ $index + 1 }}</td>
                                                     <td><center><font size="14px">{{ $item->barang->namaBarang }}</td>
                                                     <td><center><font size="14px">{{ $item->qty.' '.$item->barang->satuan }}</td>
+                                                    <td><center><font size="14px">Rp {{ $item->barang->hargaBeli }}</td>
                                                     <td><center><font size="14px">Rp {{ $item->totalHarga }}</td>
                                                 </tr>
                                             @endforeach

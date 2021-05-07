@@ -47,6 +47,7 @@
                                 <th><center>No</th>
                                 <th><center>Nama Barang</th>
                                 <th><center>Quantity</th>
+                                <th><center>Harga</th>
                                 <th><center>Total Harga</th>
                             </tr>
                         </thead>
