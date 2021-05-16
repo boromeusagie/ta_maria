@@ -66,8 +66,8 @@
                                 <th><center>Nama Barang</center></th>
                                 <th><center>Quantity</center></th>
                                 <th><center>Satuan</center></th>
-                                <th><center>Harga Jual</center></th>
                                 <th><center>Harga Beli</center></th>
+                                <th><center>Harga Jual</center></th>
                                 <th colspan = "2"><center>Action</center></th>
                             </tr>
                         </thead>

@@ -24,6 +24,7 @@ class CreatePenjualanTable extends Migration
                 ->references('noKas')
                 ->on('kas')
                 ->onDelete('cascade');
+            $table->integer('totalHpp')->nullable();
             $table->integer('totalBayar')->nullable();
             $table->float('disc')->nullable();
             $table->integer('totalPembayaran')->nullable();

@@ -101,10 +101,12 @@ class PenjualanController extends Controller
         $newItem->noPenjualan = $newPenjualan->noPenjualan;
         $newItem->kodeBarang = $request->namaBarang;
         $newItem->qty = (int) $request->qty;
+        $newItem->totalHpp = (int) $barang->hargaBeli * (int) $request->qty;
         $newItem->totalHarga = (int) $barang->hargaJual * (int) $request->qty;
         $newItem->save();
 
-        $newPenjualan->totalBayar += $newPenjualan->items->sum('totalHarga');
+        $newPenjualan->totalHpp = $newPenjualan->items->sum('totalHpp');
+        $newPenjualan->totalBayar = $newPenjualan->items->sum('totalHarga');
         $newPenjualan->save();
         $barang->qty -= $request->qty;
         $barang->save();
@@ -141,8 +143,10 @@ class PenjualanController extends Controller
         $newItem->noPenjualan = $penjualan->noPenjualan;
         $newItem->kodeBarang = $request->namaBarang;
         $newItem->qty = (int) $request->qty;
-        $newItem->totalHarga += (int) $barang->hargaJual * (int) $request->qty;
+        $newItem->totalHpp = (int) $barang->hargaBeli * (int) $request->qty;
+        $newItem->totalHarga = (int) $barang->hargaJual * (int) $request->qty;
         $newItem->save();
+        $penjualan->totalHpp = $penjualan->items->sum('totalHpp');
         $penjualan->totalBayar = $penjualan->items->sum('totalHarga');
         $penjualan->save();
         $barang->qty -= $request->qty;

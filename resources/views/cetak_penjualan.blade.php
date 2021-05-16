@@ -1049,21 +1049,19 @@
                                                 <td><center>{{ $item->tanggal }}</td>
                                                 <td><center>{{ $item->noPenjualan }}</td>
                                                 <td><center>{{ $item->totalBayar }}</td>
-                                                <td><center>{{ $item->items->sum('barang.hargaBeli') }}</td>
-                                                <td><center>{{ $item->totalBayar - $item->items->sum('barang.hargaBeli') }}</td>
+                                                <td><center>{{ $item->items->sum('totalHpp') }}</td>
+                                                <td><center>{{ $item->totalBayar - $item->items->sum('totalHpp') }}</td>
                                             </tr>
                                         @endforeach
+                                        <tr>
+                                            <td colspan="3"><center><strong>TOTAL</strong></div></td>
+                                            <td><center>Rp {{ $query->sum('totalBayar') }}</td>
+                                            <td><center>Rp {{ $query->sum('totalHpp') }}</td>
+                                            <td><center>Rp {{ $query->sum('totalBayar') - $query->sum('totalHpp') }}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
-                                <table align="right">
-                                    <tr>
-                                        <th><div class="text-center"><font size="12px"><strong>TOTAL</strong></font></div></th>
-                                        <td><font size="12px"> : </font></td>
-                                        <td><font size="12px">Rp {{ $item->sum('penjualan.totalBayar') }}</td>
-                                        <td><font size="12px">Rp</td>
-                                        <td><font size="12px">Rp </td>
-                                    </tr>
-                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -29,6 +29,7 @@ class CreateItemPenjualanTable extends Migration
                 ->on('barang')
                 ->onDelete('cascade');
             $table->integer('qty')->nullable();
+            $table->integer('totalHpp')->nullable();
             $table->integer('totalHarga')->nullable();
         });
     }
