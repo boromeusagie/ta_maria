@@ -11,7 +11,7 @@
                             @csrf
                                 <div class="form-group">
                                     <label for="kodeBarang">Kode Barang</label>
-                                    <input class="form-control @error('kodeBarang') is-invalid @enderror" type="text" name="kodeBarang" id="kodeBarang" value="{{ $barang->kodeBarang }}">
+                                    <input class="form-control @error('kodeBarang') is-invalid @enderror" type="text" name="kodeBarang" id="kodeBarang" value="{{ $barang->kodeBarang }}" readonly>
                                     @error('kodeBarang')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
