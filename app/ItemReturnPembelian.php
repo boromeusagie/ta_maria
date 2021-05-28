@@ -24,4 +24,9 @@ class ItemReturnPembelian extends Model
     {
         return $this->belongsTo('App\Barang', 'kodeBarang', 'kodeBarang');
     }
+
+    public function itemPembelian()
+    {
+        return $this->belongsTo('App\ItemPembelian', 'noItemPembelian', 'noItemPembelian');
+    }
 }

@@ -35,4 +35,9 @@ class Pembelian extends Model
     {
         return $this->belongsTo('App\Kas', 'noKas', 'noKas');
     }
+
+    public function returns()
+    {
+        return $this->hasMany('App\ReturnPembelian', 'noFaktur', 'noFaktur');
+    }
 }

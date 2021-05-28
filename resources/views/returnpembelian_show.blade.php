@@ -67,12 +67,28 @@
                             </thead>
                             <tbody>
                                 @foreach ($pembelian->items as $index => $item)
-                                    <tr>
+                                    <tr style="font-size: 12px;">
                                         <td><center>{{ $index + 1 }}</td>
                                         <td>{{ $item->barang->namaBarang }}</td>
-                                        <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
-                                        <td><center>Rp {{ $item->barang->hargaBeli }}</td>
-                                        <td><center>Rp {{ $item->totalHarga }}</td>
+                                        <td><center>
+                                            {{ $item->qty }} {{ $item->barang->satuan }}
+                                        </td>
+                                        <td><center>Rp 
+                                            @if ($item->status->status === 'Belum Diterima')
+                                                <input type="text" name="{{ 'harga'.$item->noItemPembelian }}" value="{{ $item->barang->hargaBeli }}" style="width: 50px">
+                                            @elseif ($item->status->status === 'Sudah Diterima')
+                                                {{ $item->barang->hargaBeli }}
+                                            @else
+                                                {{ $item->return->harga }}
+                                            @endif
+                                        </td>
+                                        <td><center>Rp 
+                                            @if ($item->status->status === 'Return')
+                                                {{ $item->return->totalHarga }}
+                                            @else
+                                                {{ $item->totalHarga }}
+                                            @endif
+                                        </td>
                                         <td><center>
                                             @if ($item->status->status === 'Belum Diterima')
                                                 <p class="text-muted">
@@ -101,7 +117,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <center><button id="submit" type="submit" class="btn btn-primary">SAVE</button>
+                        <center><button id="submit" type="submit" class="btn btn-primary">SAVE RETURN</button>
                     </form>
                 </div>
             </div>

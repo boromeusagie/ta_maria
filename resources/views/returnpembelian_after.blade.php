@@ -67,8 +67,35 @@
                                         <td><center>{{ $index + 1 }}</td>
                                         <td>{{ $item->barang->namaBarang }}</td>
                                         <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
-                                        <td><center>Rp{{ $item->barang->hargaBeli }}</td>
-                                        <td><center>Rp {{ $item->totalHarga }}</td>
+                                            <td><center>Rp 
+                                                @if ($item->status->status === 'Return')
+                                                    {{ $item->return->harga }}
+                                                @else
+                                                    {{ $item->barang->hargaBeli }}
+                                                @endif
+                                            </td>
+                                            <td><center>Rp 
+                                                @if ($item->status->status === 'Return')
+                                                    {{ $item->return->totalHarga }}
+                                                @else
+                                                    {{ $item->totalHarga }}
+                                                @endif
+                                            </td>
+                                            <td><center>
+                                                @if ($item->status->status === 'Belum Diterima')
+                                                    <p class="text-muted">
+                                                        {{ $item->status->status }}
+                                                    </p>
+                                                @elseif ($item->status->status === 'Sudah Diterima')
+                                                    <p class="text-success">
+                                                        {{ $item->status->status }}
+                                                    </p>
+                                                @else
+                                                    <p class="text-danger">
+                                                        {{ $item->status->status }}
+                                                    </p>
+                                                @endif
+                                            </td>
                                         <td><center>
                                             @if ($item->status->status === 'Belum Diterima')
                                                 <p class="text-muted">

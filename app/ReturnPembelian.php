@@ -35,4 +35,9 @@ class ReturnPembelian extends Model
     {
         return $this->belongsTo('App\Supplier', 'kodeSupplier', 'kodeSupplier');
     }
+
+    public function pembelian()
+    {
+        return $this->belongsTo('App\Pembelian', 'noFaktur', 'noFaktur');
+    }
 }

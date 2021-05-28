@@ -24,4 +24,9 @@ class ItemPembelian extends Model
     {
         return $this->hasOne('App\StatusItem', 'noItemPembelian', 'noItemPembelian');
     }
+
+    public function return()
+    {
+        return $this->hasOne('App\ItemReturnPembelian', 'noItemPembelian', 'noItemPembelian');
+    }
 }

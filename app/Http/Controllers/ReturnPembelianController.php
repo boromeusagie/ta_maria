@@ -99,12 +99,15 @@ class ReturnPembelianController extends Controller
 
         foreach ($request->checks as $key => $value) {
             $itemPembelian = ItemPembelian::findOrFail($key);
+            $harga = 'harga'.$itemPembelian->noItemPembelian;
 
             $newItemReturn = new ItemReturnPembelian();
             $newItemReturn->noReturn = $newReturn->noReturn;
+            $newItemReturn->noItemPembelian = $itemPembelian->noItemPembelian;
             $newItemReturn->kodeBarang = $itemPembelian->kodeBarang;
             $newItemReturn->qty = $itemPembelian->qty;
-            $newItemReturn->totalHarga = $itemPembelian->totalHarga;
+            $newItemReturn->harga = $request->{$harga};
+            $newItemReturn->totalHarga = $request->{$harga} * $itemPembelian->qty;
             $newItemReturn->save();
 
             $newReturn->totalReturn += $newItemReturn->totalHarga;

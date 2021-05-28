@@ -77,8 +77,10 @@
                                     </td>
                                     <td><center>
                                         @if ($item->status->status === 'Belum Diterima')
-                                            <a href="{{ route('penerimaan-barang.terima', ['id' => $pembelian->id, 'idItem' => $item->id]) }}" class="btn btn-primary btn-sm">TERIMA</a></td>
+                                            <a href="{{ route('penerimaan-barang.terima', ['id' => $pembelian->id, 'idItem' => $item->id]) }}" class="btn btn-primary btn-sm">TERIMA</a><br>
+                                            <a href="{{ route('barang.edit', ['id' => $item->barang->id]) }}"><span style="font-size: 12px;">Edit Harga</span></a>
                                         @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

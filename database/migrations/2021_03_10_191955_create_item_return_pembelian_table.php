@@ -22,12 +22,18 @@ class CreateItemReturnPembelianTable extends Migration
                 ->references('noReturn')
                 ->on('return_pembelian')
                 ->onDelete('cascade');
+            $table->string('noItemPembelian')->nullable();
+            $table->foreign('noItemPembelian')
+                ->references('noItemPembelian')
+                ->on('item_pembelian')
+                ->onDelete('cascade');
             $table->string('kodeBarang', 6)->nullable();
             $table->foreign('kodeBarang')
                 ->references('kodeBarang')
                 ->on('barang')
                 ->onDelete('cascade');
             $table->integer('qty')->nullable();
+            $table->integer('harga')->nullable();
             $table->integer('totalHarga')->nullable();
         });
     }
