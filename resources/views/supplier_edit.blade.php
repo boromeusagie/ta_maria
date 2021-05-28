@@ -11,7 +11,7 @@
                             {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="kodeSupplier">Kode Supplier</label>
-                                    <input class="form-control @error('kodeSupplier') is-invalid @enderror" type="text" name="kodeSupplier" id="kodeSupplier" value="{{ $supplier->kodeSupplier }}">
+                                    <input class="form-control @error('kodeSupplier') is-invalid @enderror" type="text" name="kodeSupplier" id="kodeSupplier" value="{{ $supplier->kodeSupplier }}" readonly>
                                     @error('kodeSupplier')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
