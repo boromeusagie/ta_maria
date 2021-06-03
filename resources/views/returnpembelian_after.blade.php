@@ -66,7 +66,6 @@
                                     <tr>
                                         <td><center>{{ $index + 1 }}</td>
                                         <td>{{ $item->barang->namaBarang }}</td>
-                                        <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
                                         @if ($item->status === 'Belum Diterima')
                                             <td><center><input type="number" name="{{ 'qty'.$item->noItemPembelian }}" value="{{ $item->qty }}" min="1" max="{{ $item->qty }}" style="width: 60px"> {{ $item->barang->satuan }}</td>
                                             <td><center>Rp <input type="text" name="{{ 'harga'.$item->noItemPembelian }}" value="{{ $item->barang->hargaBeli }}" style="width: 50px"></td>
