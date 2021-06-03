@@ -70,49 +70,38 @@
                                     <tr style="font-size: 12px;">
                                         <td><center>{{ $index + 1 }}</td>
                                         <td>{{ $item->barang->namaBarang }}</td>
-                                        <td><center>
-                                            {{ $item->qty }} {{ $item->barang->satuan }}
-                                        </td>
-                                        <td><center>Rp 
-                                            @if ($item->status->status === 'Belum Diterima')
-                                                <input type="text" name="{{ 'harga'.$item->noItemPembelian }}" value="{{ $item->barang->hargaBeli }}" style="width: 50px">
-                                            @elseif ($item->status->status === 'Sudah Diterima')
-                                                {{ $item->barang->hargaBeli }}
-                                            @else
-                                                {{ $item->return->harga }}
-                                            @endif
-                                        </td>
-                                        <td><center>Rp 
-                                            @if ($item->status->status === 'Return')
-                                                {{ $item->return->totalHarga }}
-                                            @else
-                                                {{ $item->totalHarga }}
-                                            @endif
-                                        </td>
-                                        <td><center>
-                                            @if ($item->status->status === 'Belum Diterima')
-                                                <p class="text-muted">
-                                                    {{ $item->status->status }}
-                                                </p>
-                                            @elseif ($item->status->status === 'Sudah Diterima')
-                                                <p class="text-success">
-                                                    {{ $item->status->status }}
-                                                </p>
-                                            @else
-                                                <p class="text-danger">
-                                                    {{ $item->status->status }}
-                                                </p>
-                                            @endif
-                                        </td>
-                                        <td><center>
-                                            @if ($item->status->status === 'Belum Diterima')
-                                                {{-- <a href="{{ route('return-pembelian.return', ['id' => $pembelian->id, 'idItem' => $item->id, 'tanggal' => Carbon\Carbon::today()->format('Y-m-d')]) }}" class="btn btn-danger btn-sm">RETURN</a></td> --}}
+                                        @if ($item->status === 'Belum Diterima')
+                                            <td><center><input type="number" name="{{ 'qty'.$item->noItemPembelian }}" value="{{ $item->qty }}" min="1" max="{{ $item->qty }}" style="width: 60px"> {{ $item->barang->satuan }}</td>
+                                            <td><center>Rp <input type="text" name="{{ 'harga'.$item->noItemPembelian }}" value="{{ $item->barang->hargaBeli }}" style="width: 50px"></td>
+                                            <td><center>Rp {{ number_format($item->totalHarga, 2) }}</td>
+                                            <td><center>{{ $item->status }}</td>
+                                            <td><center>
                                                 <input class="@error('checks') is-invalid @enderror" type="checkbox" name="checks[{{ $item->id }}]" value="{{ $item->id }}">
                                                 @error('checks')
                                                     <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
-                                            @endif
-                                        </td>
+                                            </td>
+                                        @elseif ($item->status === 'Sudah Diterima')
+                                            <td><center>{{ $item->terima->qty }} {{ $item->barang->satuan }}</td>
+                                            <td><center>Rp {{ number_format($item->terima->harga, 2) }}</td>
+                                            <td><center>Rp {{ number_format($item->terima->totalHarga, 2) }}</td>
+                                            <td><center>
+                                                <div class="text-success">
+                                                    {{ $item->status }}
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                        @else
+                                            <td><center>{{ $item->return->qty }} {{ $item->barang->satuan }}</td>
+                                            <td><center>Rp {{ number_format($item->return->harga, 2) }}</td>
+                                            <td><center>Rp {{ number_format($item->return->totalHarga, 2) }}</td>
+                                            <td><center>
+                                                <div class="text-danger">
+                                                    {{ $item->status }}
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

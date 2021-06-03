@@ -54,33 +54,39 @@
                         </thead>
                         <tbody>
                             @foreach ($pembelian->items as $index => $item)
-                                <tr>
+                                <tr style="font-size: 12px;">
                                     <td><center>{{ $index + 1 }}</td>
                                     <td>{{ $item->barang->namaBarang }}</td>
-                                    <td><center>{{ $item->qty }} {{ $item->barang->satuan }}</td>
-                                    <td><center>Rp {{ number_format($item->barang->hargaBeli, 2) }}</td>
-                                    <td><center>Rp {{ number_format($item->totalHarga, 2) }}</td>
-                                    <td><center>
-                                        @if ($item->status->status === 'Belum Diterima')
-                                            <p class="text-muted">
-                                                {{ $item->status->status }}
-                                            </p>
-                                        @elseif ($item->status->status === 'Sudah Diterima')
-                                            <p class="text-success">
-                                                {{ $item->status->status }}
-                                            </p>
-                                        @else
-                                            <p class="text-danger">
-                                                {{ $item->status->status }}
-                                            </p>
-                                        @endif
-                                    </td>
-                                    <td><center>
-                                        @if ($item->status->status === 'Belum Diterima')
-                                            <a href="{{ route('penerimaan-barang.terima', ['id' => $pembelian->id, 'idItem' => $item->id]) }}" class="btn btn-primary btn-sm">TERIMA</a><br>
+                                    @if ($item->status === 'Belum Diterima')
+                                        <td><center><input type="number" id="{{ 'qty'.$item->noItemPembelian }}" name="{{ 'qty'.$item->noItemPembelian }}" value="{{ $item->qty }}" min="1" max="{{ $item->qty }}" style="width: 60px"> {{ $item->barang->satuan }}</td>
+                                        <td><center>Rp {{ number_format($item->barang->hargaBeli, 2) }}</td>
+                                        <td><center>Rp {{ number_format($item->totalHarga, 2) }}</td>
+                                        <td><center>{{ $item->status }}</td>
+                                        <td><center>
+                                            <button type="button" data-pembelian="{{ $pembelian->id }}" data-item="{{ $item->id }}" class="btn btn-primary btn-sm submitButton">TERIMA</button><br>
                                             <a href="{{ route('barang.edit', ['id' => $item->barang->id]) }}"><span style="font-size: 12px;">Edit Harga</span></a>
-                                        @endif
-                                    </td>
+                                        </td>
+                                    @elseif ($item->status === 'Sudah Diterima')
+                                        <td><center>{{ $item->terima->qty }} {{ $item->barang->satuan }}</td>
+                                        <td><center>Rp {{ number_format($item->terima->harga, 2) }}</td>
+                                        <td><center>Rp {{ number_format($item->terima->totalHarga, 2) }}</td>
+                                        <td><center>
+                                            <div class="text-success">
+                                                {{ $item->status }}
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    @else
+                                        <td><center>{{ $item->return->qty }} {{ $item->barang->satuan }}</td>
+                                        <td><center>Rp {{ number_format($item->return->harga, 2) }}</td>
+                                        <td><center>Rp {{ number_format($item->return->totalHarga, 2) }}</td>
+                                        <td><center>
+                                            <div class="text-danger">
+                                                {{ $item->status }}
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
@@ -108,7 +114,33 @@
                 document.show.action = get_action();
                 $('form').submit();
 
-            })
+            });
+
+            $('.submitButton').click(function (e) {
+                e.preventDefault();
+                var pembelian = $(this).data('pembelian');
+                var item = $(this).data('item');
+                var qty = '#qty' + item;
+                var qtyValue = $(qty).val();
+                var csrf = $("meta[name = 'csrf-token']").attr('content');
+                console.log(qtyValue);
+
+                let url = "{{ route('penerimaan-barang.terima', ['id' => ':id', 'idItem' => ':idItem']) }}";
+                url = url.replace(':id', pembelian);
+                url = url.replace(':idItem', item);
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: { _token: csrf,
+                        qty: qtyValue
+                    }
+                })
+                .done(function () {
+                    window.location.reload();
+                })
+
+            });
         });
     </script>
 @endsection

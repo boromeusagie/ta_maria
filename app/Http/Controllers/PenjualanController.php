@@ -8,6 +8,7 @@ use App\Penjualan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\toastr;
 use App\Kas;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PenjualanController extends Controller
@@ -19,9 +20,11 @@ class PenjualanController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         $penjualan = Penjualan::all();
 
         return view('penjualan_index', [
+            'user' => $user,
             'penjualan' => $penjualan
         ]);
     }

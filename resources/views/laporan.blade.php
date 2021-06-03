@@ -11,14 +11,32 @@
                         <div class="form-group row">
                             <label for="namaLaporan" class="col-sm-3 col-form-label">Nama Laporan</label>
                             <div class="col-sm-9">
-                                <select class="custom-select @error('namaLaporan') is-invalid @enderror" name="namaLaporan" id="namaLaporan">
-                                    <option selected disabled>Pilih laporan.....</option>
-                                    <option value="barang">Laporan Persediaan Barang</option>
-                                    <option value="pembelian">Laporan Pembelian</option>
-                                    <option value="return-pembelian">Laporan Return Pembelian</option>
-                                    <option value="penjualan">Laporan Penjualan</option>
-                                    <option value="kas">Laporan Kas</option>
-                                </select>
+                                @if (Auth::user()->username === 'owner1')
+                                    <select class="custom-select @error('namaLaporan') is-invalid @enderror" name="namaLaporan" id="namaLaporan">
+                                        <option selected disabled>Pilih laporan.....</option>
+                                        <option value="barang">Laporan Persediaan Barang</option>
+                                        <option value="pembelian">Laporan Pembelian</option>
+                                        <option value="return-pembelian">Laporan Return Pembelian</option>
+                                        <option value="penjualan">Laporan Penjualan</option>
+                                        <option value="kas">Laporan Kas</option>
+                                    </select>
+                                @endif
+                                @if (Auth::user()->username === 'bagiangudang')
+                                    <select class="custom-select @error('namaLaporan') is-invalid @enderror" name="namaLaporan" id="namaLaporan">
+                                        <option selected disabled>Pilih laporan.....</option>
+                                        <option value="barang">Laporan Persediaan Barang</option>
+                                        <option value="pembelian">Laporan Pembelian</option>
+                                    </select>
+                                @endif
+                                @if (Auth::user()->username === 'bagiankeuangan1')
+                                    <select class="custom-select @error('namaLaporan') is-invalid @enderror" name="namaLaporan" id="namaLaporan">
+                                        <option selected disabled>Pilih laporan.....</option>
+                                        <option value="pembelian">Laporan Pembelian</option>
+                                        <option value="return-pembelian">Laporan Return Pembelian</option>
+                                        <option value="penjualan">Laporan Penjualan</option>
+                                        <option value="kas">Laporan Kas</option>
+                                    </select>
+                                @endif
                                 @error('namaLaporan')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror

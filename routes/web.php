@@ -88,7 +88,7 @@ Route::group(
             ['prefix' => 'penerimaan-barang'], function() {
                 Route::get('', 'PenerimaanBarangController@index')->name('penerimaan-barang.index');
                 Route::get('{id}', 'PenerimaanBarangController@show')->name('penerimaan-barang.show');
-                Route::get('{id}/{idItem}', 'PenerimaanBarangController@terimaBarang')->name('penerimaan-barang.terima');
+                Route::post('{id}/{idItem}', 'PenerimaanBarangController@terimaBarang')->name('penerimaan-barang.terima');
             }
 
         );

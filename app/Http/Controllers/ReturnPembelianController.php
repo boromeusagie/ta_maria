@@ -8,7 +8,6 @@ use App\ItemReturnPembelian;
 use App\Kas;
 use App\Pembelian;
 use App\ReturnPembelian;
-use App\StatusItem;
 use Illuminate\Http\Request;
 
 class ReturnPembelianController extends Controller
@@ -21,9 +20,7 @@ class ReturnPembelianController extends Controller
     public function index()
     {
         $pembelian = Pembelian::whereHas('items', function($q) {
-            $q->whereHas('status', function($s) {
-                $s->where('status', 'Belum Diterima');
-            });
+            $q->where('status', 'Belum Diterima');
         })->get();
 
         return view('returnpembelian_index', ['pembelian' => $pembelian]);
@@ -50,9 +47,7 @@ class ReturnPembelianController extends Controller
     {
         $pembelian = Pembelian::findOrFail($id);
         $pembelians = Pembelian::whereHas('items', function($q) {
-            $q->whereHas('status', function($s) {
-                $s->where('status', 'Belum Diterima');
-            });
+            $q->where('status', 'Belum Diterima');
         })->get();
 
         return view('returnpembelian_show', ['pembelian' => $pembelian, 'pembelians' => $pembelians]);
@@ -63,9 +58,7 @@ class ReturnPembelianController extends Controller
         $pembelian = Pembelian::findOrFail($id);
         $return = ReturnPembelian::findOrFail($returnId);
         $pembelians = Pembelian::whereHas('items', function($q) {
-            $q->whereHas('status', function($s) {
-                $s->where('status', 'Belum Diterima');
-            });
+            $q->where('status', 'Belum Diterima');
         })->get();
 
         return view('returnpembelian_after', ['pembelian' => $pembelian, 'return' => $return, 'pembelians' => $pembelians]);
@@ -99,23 +92,23 @@ class ReturnPembelianController extends Controller
 
         foreach ($request->checks as $key => $value) {
             $itemPembelian = ItemPembelian::findOrFail($key);
+            $qty = 'qty'.$itemPembelian->noItemPembelian;
             $harga = 'harga'.$itemPembelian->noItemPembelian;
 
             $newItemReturn = new ItemReturnPembelian();
             $newItemReturn->noReturn = $newReturn->noReturn;
             $newItemReturn->noItemPembelian = $itemPembelian->noItemPembelian;
             $newItemReturn->kodeBarang = $itemPembelian->kodeBarang;
-            $newItemReturn->qty = $itemPembelian->qty;
+            $newItemReturn->qty = $request->{$qty};
             $newItemReturn->harga = $request->{$harga};
-            $newItemReturn->totalHarga = $request->{$harga} * $itemPembelian->qty;
+            $newItemReturn->totalHarga = $request->{$harga} * $request->{$qty};
             $newItemReturn->save();
 
             $newReturn->totalReturn += $newItemReturn->totalHarga;
             $newReturn->save();
 
-            $status = StatusItem::where('noItemPembelian', $itemPembelian->noItemPembelian)->first();
-            $status->status = 'Return';
-            $status->save();
+            $itemPembelian->status = 'Return';
+            $itemPembelian->save();
 
             $pembelian->totalBayar -= $newItemReturn->totalHarga;
             $pembelian->save();

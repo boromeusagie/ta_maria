@@ -30,6 +30,7 @@ class CreateItemPembelianTable extends Migration
                 ->onDelete('cascade');
             $table->integer('qty')->nullable();
             $table->integer('totalHarga')->nullable();
+            $table->string('status')->nullable();
         });
     }
 

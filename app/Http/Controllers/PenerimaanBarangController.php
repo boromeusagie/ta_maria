@@ -6,8 +6,9 @@ use App\Barang;
 use App\ItemPembelian;
 use App\Kas;
 use App\Pembelian;
-use App\StatusItem;
+use App\PenerimaanBarang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PenerimaanBarangController extends Controller
 {
@@ -18,13 +19,12 @@ class PenerimaanBarangController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         $pembelian = Pembelian::whereHas('items', function($q) {
-            $q->whereHas('status', function($s) {
-                $s->where('status', 'Belum Diterima');
-            });
+            $q->where('status', 'Belum Diterima');
         })->get();
 
-        return view('penerimaanbarang_index', ['pembelian' => $pembelian]);
+        return view('penerimaanbarang_index', ['user' => $user, 'pembelian' => $pembelian]);
     }
 
     /**
@@ -46,31 +46,31 @@ class PenerimaanBarangController extends Controller
      */
     public function show($id)
     {
+        $user = Auth::user();
         $pembelian = Pembelian::findOrFail($id);
         $pembelians = Pembelian::whereHas('items', function($q) {
-            $q->whereHas('status', function($s) {
-                $s->where('status', 'Belum Diterima');
-            });
+            $q->where('status', 'Belum Diterima');
         })->get();
 
-        return view('penerimaanbarang_show', ['pembelian' => $pembelian, 'pembelians' => $pembelians]);
+        return view('penerimaanbarang_show', ['user' => $user, 'pembelian' => $pembelian, 'pembelians' => $pembelians]);
     }
 
-    public function terimaBarang($id, $idItem)
+    public function terimaBarang(Request $request, $id, $idItem)
     {
         $pembelian = Pembelian::findOrFail($id);
         $item = ItemPembelian::findOrFail($idItem);
-        $status = StatusItem::where('noItemPembelian', $item->noItemPembelian)->first();
         $barang = Barang::where('kodeBarang', $item->kodeBarang)->first();
         $kas = Kas::whereHas('pembelian', function ($q) use ($id) {
             $q->where('id', $id);
         })->first();
 
+        // $qty = 'qty'.$item->noItemPembelian;
+
         $beforePrice = $item->totalHarga;
         $afterPrice = $barang->hargaBeli * $item->qty;
 
-        $status->status = 'Sudah Diterima';
-        $status->save();
+        $item->status = 'Sudah Diterima';
+        $item->save();
 
         if ($beforePrice != $afterPrice) {
             $pembelian->totalBayar -= $item->totalHarga;
@@ -80,6 +80,14 @@ class PenerimaanBarangController extends Controller
             $pembelian->totalBayar += $item->totalHarga;
             $pembelian->save();
         }
+
+        $newPenerimaan = new PenerimaanBarang();
+        $newPenerimaan->noItemPembelian = $item->noItemPembelian;
+        $newPenerimaan->kodeBarang = $item->kodeBarang;
+        $newPenerimaan->qty = $request->qty;
+        $newPenerimaan->harga = $barang->hargaBeli;
+        $newPenerimaan->totalHarga = $request->qty * $barang->hargaBeli;
+        $newPenerimaan->save();
 
 
         $barang->qty += $item->qty;

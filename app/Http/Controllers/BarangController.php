@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Barang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
@@ -17,8 +18,10 @@ class BarangController extends Controller
     public function index()
     {
         $barang = Barang::all();
+        $user = Auth::user();
 
         return view('barang_index', [
+            'user' => $user,
             'barangs' => $barang
         ]);
     }
@@ -81,10 +84,11 @@ class BarangController extends Controller
      */
     public function edit($id)
     {
+        $user = Auth::user();
         // mengambil data pegawai berdasarkan id yang dipilih
         $barang = DB::table('barang')->where('id',$id)->get();
         // passing data pegawai yang didapat ke view edit.blade.php
-        return view('barang_edit',['barang' => $barang]);
+        return view('barang_edit',['user' => $user, 'barang' => $barang]);
      
     }
 

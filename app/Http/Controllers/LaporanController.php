@@ -11,13 +11,15 @@ use App\Penjualan;
 use App\Kas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
     public function index()
     {
-        return view('laporan');
+        $user = Auth::user();
+        return view('laporan', ['user' => $user]);
     }
 
     public function cetakPdf(Request $request)

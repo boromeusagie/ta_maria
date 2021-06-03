@@ -37,36 +37,99 @@
                     @else
                     <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                MASTER
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('barang.index') }}">Barang</a>
-                                <a class="dropdown-item" href="{{ route('supplier.index') }}">Supplier</a>
-                                <a class="dropdown-item" href="{{ route('user.index') }}">User</a>
-                                </div>
-                            </li>
+                            @if (Auth::user()->username === 'owner1')
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    MASTER
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('barang.index') }}">Barang</a>
+                                    <a class="dropdown-item" href="{{ route('supplier.index') }}">Supplier</a>
+                                    <a class="dropdown-item" href="{{ route('user.index') }}">User</a>
+                                    </div>
+                                </li>
 
-                            <li class="nav-item dropdown dropdown-submenu">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                TRANSAKSI
-                                </a>
-                                <div class="dropdown-menu dropright" aria-labelledby="navbarDropdown">
-                                    <a class="nav-link ml-3 dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pembelian</a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                                            <a class="dropdown-item" href="{{ route('pembelian.order') }}">Order Pembelian</a>
-                                            <a class="dropdown-item" href="{{ route('penerimaan-barang.index') }}">Penerimaan Barang</a>
-                                            <a class="dropdown-item" href="{{ route('return-pembelian.index') }}">Return Pembelian</a>
-                                        </div>
-                                    <a class="dropdown-item" href="{{ route('penjualan.order') }}">Penjualan</a>
-                                    <a class="dropdown-item" href="{{ route('kas.index') }}">Kas</a>
-                                </div>
-                            </li>
+                                <li class="nav-item dropdown dropdown-submenu">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    TRANSAKSI
+                                    </a>
+                                    <div class="dropdown-menu dropright" aria-labelledby="navbarDropdown">
+                                        <a class="nav-link ml-3 dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pembelian</a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                                                <a class="dropdown-item" href="{{ route('pembelian.order') }}">Order Pembelian</a>
+                                                <a class="dropdown-item" href="{{ route('penerimaan-barang.index') }}">Penerimaan Barang</a>
+                                                <a class="dropdown-item" href="{{ route('return-pembelian.index') }}">Return Pembelian</a>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('penjualan.order') }}">Penjualan</a>
+                                        <a class="dropdown-item" href="{{ route('kas.index') }}">Kas</a>
+                                    </div>
+                                </li>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-item" href="{{ route('laporan.index') }}">LAPORAN</a>
-                            </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-item" href="{{ route('laporan.index') }}">LAPORAN</a>
+                                </li>  
+                            @endif
+                            @if (Auth::user()->username === 'bagianpelayanan')
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    MASTER
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('barang.index') }}">Barang</a>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown dropdown-submenu">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    TRANSAKSI
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('penjualan.order') }}">Penjualan</a>
+                                    </div>
+                                </li>
+                            @endif
+                            @if (Auth::user()->username === 'bagiangudang')
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    MASTER
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('barang.index') }}">Barang</a>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown dropdown-submenu">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    TRANSAKSI
+                                    </a>
+                                    <div class="dropdown-menu dropright" aria-labelledby="navbarDropdown">
+                                        <a class="nav-link ml-3 dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pembelian</a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                                                <a class="dropdown-item" href="{{ route('pembelian.order') }}">Order Pembelian</a>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-item" href="{{ route('laporan.index') }}">LAPORAN</a>
+                                </li>  
+                            @endif
+                            @if (Auth::user()->username === 'bagiankeuangan1')
+                                <li class="nav-item dropdown dropdown-submenu">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    TRANSAKSI
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('kas.index') }}">Kas</a>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-item" href="{{ route('laporan.index') }}">LAPORAN</a>
+                                </li>  
+                            @endif
                         </ul>
                     @endguest
                     <!-- Right Side Of Navbar -->
@@ -76,11 +139,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

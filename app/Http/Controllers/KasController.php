@@ -5,73 +5,38 @@ namespace App\Http\Controllers;
 use App\Kas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class KasController extends Controller
 {
     public function index()
     {
-        return view('kas_index');
+        $user = Auth::user();
+        return view('kas_index', ['user' => $user]);
     }
 
     public function show(Request $request)
     {
         $request->validate(
             [
-                'tanggalKasMasukStart' => 'nullable|date',
-                'tanggalKasMasukEnd' => 'nullable|date',
-                'tanggalKasKeluarStart' => 'nullable|date',
-                'tanggalKasKeluarEnd' => 'nullable|date',
+                'tanggal' => 'nullable|date'
             ]
         );
+        $user = Auth::user();
 
         $filter = $request->all();
 
         
         $date = Carbon::today()->format('Y-m-d');
-        $tanggalKasMasukStart = $filter['tanggalKasMasukStart'] ?? $date;
-        $tanggalKasMasukEnd = $filter['tanggalKasMasukEnd'] ?? $date;
-        $tanggalKasKeluarStart = $filter['tanggalKasKeluarStart'] ?? $date;
-        $tanggalKasKeluarEnd = $filter['tanggalKasKeluarEnd'] ?? $date;
-
-        if ($tanggalKasMasukStart > $tanggalKasMasukEnd || $tanggalKasKeluarStart > $tanggalKasKeluarEnd) {
-            toastr()->error('Tanggal dari harus lebih kecil dari sampai');
-            return redirect()->route('kas.index');
-        }
-
-        $tagMasuk = '';
-        $tagKeluar = '';
-
-        if (isset($filter['tanggalKasMasukStart']) || isset($filter['tanggalKasMasukEnd'])) {
-            $tagMasuk = 'masuk';
-        }
-        if (isset($filter['tanggalKasKeluarStart']) || isset($filter['tanggalKasKeluarEnd'])) {
-            $tagKeluar = 'keluar';
-        }
-
-        
-        $kasMasuk = Kas::where('tag', $tagMasuk)
-            ->whereBetween('tanggal', [$tanggalKasMasukStart, $tanggalKasMasukEnd])
-            ->get();
-            
-        $kasKeluar = Kas::where('tag', $tagKeluar)
-                ->whereBetween('tanggal', [$tanggalKasKeluarStart, $tanggalKasKeluarEnd])
-                ->get();
+        $tanggal = $filter['tanggal'] ?? $date;
 
 
-        $kas = new \Illuminate\Database\Eloquent\Collection;
-        $kas = $kas->merge($kasKeluar);
-        $kas = $kas->merge($kasMasuk);
+        $kas = Kas::where('tanggal', $tanggal)->get();
 
-
-        if (!isset($filter['tanggalKasMasukStart'])
-            && !isset($filter['tanggalKasMasukEnd'])
-            && !isset($filter['tanggalKasKeluarStart'])
-            && !isset($filter['tanggalKasKeluarEnd'])) {
+        if (!isset($filter['tanggal'])) {
             $kas = Kas::all();
         }
-
-        \Log::debug(['kas' => $kasKeluar]);
 
         $totalDebit = $kas->sum('kasKeluar') ?? 0;
         $totalKredit = $kas->sum('kasMasuk') ?? 0;
@@ -87,6 +52,7 @@ class KasController extends Controller
         }
 
         return view('kas_show', [
+            'user' => $user,
             'kas' => $kas,
             'totalKredit' => $totalKredit,
             'totalDebit' => $totalDebit,

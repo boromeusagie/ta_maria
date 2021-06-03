@@ -7,9 +7,9 @@ use App\Barang;
 use App\ItemPembelian;
 use App\Kas;
 use App\Pembelian;
-use App\StatusItem;
 use App\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PembelianController extends Controller
@@ -21,9 +21,11 @@ class PembelianController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         $pembelian = Pembelian::all();
 
         return view('pembelian_index', [
+            'user' => $user,
             'pembelian' => $pembelian
         ]);
     }
@@ -35,10 +37,12 @@ class PembelianController extends Controller
      */
     public function orderPembelian()
     {
+        $user = Auth::user();
         $suppliers = Supplier::all();
         $barangs = Barang::all();
 
         return view('order_pembelian', [
+            'user' => $user,
             'suppliers' => $suppliers,
             'barangs' => $barangs
         ]);
@@ -51,12 +55,14 @@ class PembelianController extends Controller
      */
     public function orderPembelianShow($id, $kasId)
     {
+        $user = Auth::user();
         $pembelian = Pembelian::findOrFail($id);
         $suppliers = Supplier::all();
         $barangs = Barang::all();
         $kas = Kas::findOrFail($kasId);
 
         return view('order_pembelian_show', [
+            'user' => $user,
             'pembelian' => $pembelian,
             'suppliers' => $suppliers,
             'barangs' => $barangs,
@@ -112,15 +118,11 @@ class PembelianController extends Controller
         $newItem->kodeBarang = $request->namaBarang;
         $newItem->qty = (int) $request->qty;
         $newItem->totalHarga = (int) $barang->hargaBeli * (int) $request->qty;
+        $newItem->status = 'Belum Diterima';
         $newItem->save();
 
         $newPembelian->totalBayar += $newItem->totalHarga;
         $newPembelian->save();
-
-        $newStatus = new StatusItem();
-        $newStatus->noItemPembelian = $newItem->noItemPembelian;
-        $newStatus->status = 'Belum Diterima';
-        $newStatus->save();
 
         $newKas = new Kas();
         $newKas->noKas = (int) $lastKas + 1;
@@ -163,12 +165,8 @@ class PembelianController extends Controller
         $newItem->kodeBarang = $request->namaBarang;
         $newItem->qty = (int) $request->qty;
         $newItem->totalHarga = (int) $barang->hargaBeli * (int) $request->qty;
+        $newItem->status = 'Belum Diterima';
         $newItem->save();
-
-        $newStatus = new StatusItem();
-        $newStatus->noItemPembelian = $newItem->noItemPembelian;
-        $newStatus->status = 'Belum Diterima';
-        $newStatus->save();
 
         $pembelian->totalBayar += $newItem->totalHarga;
         $pembelian->save();

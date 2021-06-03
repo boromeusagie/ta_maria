@@ -11,30 +11,15 @@
                     <label>Kas Masuk</label>
                     <form action="{{ route('kas.show') }}" method="get">
                         <div class="form-group row">
-                            <label for="tanggalKasMasukStart" class="col-sm-3 col-form-label">Penjualan Tanggal</label>
+                            <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                             <div class="col-sm-4">
-                                <input class="form-control" type="date" name="tanggalKasMasukStart" id="tanggalKasMasukStart" value="{{ $tanggalKasMasukStart }}">
-                            </div>
-                            <label for="tanggalKasMasukEnd" class="col-sm-1 col-form-label">-</label>
-                            <div class="col-sm-4">
-                                <input class="form-control" type="date" name="tanggalKasMasukEnd" id="tanggalKasMasukEnd" value="{{ $tanggalKasMasukEnd }}">
-                            </div>
-                        </div>
-                        <div class="dropdown-divider"></div>
-                        <label>Kas Keluar</label>
-                        <div class="form-group row">
-                            <label for="tanggalKasKeluarStart" class="col-sm-3 col-form-label">Pembelian Tanggal</label>
-                            <div class="col-sm-4">
-                                <input class="form-control" type="date" name="tanggalKasKeluarStart" id="tanggalKasKeluarStart" value="{{ $tanggalKasKeluarStart }}">
-                            </div>
-                            <label for="tanggalKasKeluarEnd" class="col-sm-1 col-form-label">-</label>
-                            <div class="col-sm-4">
-                                <input class="form-control" type="date" name="tanggalKasKeluarEnd" id="tanggalKasKeluarEnd" value="{{ $tanggalKasKeluarEnd }}">
+                                <input class="form-control" type="date" name="tanggal" id="tanggal">
                             </div>
                         </div>
                         <div class="form-group row">
-                            {{-- <div class="col-sm-10"></div> --}}
-                            <button class="btn btn-primary col-sm-2" type="submit">FILTER</button>
+                            <div class="col-sm-12" align="left">
+                                <button class="btn btn-primary" type="submit">FILTER</button>
+                            </div>
                         </div>
                     </form>
                 </div>
